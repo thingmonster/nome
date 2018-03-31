@@ -21,6 +21,7 @@ void Engine::update() {
 
 void Engine::render() {
 	_activeScene->render();
+	Renderer::render();
 }
 
 void Engine::changeScene(Scene* s) {
@@ -34,6 +35,7 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	window.setVerticalSyncEnabled(true);
 	
 	changeScene(s);
+	Renderer::initialise(window);
 	
 	while (window.isOpen()) {
 		
@@ -67,11 +69,11 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 
 
 void Scene::render() {
-	cout << "scene-render ";
+	_ents.render();
 }
 
 void Scene::update(const double& dt) { 
-	cout << "scene-update ";
+	_ents.update(dt); 
 }
 
 Scene::~Scene() {}

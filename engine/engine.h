@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
-
 #include <memory>
+#include <ecm.h>
+#include "system_renderer.h"
 
 class Scene {
 	
@@ -12,6 +13,9 @@ class Scene {
 		virtual void update(const double& dt);
 		void render();
 		virtual void load() = 0;
+		
+	protected:
+		EntityManager _ents;
 		
 };
 
