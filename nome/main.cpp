@@ -1,9 +1,11 @@
 
 #include "engine.h"
 #include "scenes/scn_menu.h"
+#include "scenes/scn_level1.h"
 #include "game.h"
 
 MenuScene menu;
+Level1Scene level1;
 
 using namespace std;
 using namespace sf;

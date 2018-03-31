@@ -4,6 +4,10 @@
 // ======================== ENTITY ======================== //
 	
 	
+const Vector2f Entity::getPosition() {
+	return _position;
+}
+
 void Entity::update(const double dt) {}
 
 void Entity::render() {

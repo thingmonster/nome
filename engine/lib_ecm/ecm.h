@@ -61,6 +61,7 @@ class Entity {
 		Scene* const scene;
 		void update(const double dt);
 		void render();
+		const sf::Vector2f getPosition();
 		std::vector<std::shared_ptr<Component>> _components;
 		
 	template <typename T, typename... Targs>
