@@ -16,6 +16,23 @@ class Scene;
 
 
 
+// ======================== COMPONENT ======================== //
+	
+class Component {
+	
+	protected:
+		Entity* const _parent;
+		bool _fordeletion;
+		explicit Component(Entity* const p);
+
+	public:
+		Component() = delete;
+		virtual ~Component();
+		bool is_fordeletion() const;
+		virtual void update(double dt) = 0;
+		virtual void render() = 0;
+};
+
 // ======================== ENTITY MANAGER ======================== //
 	
 struct EntityManager {

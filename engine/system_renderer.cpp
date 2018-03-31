@@ -8,8 +8,7 @@ static queue<const Drawable *> sprites;
 static RenderWindow *rw;
 
 void Renderer::initialise(sf::RenderWindow &r) {
-	rw = &r;
-	
+	rw = &r;	
 }
 
 sf::RenderWindow &Renderer::getWindow() {
@@ -25,8 +24,6 @@ void Renderer::shutdown() {
 void Renderer::update(const double &) {}
 
 void Renderer::render() {
-	
-	cout << "R-render ";
 	
 	if (rw == nullptr) {
 		throw("No render window set!");

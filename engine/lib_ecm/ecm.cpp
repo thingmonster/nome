@@ -22,16 +22,29 @@ Entity::Entity(Scene* s) : scene(s), _fordeletion(false) {}
 
 void EntityManager::update(double dt) {
 	
-	cout << "EM-update ";
-	
+	for (auto &e : list) {
+		for (auto &c : e->_components) {
+			c->update(dt);
+		}
+	}
 }
 	
 void EntityManager::render() {
 	
-	cout << "EM-render ";
-	
+	for (auto &e : list) {
+		e->render();
+	}
 }
 	
 	
 	
+	
+// ======================== COMPONENT ======================== //
+	
+	
+Component::Component(Entity* const p) : _parent(p), _fordeletion(false) {}
+
+Component::~Component() {}
+
+
 

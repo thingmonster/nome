@@ -13,6 +13,7 @@ class Scene {
 		virtual void update(const double& dt);
 		void render();
 		virtual void load() = 0;
+		std::shared_ptr<Entity> Scene::makeEntity();
 		
 	protected:
 		EntityManager _ents;

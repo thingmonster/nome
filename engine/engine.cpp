@@ -8,21 +8,8 @@ Scene* Engine::_activeScene = nullptr;
 
 
 
-void Engine::update() {
+// ======================== ENGINE ======================== //
 	
-	static sf::Clock clock;
-	float dt = clock.restart().asSeconds();
-		
-	if (_activeScene != nullptr) {
-    _activeScene->update(dt);
-	}
-	
-}
-
-void Engine::render() {
-	_activeScene->render();
-	Renderer::render();
-}
 
 void Engine::changeScene(Scene* s) {
 	_activeScene = s;
@@ -34,8 +21,8 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	RenderWindow window(sf::VideoMode(width, height), name);
 	window.setVerticalSyncEnabled(true);
 	
-	changeScene(s);
 	Renderer::initialise(window);
+	changeScene(s);
 	
 	while (window.isOpen()) {
 		
@@ -57,6 +44,21 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	}
 }
 
+void Engine::update() {
+	
+	static sf::Clock clock;
+	float dt = clock.restart().asSeconds();
+		
+	if (_activeScene != nullptr) {
+    _activeScene->update(dt);
+	}
+	
+}
+
+void Engine::render() {
+	_activeScene->render();
+	Renderer::render();
+}
 
 
 
@@ -66,6 +68,9 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 
 
 
+
+// ======================== SCENE ======================== //
+	
 
 
 void Scene::render() {
@@ -74,6 +79,12 @@ void Scene::render() {
 
 void Scene::update(const double& dt) { 
 	_ents.update(dt); 
+}
+
+std::shared_ptr<Entity> Scene::makeEntity() {
+	auto e = make_shared<Entity>(this);
+	_ents.list.push_back(e);
+	return std::move(e);
 }
 
 Scene::~Scene() {}
