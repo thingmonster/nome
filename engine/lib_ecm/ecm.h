@@ -62,7 +62,7 @@ class Entity {
 		void update(const double dt);
 		void render();
 		const sf::Vector2f getPosition();
-		// void setPosition(const sf::Vector2f &pos);
+		void setPosition(const sf::Vector2f &pos);
 		// void move(const sf::Vector2f &pos);
 		// float getRadius();
 		// void setForDelete();

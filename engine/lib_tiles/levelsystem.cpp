@@ -24,11 +24,11 @@ vector<std::unique_ptr<sf::RectangleShape>> LevelSystem::_sprites;
 
 std::map<LevelSystem::TILE, sf::Color> LevelSystem::_colours {
 	{WALL, Color::White}, 
-	{START, Color::Red}, 
+	{START, Color::White}, 
 	{END, Color::Green}, 
 	{EMPTY, Color::White}, 
 	{WAYPOINT, Color::Blue},
-	{ENEMY, Color::Black}
+	{ENEMY, Color::White}
 };
 
 std::map<LevelSystem::TILE, sf::IntRect> LevelSystem::_spriteCoords {
@@ -37,7 +37,7 @@ std::map<LevelSystem::TILE, sf::IntRect> LevelSystem::_spriteCoords {
 	{END, sf::IntRect(0, 0, 0, 0)}, 
 	{EMPTY, sf::IntRect(0, 0, 150, 150)}, 
 	{WAYPOINT, sf::IntRect(0, 0, 0, 0)},
-	{ENEMY, sf::IntRect(0, 0, 0, 0)}
+	{ENEMY, sf::IntRect(300, 0, 150, 150)}
 };
 
 

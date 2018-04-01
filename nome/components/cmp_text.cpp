@@ -9,7 +9,6 @@ TextComponent::TextComponent(Entity* const p, const std::string& str, const std:
   _text.setString(_string);
   _font = Resources::get<sf::Font>(font);
   _text.setFont(*_font);
-	
 }
 
 void TextComponent::SetText(const std::string& str) {

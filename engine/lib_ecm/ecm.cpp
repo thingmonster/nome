@@ -8,9 +8,9 @@ const Vector2f Entity::getPosition() {
 	return _position;
 }
 
-// void Entity::setPosition(const Vector2f &pos) {
-	// _position = pos;
-// }
+void Entity::setPosition(const Vector2f &pos) {
+	_position = pos;
+}
 
 // void Entity::setForDelete() {
 	// _fordeletion = true;
@@ -45,14 +45,6 @@ Entity::Entity(Scene* s) : scene(s), _fordeletion(false) {}
 	
 
 void EntityManager::update(double dt) {
-	
-	// for (int i = 0; i < list.size(); i++) {
-		// if (list[i]->is_fordeletion()) {
-			// list.erase(list.begin() + i);
-			// --i;
-			// continue;
-		// }
-	// }
 	
 	for (auto &e : list) {
 		for (auto &c : e->_components) {
