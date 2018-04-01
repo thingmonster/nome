@@ -11,7 +11,7 @@ class Scene {
 		Scene() = default;
 		virtual ~Scene();
 		virtual void update(const double& dt);
-		void render();
+		virtual void render();
 		virtual void load() = 0;
 		std::shared_ptr<Entity> Scene::makeEntity();
 		

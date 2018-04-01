@@ -8,6 +8,7 @@ class Level1Scene : public Scene {
 		Level1Scene() = default;
 		void update(const double& dt) override;
 		void load() override;
+		void render() override;
 
 };
 
