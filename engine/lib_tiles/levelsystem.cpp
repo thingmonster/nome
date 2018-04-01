@@ -15,16 +15,29 @@ std::unique_ptr<LevelSystem::TILE[]> LevelSystem::_tiles;
 size_t LevelSystem::_width;
 size_t LevelSystem::_height;
 
+sf::Texture LevelSystem::texture;
 float LevelSystem::_tileSize(100.f);
 vector<std::unique_ptr<sf::RectangleShape>> LevelSystem::_sprites;
+
+
+
 
 std::map<LevelSystem::TILE, sf::Color> LevelSystem::_colours {
 	{WALL, Color::White}, 
 	{START, Color::Red}, 
 	{END, Color::Green}, 
-	{EMPTY, Color::Black}, 
+	{EMPTY, Color::White}, 
 	{WAYPOINT, Color::Blue},
 	{ENEMY, Color::Black}
+};
+
+std::map<LevelSystem::TILE, sf::IntRect> LevelSystem::_spriteCoords {
+	{WALL, sf::IntRect(150, 0, 150, 150)}, 
+	{START, sf::IntRect(0, 0, 150, 150)}, 
+	{END, sf::IntRect(0, 0, 0, 0)}, 
+	{EMPTY, sf::IntRect(0, 0, 150, 150)}, 
+	{WAYPOINT, sf::IntRect(0, 0, 0, 0)},
+	{ENEMY, sf::IntRect(0, 0, 0, 0)}
 };
 
 
@@ -135,6 +148,15 @@ sf::Color LevelSystem::getColor(LevelSystem::TILE t) {
 	return _colours[t];
 }
  
+sf::IntRect LevelSystem::getSpriteCoords(LevelSystem::TILE t) {
+	auto it = _spriteCoords.find(t);
+	if (it == _spriteCoords.end()) {
+		_spriteCoords[t] = sf::IntRect(300,0,150,150);
+	}
+	return _spriteCoords[t];
+}
+ 
+ 
 void LevelSystem::setColor(LevelSystem::TILE t, sf::Color c) {
 	_colours[t] = c;
 }
@@ -142,9 +164,8 @@ void LevelSystem::setColor(LevelSystem::TILE t, sf::Color c) {
 
 
 
-void LevelSystem::loadLevel(const std::string &path, float tileSize) {
+void LevelSystem::loadLevel(const std::string &path, const std::string &sprites, sf::Vector2f windowSize) {
 	
-	_tileSize = tileSize;
 	size_t w = 0, h = 0;
 	string buffer;
 
@@ -200,22 +221,42 @@ void LevelSystem::loadLevel(const std::string &path, float tileSize) {
 	_width = w;	
 	_height = h;
 	std::copy(temp_tiles.begin(), temp_tiles.end(), &_tiles[0]);
+	
+	
+	if (windowSize.x / w > windowSize.y / h) {
+		_tileSize = windowSize.y / h;
+	} else {
+		_tileSize = windowSize.x / w;
+	}
+	
+	
+	
 	cout << "Level " << path << " Loaded. " << w << "x" << h << std::endl;
-	buildSprites();
+	buildSprites(sprites);
 
 }
 
-void LevelSystem::buildSprites() {
+void LevelSystem::buildSprites(const std::string &sprites) {
 	
 	_sprites.clear();
 	
+	texture.loadFromFile("res/sprites/level1.png");
+	
 	for (size_t y = 0; y < LevelSystem::getHeight(); ++y) {
 		for (size_t x = 0; x < LevelSystem::getWidth(); ++x) {
+			
 			auto s = make_unique<sf::RectangleShape>();
+			
 			s->setPosition(getTilePosition({x, y}));
 			s->setSize(Vector2f(_tileSize, _tileSize));
 			s->setFillColor(getColor(getTile({x, y})));
+			s->setTexture(&texture);
+			s->setTextureRect(getSpriteCoords(getTile({x, y})));
+			
+			
 			_sprites.push_back(move(s)); 
+			
+			
 		}
 	}
 }

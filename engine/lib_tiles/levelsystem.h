@@ -12,11 +12,13 @@ class LevelSystem {
 	
 	public:
 		enum TILE {EMPTY, START, END, WALL, WAYPOINT, ENEMY};
-		static void loadLevel(const std::string&, float tileSize = 100.f);
+		static void loadLevel(const std::string& path, const std::string& sprites, sf::Vector2f windowSize = {800.f, 600.f});
 		static void render(sf::RenderWindow &window);
 		
+		static sf::IntRect getSpriteCoords(TILE t);
 		static sf::Color getColor(TILE t);
 		static void setColor(TILE t, sf::Color c);
+		static sf::Texture texture;
 		
 		static size_t getWidth();
 		static size_t getHeight();
@@ -32,16 +34,18 @@ class LevelSystem {
 		static std::vector<sf::Vector2ul> findTiles(TILE t);
 		static sf::Vector2f getTileCoordinates(TILE t);
 		
+
 		
 		
 	protected:
 		static std::unique_ptr<TILE[]> _tiles;
 		static std::map<TILE, sf::Color> _colours;
+		static std::map<TILE, sf::IntRect> _spriteCoords;
 		static size_t _width;
 		static size_t _height;
 		static float _tileSize;
 		static std::vector<std::unique_ptr<sf::RectangleShape>> _sprites;
-		static void buildSprites();
+		static void buildSprites(const std::string&);
 
 		
 		

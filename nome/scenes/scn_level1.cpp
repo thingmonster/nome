@@ -21,10 +21,10 @@ void Level1Scene::render() {
 
 void Level1Scene::load() {
 	
-	ls::loadLevel("res/levels/level1.txt", 30.f);
-	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
-
+	
+	ls::loadLevel("res/levels/level1.txt", "res/sprites/level1.png", windowSize);
+	
 	// "Level 1 goes here"
 	auto txt = makeEntity();
 	auto t = txt->addComponent<TextComponent>("Level 1 goes here", "Rubik-Medium.ttf");
