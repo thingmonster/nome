@@ -9,6 +9,7 @@ class Level1Scene : public Scene {
 		void update(const double& dt) override;
 		void load() override;
 		void render() override;
+		static std::shared_ptr<sf::Texture> spritesheet;
 
 };
 

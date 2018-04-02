@@ -19,6 +19,12 @@ sf::Shape& ShapeComponent::getShape() const {
 	return *_shape;
 }
 
+void ShapeComponent::setTexture(std::shared_ptr<sf::Texture> t, sf::IntRect r) {
+  _texture = t;
+	getShape().setTexture(_texture.get());
+	getShape().setTextureRect(r);
+}
+
 ShapeComponent::ShapeComponent(Entity *p) : Component(p), _shape(make_shared<sf::CircleShape>()) {}
 
 

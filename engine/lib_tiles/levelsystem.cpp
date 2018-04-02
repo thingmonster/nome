@@ -25,19 +25,17 @@ vector<std::unique_ptr<sf::RectangleShape>> LevelSystem::_sprites;
 std::map<LevelSystem::TILE, sf::Color> LevelSystem::_colours {
 	{WALL, Color::White}, 
 	{START, Color::White}, 
-	{END, Color::Green}, 
+	{BALL, Color::White}, 
 	{EMPTY, Color::White}, 
-	{WAYPOINT, Color::Blue},
-	{ENEMY, Color::White}
+	{HOLE, Color::White}
 };
 
 std::map<LevelSystem::TILE, sf::IntRect> LevelSystem::_spriteCoords {
 	{WALL, sf::IntRect(150, 0, 150, 150)}, 
 	{START, sf::IntRect(0, 0, 150, 150)}, 
-	{END, sf::IntRect(0, 0, 0, 0)}, 
+	{BALL, sf::IntRect(0, 0, 150, 150)}, 
 	{EMPTY, sf::IntRect(0, 0, 150, 150)}, 
-	{WAYPOINT, sf::IntRect(0, 0, 0, 0)},
-	{ENEMY, sf::IntRect(300, 0, 150, 150)}
+	{HOLE, sf::IntRect(300, 0, 150, 150)}
 };
 
 
@@ -190,17 +188,14 @@ void LevelSystem::loadLevel(const std::string &path, const std::string &sprites,
 			case 's':
 				temp_tiles.push_back(START);
 				break;
-			case 'e':
-				temp_tiles.push_back(END);
+			case 'b':
+				temp_tiles.push_back(BALL);
 				break;
 			case ' ':
 				temp_tiles.push_back(EMPTY);
 				break;
-			case '+':
-				temp_tiles.push_back(WAYPOINT);
-				break;
-			case 'n':
-				temp_tiles.push_back(ENEMY);
+			case 'h':
+				temp_tiles.push_back(HOLE);
 				break;
 			case '\n':
 				if (w == 0) {

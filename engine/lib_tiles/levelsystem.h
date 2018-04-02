@@ -11,7 +11,7 @@
 class LevelSystem {
 	
 	public:
-		enum TILE {EMPTY, START, END, WALL, WAYPOINT, ENEMY};
+		enum TILE {EMPTY, START, BALL, WALL, HOLE};
 		static void loadLevel(const std::string& path, const std::string& sprites, sf::Vector2f windowSize = {800.f, 600.f});
 		static void render(sf::RenderWindow &window);
 		
