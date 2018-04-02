@@ -9,7 +9,10 @@ class Level1Scene : public Scene {
 		void update(const double& dt) override;
 		void load() override;
 		void render() override;
-		static std::shared_ptr<sf::Texture> spritesheet;
+		void spawn();
+		static std::shared_ptr<sf::Texture> playerSprites;
+		static std::shared_ptr<sf::Texture> enemySprites;
+		static std::shared_ptr<Entity> hole;
 
 };
 
