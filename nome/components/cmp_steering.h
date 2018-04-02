@@ -1,13 +1,13 @@
 #pragma once
 #include <iostream>
-#include "cmp_actor_movement.h"
+#include "cmp_movement.h"
 #include "../classes/steering.h"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
 using namespace std;
 
-class EnemyMovementComponent : public ActorMovementComponent {
+class SteeringComponent : public MovementComponent {
 	
 	private:
 		Seek _seek;
@@ -17,8 +17,8 @@ class EnemyMovementComponent : public ActorMovementComponent {
 		Vector2f _direction;
 		
 	public:
-		EnemyMovementComponent() = delete;
-		explicit EnemyMovementComponent(Entity *p, Entity *player);		
+		SteeringComponent() = delete;
+		explicit SteeringComponent(Entity *p, Entity *player);		
 		void update(double dt) override;
 	
 	

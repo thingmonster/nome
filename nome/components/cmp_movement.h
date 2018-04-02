@@ -3,15 +3,15 @@
 #include "levelsystem.h"
 #include "../classes/steering.h"
 
-class ActorMovementComponent : public Component {
+class MovementComponent : public Component {
 	
 	protected:
 		bool validMove(const sf::Vector2f&);
 		float _speed;
 		
 	public:
-		explicit ActorMovementComponent(Entity* p);
-		ActorMovementComponent() = delete;
+		explicit MovementComponent(Entity* p);
+		MovementComponent() = delete;
 		
 		float getSpeed() const;
 		void setSpeed(float _speed);

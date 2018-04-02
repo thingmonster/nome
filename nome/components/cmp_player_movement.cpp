@@ -99,7 +99,7 @@ void PlayerMovementComponent::update(double dt) {
 	float floatY = (float)moveY;
 	
 	move({floatX, floatY});
-	ActorMovementComponent::update(dt);
+	MovementComponent::update(dt);
 }
 
-PlayerMovementComponent::PlayerMovementComponent(Entity *p) : ActorMovementComponent(p) {}
+PlayerMovementComponent::PlayerMovementComponent(Entity *p) : MovementComponent(p) {}

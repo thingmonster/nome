@@ -1,7 +1,7 @@
 #pragma once
-#include "cmp_actor_movement.h"
+#include "cmp_movement.h"
 
-class PlayerMovementComponent : public ActorMovementComponent {
+class PlayerMovementComponent : public MovementComponent {
 	
 	private:
 		double _momentum(double * timer);

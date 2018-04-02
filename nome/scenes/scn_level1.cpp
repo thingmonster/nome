@@ -2,9 +2,10 @@
 #include "scn_menu.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_shape.h"
-#include "../components/cmp_actor_movement.h"
+#include "../components/cmp_movement.h"
 #include "../components/cmp_player_movement.h"
-#include "../components/cmp_enemy_movement.h"
+#include "../components/cmp_steering.h"
+#include "../components/cmp_pathfinding.h"
 #include "../game.h"
 #include "levelsystem.h"
 #include <SFML/Window/Keyboard.hpp>
@@ -80,8 +81,11 @@ void Level1Scene::spawn() {
 	shape->getShape().setFillColor({255 , 255, 255});
 	shape->getShape().setOrigin(Vector2f(20.f, 20.f));
 	shape->setTexture(enemySprites, sf::IntRect(0,0,50,50));
-	auto move = beetle->addComponent<EnemyMovementComponent>(player.get());
+	// auto move = beetle->addComponent<SteeringComponent>(player.get());
 	
+	auto path = pathFind(Vector2i(1, 1), Vector2i(ls::getWidth() - 2, ls::getHeight() - 2));
+	auto move = beetle->addComponent<PathfindingComponent>();
+	move->setPath(path);
 }
 
 
