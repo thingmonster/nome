@@ -6,6 +6,8 @@
 #include "../components/cmp_player_movement.h"
 #include "../components/cmp_steering.h"
 #include "../components/cmp_pathfinding.h"
+#include "../components/cmp_state_machine.h"
+#include "../states/enemy_states.h"
 #include "../game.h"
 #include "levelsystem.h"
 #include <SFML/Window/Keyboard.hpp>
@@ -81,11 +83,18 @@ void Level1Scene::spawn() {
 	shape->getShape().setFillColor({255 , 255, 255});
 	shape->getShape().setOrigin(Vector2f(20.f, 20.f));
 	shape->setTexture(enemySprites, sf::IntRect(0,0,50,50));
-	// auto move = beetle->addComponent<SteeringComponent>(player.get());
+	auto move = beetle->addComponent<SteeringComponent>(player.get());
 	
-	auto path = pathFind(Vector2i(1, 1), Vector2i(ls::getWidth() - 2, ls::getHeight() - 2));
-	auto move = beetle->addComponent<PathfindingComponent>();
-	move->setPath(path);
+	// auto path = pathFind(Vector2i(1, 1), Vector2i(ls::getWidth() - 2, ls::getHeight() - 2));
+	// auto move = beetle->addComponent<PathfindingComponent>();
+	// move->setPath(path);
+	
+	auto sm = beetle->addComponent<StateMachineComponent>();
+	sm->addState("normal", make_shared<NormalState>(player));
+	sm->addState("near", make_shared<NearState>(player));
+	sm->changeState("normal");
+	
+	
 }
 
 
