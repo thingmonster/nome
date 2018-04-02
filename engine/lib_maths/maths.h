@@ -21,9 +21,10 @@ namespace sf {
 	template <typename T> Vector2<T> normalize(const Vector2<T> &v) {
 		Vector2<T> vector;
 		double l = length(v);
+		
 		if (l != 0) {
-			vector.x /= l;
-			vector.y /= l;
+			vector.x = v.x / l;
+			vector.y = v.y / l;
 		}
 		return vector;
 	}

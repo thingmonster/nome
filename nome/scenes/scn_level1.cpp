@@ -16,9 +16,6 @@ using namespace std;
 
 std::shared_ptr<sf::Texture> Level1Scene::playerSprites;
 std::shared_ptr<sf::Texture> Level1Scene::enemySprites;
-std::shared_ptr<Entity> Level1Scene::hole;
-
-
 
 void Level1Scene::update(const double& dt) {
 	
@@ -27,7 +24,11 @@ void Level1Scene::update(const double& dt) {
 	static double timer = 1.0f;
 	timer -= dt;
 	if (timer < 0.f)  {
-		spawn();
+		cout << maxEnemies << endl;
+		if (maxEnemies > 0) {
+			spawn();
+			maxEnemies--;
+		}
 		timer = 4.f;
 	}
 	
@@ -49,14 +50,14 @@ void Level1Scene::load() {
 	
 	
 	
-	auto pl = Level1Scene::makeEntity();
-	pl->setPosition(ls::getTileCentre(ls::findTiles(ls::START)[0]));
-	auto s = pl->addComponent<ShapeComponent>();
+	player = Level1Scene::makeEntity();
+	player->setPosition(ls::getTileCentre(ls::findTiles(ls::START)[0]));
+	auto s = player->addComponent<ShapeComponent>();
 	s->setShape<sf::CircleShape>(20.f);
 	s->getShape().setFillColor({255 , 255, 255});
 	s->getShape().setOrigin(Vector2f(20.f, 20.f));
 	s->setTexture(playerSprites, sf::IntRect(0,0,50,50));
-	auto m = pl->addComponent<PlayerMovementComponent>();
+	auto m = player->addComponent<PlayerMovementComponent>();
 	m->setSpeed(200.f);
 	
 	auto ball = Level1Scene::makeEntity();
@@ -79,8 +80,7 @@ void Level1Scene::spawn() {
 	shape->getShape().setFillColor({255 , 255, 255});
 	shape->getShape().setOrigin(Vector2f(20.f, 20.f));
 	shape->setTexture(enemySprites, sf::IntRect(0,0,50,50));
-	auto move = beetle->addComponent<EnemyMovementComponent>();
-	move->setSpeed(200.f);
+	auto move = beetle->addComponent<EnemyMovementComponent>(player.get());
 	
 }
 

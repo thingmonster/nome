@@ -1,6 +1,7 @@
 #pragma once
 #include "ecm.h"
 #include "levelsystem.h"
+#include "../classes/steering.h"
 
 class ActorMovementComponent : public Component {
 	
@@ -15,8 +16,8 @@ class ActorMovementComponent : public Component {
 		float getSpeed() const;
 		void setSpeed(float _speed);
 		
-		void move(const sf::Vector2f&);
-		void move(float x, float y);
+		bool move(const sf::Vector2f&);
+		bool move(float x, float y);
 		
 		void render() override {}
 		void update(double dt) override;

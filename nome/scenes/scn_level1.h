@@ -12,7 +12,9 @@ class Level1Scene : public Scene {
 		void spawn();
 		static std::shared_ptr<sf::Texture> playerSprites;
 		static std::shared_ptr<sf::Texture> enemySprites;
-		static std::shared_ptr<Entity> hole;
+		std::shared_ptr<Entity> player;
+		int maxEnemies = 1;
 
 };
+
 
