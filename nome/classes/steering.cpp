@@ -3,7 +3,7 @@
 #include <iostream>
 #include <ctime>
 
-SteeringOutput Seek::getSteering() const noexcept {
+SteeringOutput SeekSteering::getSteering() const noexcept {
 	SteeringOutput steering;
 	steering.direction = _target->getPosition() - _character->getPosition();
 	steering.direction = normalize(steering.direction);
@@ -12,7 +12,7 @@ SteeringOutput Seek::getSteering() const noexcept {
 	return steering;
 }
 
-SteeringOutput Flee::getSteering() const noexcept {
+SteeringOutput FleeSteering::getSteering() const noexcept {
 	SteeringOutput steering;
 	steering.direction = _character->getPosition() - _target->getPosition();
 	steering.direction = normalize(steering.direction);
@@ -21,7 +21,7 @@ SteeringOutput Flee::getSteering() const noexcept {
 	return steering;
 }
 
-SteeringOutput Wander::getSteering() const noexcept {
+SteeringOutput WanderSteering::getSteering() const noexcept {
 	
 	Vector2f test = Vector2f(std::rand() % 100, std::rand() % 100) - Vector2f(std::rand() % 100, std::rand() % 100);
 	
@@ -35,7 +35,7 @@ SteeringOutput Wander::getSteering() const noexcept {
 }
 
 
-SteeringOutput Wander::getSteering(Vector2f direction) {
+SteeringOutput WanderSteering::getSteering(Vector2f direction) {
 	
 	SteeringOutput steering;
 	int odds = std::rand() % 100;
@@ -57,7 +57,7 @@ SteeringOutput Wander::getSteering(Vector2f direction) {
 
 
 
-Wander::Wander(Entity *character, Entity *target, float maxSpeed) 
+WanderSteering::WanderSteering(Entity *character, Entity *target, float maxSpeed) 
 	: _character(character), _target(target), _maxSpeed(maxSpeed) {
 		
 	std::srand(std::time(nullptr));

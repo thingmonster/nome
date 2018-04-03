@@ -37,9 +37,31 @@ void StateMachineComponent::changeState(const string &name) noexcept {
 
 
 
+ 
 
 
 
+void StationaryState::execute(Entity *owner, double dt) noexcept {
+	// cout << "stationary" << endl;
+	auto s = owner->getComponents<ShapeComponent>();
+	s[0]->getShape().setFillColor(Color::Red);
+}
+
+void SeekState::execute(Entity *owner, double dt) noexcept {
+	// cout << "seek" << endl;
+	auto s = owner->getComponents<ShapeComponent>();
+	s[0]->getShape().setFillColor(Color::Green);
+	auto output = _steering.getSteering();
+	owner->setPosition(owner->getPosition() + (output.direction * (float)dt));
+}
+
+void FleeState::execute(Entity *owner, double dt) noexcept {
+	// cout << "flee" << endl;
+	auto s = owner->getComponents<ShapeComponent>();
+	s[0]->getShape().setFillColor(Color::Yellow);
+	auto output = _steering.getSteering();
+	owner->setPosition(owner->getPosition() + (output.direction * (float)dt));
+}
 
 
 

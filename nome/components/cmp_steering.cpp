@@ -8,20 +8,26 @@ using namespace std;
 
 SteeringComponent::SteeringComponent(Entity* p, Entity *player) : 
 	_player(player), 
-	_seek(Seek(p, player, 100.0f)),
-	_flee(Flee(p, player, 100.0f)), 
-	_wander(Wander(p, player, 100.0f)), 
+	_seek(SeekSteering(p, player, 100.0f)),
+	_flee(FleeSteering(p, player, 100.0f)), 
+	_wander(WanderSteering(p, player, 100.0f)), 
 	MovementComponent(p) {
 		
 	}
 
 	
 void SteeringComponent::update(double dt) {
+	
+	/* 
 	if (length(_parent->getPosition() - _player->getPosition()) > 500.0f) {
 		auto output = _seek.getSteering();
 		move(output.direction * (float)dt);
 		_direction = output.direction;
 	} else if (length(_parent->getPosition() - _player->getPosition()) < 50.0f) {
+		auto output = _flee.getSteering();
+		move(output.direction * (float)dt);
+		_direction = output.direction;
+	} else if (state == "stationary") {
 		auto output = _flee.getSteering();
 		move(output.direction * (float)dt);
 		_direction = output.direction;
@@ -38,7 +44,7 @@ void SteeringComponent::update(double dt) {
 			}
 		}
 		_direction = output.direction;
-	}
+	} */
 }
 
 

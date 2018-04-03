@@ -7,7 +7,6 @@ using namespace sf;
 Scene* Engine::_activeScene = nullptr;
 
 
-
 // ======================== ENGINE ======================== //
 	
 
@@ -40,7 +39,6 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 		update();
 		render();
 		window.display();
-
 	}
 }
 

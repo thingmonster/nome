@@ -2,7 +2,9 @@
 #include "ecm.h"
 #include <unordered_map>
 #include <string>
-
+#include "../classes/steering.h"
+#include "../components/cmp_state_machine.h"
+#include "../components/cmp_shape.h"
 
 
 class State {
@@ -11,7 +13,7 @@ class State {
 		virtual ~State() = default;
 		virtual void execute(Entity*, double) noexcept = 0;
 };
-
+ 
 
 class StateMachineComponent : public Component {
 	
@@ -35,3 +37,34 @@ class StateMachineComponent : public Component {
 		
 		
 };
+
+
+class StationaryState : public State {
+	
+		public:
+			StationaryState() = default;
+			void execute(Entity*, double) noexcept override;
+};
+
+class SeekState : public State {
+	
+	private:
+		SeekSteering _steering;
+	
+	public:
+		SeekState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player)
+			: _steering(owner.get(), player.get(), 50.0f) {}
+		void execute(Entity*, double) noexcept override;
+};
+
+class FleeState : public State {
+	
+	private:
+		FleeSteering _steering;
+	
+	public:
+		FleeState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player)
+			: _steering(owner.get(), player.get(), 50.0f) {}
+		void execute(Entity*, double) noexcept override;
+};
+

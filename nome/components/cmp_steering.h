@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "cmp_movement.h"
+#include "cmp_state_machine.h"
 #include "../classes/steering.h"
 #include <SFML/Graphics.hpp>
 
@@ -10,9 +11,9 @@ using namespace std;
 class SteeringComponent : public MovementComponent {
 	
 	private:
-		Seek _seek;
-		Flee _flee;
-		Wander _wander;
+		SeekSteering _seek;
+		FleeSteering _flee;
+		WanderSteering _wander;
 		Entity *_player;
 		Vector2f _direction;
 		

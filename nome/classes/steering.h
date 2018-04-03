@@ -18,7 +18,7 @@ class SteeringBehaviour {
 		
 };
 
-class Seek : public SteeringBehaviour {
+class SeekSteering : public SteeringBehaviour {
 	
 	private:
 		Entity* _character;
@@ -26,14 +26,14 @@ class Seek : public SteeringBehaviour {
 		float _maxSpeed;
 		
 	public:
-		Seek() = delete;
-		Seek(Entity *character, Entity *target, float maxSpeed) 
+		SeekSteering() = delete;
+		SeekSteering(Entity *character, Entity *target, float maxSpeed) 
 			: _character(character), _target(target), _maxSpeed(maxSpeed) {}
 		SteeringOutput getSteering() const noexcept;
 };
 		
 
-class Flee : public SteeringBehaviour {
+class FleeSteering : public SteeringBehaviour {
 	
 	private:
 		Entity* _character;
@@ -41,13 +41,13 @@ class Flee : public SteeringBehaviour {
 		float _maxSpeed;
 		
 	public:
-		Flee() = delete;
-		Flee(Entity *character, Entity *target, float maxSpeed) 
+		FleeSteering() = delete;
+		FleeSteering(Entity *character, Entity *target, float maxSpeed) 
 			: _character(character), _target(target), _maxSpeed(maxSpeed) {}
 		SteeringOutput getSteering() const noexcept;
 };
 		
-class Wander : public SteeringBehaviour {
+class WanderSteering : public SteeringBehaviour {
 	
 	private:
 		Entity* _character;
@@ -55,8 +55,8 @@ class Wander : public SteeringBehaviour {
 		float _maxSpeed;
 		
 	public:
-		Wander() = delete;
-		Wander(Entity *character, Entity *target, float maxSpeed);
+		WanderSteering() = delete;
+		WanderSteering(Entity *character, Entity *target, float maxSpeed);
 		SteeringOutput getSteering() const noexcept;
 		SteeringOutput getSteering(Vector2f direction);
 };
