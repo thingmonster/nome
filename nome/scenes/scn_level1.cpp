@@ -75,6 +75,10 @@ void Level1Scene::load() {
 	
 }
 
+void Level1Scene::reload() {
+	
+}
+
 void Level1Scene::spawn() {
 	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();

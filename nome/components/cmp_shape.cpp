@@ -12,7 +12,9 @@ void ShapeComponent::update(double dt) {
 }
 
 void ShapeComponent::render() {
-	Renderer::queue(_shape.get());
+	if (_parent->getVisible()) {
+		Renderer::queue(_shape.get());
+	}
 }
 
 sf::Shape& ShapeComponent::getShape() const {

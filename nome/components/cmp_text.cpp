@@ -32,6 +32,10 @@ void TextComponent::setCharacterSize(float size) {
   _text.setCharacterSize(size);
 }
 
+void TextComponent::setOrigin(float x, float y) {
+  _text.setOrigin(x,y);
+}
+
 void TextComponent::update(double dt) {
 }
 

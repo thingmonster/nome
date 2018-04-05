@@ -29,7 +29,11 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
     while (window.pollEvent(event)) {
       if (event.type == Event::Closed) {
         window.close();
-      }
+      } else if (event.type == sf::Event::Resized) {
+				std::cout << "resize: ("  << event.size.width << ',' << event.size.height << ") -> " << std::endl;
+				window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+				changeScene(_activeScene);
+			}
     }
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
       window.close();

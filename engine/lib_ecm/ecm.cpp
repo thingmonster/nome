@@ -12,6 +12,14 @@ void Entity::setPosition(const Vector2f &pos) {
 	_position = pos;
 }
 
+void Entity::setVisible(bool v) {
+	_visible = v;
+}
+
+bool Entity::getVisible() {
+	return _visible;
+}
+
 // void Entity::setForDelete() {
 	// _fordeletion = true;
 // }

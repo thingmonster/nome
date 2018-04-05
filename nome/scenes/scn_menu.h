@@ -8,6 +8,7 @@ class MenuScene : public Scene {
 		MenuScene() = default;
 		void update(const double& dt) override;
 		void load() override;
+		void reload() override;
 
 };
 

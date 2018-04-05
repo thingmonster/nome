@@ -51,6 +51,7 @@ class Entity {
 	protected:
 		sf::Vector2f _position;
 		bool _fordeletion;
+		bool _visible;
 		
 	public:
 		Entity(Scene* s);
@@ -60,6 +61,8 @@ class Entity {
 		void render();
 		const sf::Vector2f getPosition();
 		void setPosition(const sf::Vector2f &pos);
+		void setVisible(bool v);
+		bool getVisible();
 		// void move(const sf::Vector2f &pos);
 		// float getRadius();
 		// void setForDelete();

@@ -18,6 +18,7 @@ class TextComponent : public Component {
 		void SetPosition(Vector2f pos);
 		void setCharacterSize(float size);
 		void setColor(sf::Color colour);
+		void setOrigin(float x, float y);
 		
 		void update(double dt) override;
 		void render() override;
