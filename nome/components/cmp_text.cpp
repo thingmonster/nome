@@ -36,9 +36,15 @@ void TextComponent::setOrigin(float x, float y) {
   _text.setOrigin(x,y);
 }
 
+void TextComponent::setString(std::string s) {
+	_text.setString(s);
+}
+
 void TextComponent::update(double dt) {
 }
 
 void TextComponent::render() {
-	Renderer::queue(&_text);
+	if (_parent->getVisible()) {
+		Renderer::queue(&_text);
+	}
 }

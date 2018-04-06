@@ -10,31 +10,41 @@ using namespace sf;
 using namespace std;
 
 
+const std::string controls[] = {
+    "Left",
+    "Right",
+    "Up",
+    "Down"
+};
+
+
 void RemapScene::update(const double& dt) {
 	
-	Event event;
-	while (Renderer::getWindow().pollEvent(event)) {
-		cout << "hi" ;
-		if (event.type == sf::Event::EventType::KeyPressed){
-				cout << event.key.code << endl;
+	if (controlCount == 4) {
+		
+		if (!finished) {
+			finish();
 		}
-	}
-	 
-	if (Keyboard::isKeyPressed(Keyboard::L)) {
-		Engine::controls[0] = Keyboard::L;
-	}
-	
-	if (Keyboard::isKeyPressed(Keyboard::B)) {
-		Engine::changeScene(&menu);			
+			
+		if (Keyboard::isKeyPressed(Keyboard::B)) {
+			Engine::changeScene(&menu);			
+		}
+		
+	} else if (controlCount < Engine::controls.size()) {
+		
+		queryKey();
+		controlCount = Engine::controls.size();
+		
 	}
 	
 }
 
 void RemapScene::load() {
 	
-	cout << Engine::controls.size() << endl;
 	Engine::controls.clear();
-	cout << Engine::controls.size() << endl;
+	remapping = true;
+	controlCount = 0;
+	finished = false;
 	
   _ents.list.clear();
 	
@@ -62,65 +72,16 @@ void RemapScene::load() {
 	auto rM = rm->addComponent<TextComponent>("Remap Controls", "Rubik-Medium.ttf");
 	rM->setColor(sf::Color(200 , 190, 183));
 	rM->setCharacterSize(50);
-	rM->SetPosition({windowSize.x / 2 - rM->getText().getLocalBounds().width / 2, 200});
+	rM->SetPosition({windowSize.x / 2 - rM->getText().getLocalBounds().width / 2, 150});
 	
-	/* // ============================== DESCRIPTIONS & KEYS ============================== // 
-	
-	
-	std::shared_ptr<sf::Texture> keySprites = Resources::get<sf::Texture>("ui_key.png");
-	
-	makeDescription("Screen Resolution", sf::Vector2f(windowSize.x / 2 - 20, 290));	
-	makeDescription("Full Screen",sf::Vector2f(windowSize.x / 2 - 20, 340));	
-	makeDescription("Remap Controls", sf::Vector2f(windowSize.x / 2 - 20, 390));
-	makeDescription("Back to Start Screen", sf::Vector2f(windowSize.x / 2 - 20, 440));
-	
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 305));
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 355));
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 405));
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 455));
-	
-	makeKeyText("S", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 300));
-	makeKeyText("F", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 350));
-	makeKeyText("R", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 400));
-	makeKeyText("B", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 450));
-	 */
-	
-	/* // ============================== SCREEN MENUS ============================== // 
-	
-	
-	
-	std::shared_ptr<sf::Texture> screenResSprites = Resources::get<sf::Texture>("ui_screen_res.png");
-	std::shared_ptr<sf::Texture> fullScreenSprites = Resources::get<sf::Texture>("ui_fullscreen.png");
-	
-	// fullscreen indicator
-	auto fsi = makeEntity();
-	auto fsI = fsi->addComponent<ShapeComponent>();
-	fsI->setShape<sf::RectangleShape>(sf::Vector2f(52, 40));
-	fsI->getShape().setOrigin(Vector2f(20,20));
-	fsI->getShape().setFillColor(sf::Color(255,255,255));
-	fsI->setTexture(fullScreenSprites, sf::IntRect(0,0,52,40));
-	fsI->getShape().setPosition(sf::Vector2f(windowSize.x / 2 + 80, 355));
-	
-	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,0,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
-	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,33,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
-	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,66,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
-	resolutionIndicators(false, sf::Vector2f(168, 102), screenResSprites, sf::IntRect(0,99,168,102), sf::Vector2f(windowSize.x / 2 + 80, 308));
-	resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 308));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,167,168,34), sf::Vector2f(windowSize.x / 2 + 80, 373));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,235,168,34), sf::Vector2f(windowSize.x / 2 + 80, 339));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,269,168,34), sf::Vector2f(windowSize.x / 2 + 80, 373));
-	preSelectResolution();
-	 */
+	// choose keys
+	instructions = makeEntity();
+	auto i = instructions->addComponent<TextComponent>("Choose a Key to Move " + controls[controlCount], "Rubik-Medium.ttf");
+	i->setColor(sf::Color(200 , 190, 183));
+	i->setCharacterSize(25);
+	i->SetPosition({windowSize.x / 2 - i->getText().getLocalBounds().width / 2, 225});
 	
 	// ============================== FOOT ============================== // 
-	
-	// "press enter to begin"
-	auto petb = makeEntity();
-	auto pe = petb->addComponent<TextComponent>("Press enter to begin", "WorstveldSling.ttf");
-	pe->setColor(sf::Color(200 , 190, 183));
-	pe->setCharacterSize(70);
-	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 485});
 	
 	// line
 	auto line = makeEntity();
@@ -130,19 +91,109 @@ void RemapScene::load() {
 	s->getShape().setFillColor(sf::Color(200 , 190, 183));
 	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
-	// line
-	auto line2 = makeEntity();
-	auto s2 = line->addComponent<ShapeComponent>();
-	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, 500));
-	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
-	
 	
 }
 
 void RemapScene::reload() {
 
+}
+
+void RemapScene::queryKey() {
+	
+	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
+
+	auto entity = makeEntity();
+	auto text = entity->addComponent<TextComponent>(controls[controlCount], "Rubik-Medium.ttf");
+	text->setColor(sf::Color(200, 190, 183));
+	text->setCharacterSize(25);
+	text->SetPosition({
+		windowSize.x / 2 - text->getText().getLocalBounds().width, 
+		(windowSize.y / 2 - 20) + (45 * controlCount)
+	});
+
+	
+	auto newKey = makeEntity();
+	auto keyText = newKey->addComponent<TextComponent>(Engine::keyStrings[Engine::controls[controlCount]], "Rubik-Medium.ttf");
+	keyText->setColor(sf::Color(72,62,55));
+	keyText->setCharacterSize(25);
+	keyText->SetPosition({
+		windowSize.x / 2 + 30, 
+		(windowSize.y / 2 - 20) + (45 * controlCount)
+	});
+
+	Vector2f bounds(keyText->getText().getLocalBounds().width, 35);
+	
+	float positionOffset = 0;
+	if (bounds.x < 20) {
+		positionOffset = (20 - bounds.x) / 2;
+	}
+	
+	IntRect textureRect(0,0,40,40);
+	if (bounds.x > 80) {
+		textureRect = IntRect(40,0,80,40);
+	}
+	
+	if (bounds.x < 20) {
+		bounds.x = 40;
+	} else {
+		bounds.x += 20;
+	}
+	
+	keyText->SetPosition({
+		windowSize.x / 2 + 30 + positionOffset, 
+		(windowSize.y / 2 - 20) + (45 * controlCount)
+	});
+	
+	
+	
+	std::shared_ptr<sf::Texture> keySprites = Resources::get<sf::Texture>("ui_key.png");
+	
+	auto background = makeEntity();
+	auto bg = background->addComponent<ShapeComponent>();
+	bg->setShape<sf::RectangleShape>(bounds);
+	// bg->getShape().setOrigin(20,20);
+	bg->getShape().setFillColor(sf::Color(255,255,255));
+	bg->setTexture(keySprites, textureRect);
+	bg->getShape().setPosition({
+		windowSize.x / 2 + 20, 
+		(windowSize.y / 2 - 20) + (45 * controlCount)
+	});
+	
+	iter_swap(_ents.list.begin() + _ents.list.size() - 2, _ents.list.begin() + _ents.list.size() - 1);
+	
+	if (controlCount < 3) {
+		auto i = instructions->getComponents<TextComponent>();
+		i[0]->setString("Choose a Key to Move "+controls[controlCount + 1]);
+	}
+}
+
+
+
+void RemapScene::finish() {
+	
+	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
+
+	// "press enter to begin"
+	auto petb = makeEntity();
+	auto pe = petb->addComponent<TextComponent>("Finished - press B to go back to options screen", "WorstveldSling.ttf");
+	pe->setColor(sf::Color(200 , 190, 183));
+	pe->setCharacterSize(50);
+	pe->SetPosition({
+		windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 
+		windowSize.y - 85
+	});
+	
+	// line
+	auto line2 = makeEntity();
+	auto s2 = line2->addComponent<ShapeComponent>();
+	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
+	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 100));
+	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
+	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	
+	instructions->setVisible(false);
+	finished = true;
+	
 }
 
 

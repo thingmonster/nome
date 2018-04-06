@@ -36,6 +36,9 @@ class Engine {
 		static void Start(int width, int height, const std::string& name, Scene* s);
 		static void changeScene(Scene*);
 		static vector<sf::Keyboard::Key> controls;
+		static vector<sf::Keyboard::Key> keys;
+		static vector<std::string> keyStrings;
 		static bool isRemapping;
-		
+		static void loadKeys();
+		static void loadKeyStrings();
 };

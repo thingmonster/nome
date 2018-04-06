@@ -6,6 +6,9 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+#include <random>
+#include <functional>
+
 using namespace sf;
 using namespace std;
 

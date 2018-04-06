@@ -192,7 +192,7 @@ void OptionsScene::makeKeys(std::shared_ptr<sf::Texture> sp, sf::Vector2f p) {
 	shape->setShape<sf::RectangleShape>(sf::Vector2f(40, 40));
 	shape->getShape().setOrigin(20,20);
 	shape->getShape().setFillColor(sf::Color(255,255,255));
-	shape->setTexture(sp, sf::IntRect(0,0,50,50));
+	shape->setTexture(sp, sf::IntRect(0,0,40,40));
 	shape->getShape().setPosition(p);	
 	
 }
@@ -312,11 +312,11 @@ void OptionsScene::load() {
 	// ============================== FOOT ============================== // 
 	
 	// "press enter to begin"
-	auto petb = makeEntity();
-	auto pe = petb->addComponent<TextComponent>("Press enter to begin", "WorstveldSling.ttf");
-	pe->setColor(sf::Color(200 , 190, 183));
-	pe->setCharacterSize(70);
-	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 485});
+	// auto petb = makeEntity();
+	// auto pe = petb->addComponent<TextComponent>("Press enter to begin", "WorstveldSling.ttf");
+	// pe->setColor(sf::Color(200 , 190, 183));
+	// pe->setCharacterSize(70);
+	// pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 485});
 	
 	// line
 	auto line = makeEntity();
@@ -327,12 +327,12 @@ void OptionsScene::load() {
 	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
 	// line
-	auto line2 = makeEntity();
-	auto s2 = line->addComponent<ShapeComponent>();
-	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, 500));
-	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	// auto line2 = makeEntity();
+	// auto s2 = line->addComponent<ShapeComponent>();
+	// s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
+	// s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, 500));
+	// s2->getShape().setFillColor(sf::Color(200 , 190, 183));
+	// s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
 	
 }

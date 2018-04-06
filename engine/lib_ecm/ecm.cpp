@@ -13,6 +13,7 @@ void Entity::setPosition(const Vector2f &pos) {
 }
 
 void Entity::setVisible(bool v) {
+	cout << "hi";
 	_visible = v;
 }
 
