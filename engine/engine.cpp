@@ -14,6 +14,9 @@ using namespace sf;
 Scene* Engine::_activeScene = nullptr;
 Scene* Engine::_activeLevel = nullptr;
 
+bool Engine::readingInput = false;
+std::string Engine::userInput;	
+
 vector<sf::Keyboard::Key> Engine::controls;	
 vector<sf::Keyboard::Key> Engine::keys;	
 vector<std::string> Engine::keyStrings;	
@@ -272,7 +275,14 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 				if (event.type == sf::Event::EventType::KeyPressed){
 						controls.push_back(keys[event.key.code]);
 				}
-			}	
+			}
+
+			if (readingInput) {
+					
+				if (event.type == sf::Event::EventType::KeyPressed){
+					userInput += keyStrings[event.key.code];
+				}
+			}
 			
       if (event.type == Event::Closed) {
         window.close();
@@ -309,7 +319,15 @@ void Engine::render() {
 	Renderer::render();
 }
 
+ void Engine::setReadingInput(bool b) {
+	readingInput = b;
+}
 
+std::string Engine::getInput() {
+	std::string ret = userInput;
+	userInput = "";
+	return ret;
+}
 
 
 

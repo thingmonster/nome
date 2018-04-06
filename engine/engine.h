@@ -31,7 +31,7 @@ class Engine {
 		static Scene* _activeLevel;
 		static void update();
 		static void render();
-		static bool isRemapping;
+		static bool readingInput;
 		static void loadKeys();
 		static void loadKeyStrings();
 	
@@ -44,5 +44,9 @@ class Engine {
 		static vector<sf::Keyboard::Key> controls;
 		static vector<sf::Keyboard::Key> keys;
 		static vector<std::string> keyStrings;
+		
+		static std::string userInput;
+		static void setReadingInput(bool b);
+		static std::string getInput();
 		
 };

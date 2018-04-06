@@ -22,6 +22,10 @@ void PausedScene::update(const double& dt) {
 		Engine::changeScene(&menu);
 	}
 	
+	if (Keyboard::isKeyPressed(Keyboard::S)) {
+		Engine::changeScene(&save);
+	}
+	
 }
 
 void PausedScene::makeDescription(std::string t, sf::Vector2f p) {

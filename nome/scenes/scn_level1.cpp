@@ -15,6 +15,11 @@
 #include <random>
 #include <chrono>
 
+#include <fstream>
+#include <iomanip>
+#include <sstream>
+#include <string>
+
 using namespace sf;
 using namespace std;
 
@@ -33,10 +38,31 @@ void Level1Scene::update(const double& dt) {
 	}
 	
 	if (Keyboard::isKeyPressed(Keyboard::S)) {
-		// Engine::changeScene(&options);
+		Engine::changeScene(&save);
 	}
 	
+	if (Keyboard::isKeyPressed(Keyboard::T)) {
+		
+	}	
 	
+	if (Keyboard::isKeyPressed(Keyboard::L)) {
+		
+		ifstream myfile ("test.txt");
+		
+		string str;
+		if (myfile.is_open()) {
+			while (getline(myfile, str)) {
+				
+			}
+			myfile.close();
+		} else {
+			cout << "Unable to open file" << endl; 
+		}
+
+			
+		
+	}
+			
 	
 	_ents.update(dt);
 	
@@ -49,7 +75,6 @@ void Level1Scene::update(const double& dt) {
 		}
 		timer = 4.f;
 	}
-	
 }
 
 void Level1Scene::render() {
