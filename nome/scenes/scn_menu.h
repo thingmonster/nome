@@ -8,6 +8,7 @@ class MenuScene : public Scene {
 		MenuScene() = default;
 		void update(const double& dt) override;
 		void load() override;
+		void unload() override;
 		void reload() override;
 		void buildKeys();
 		void textureKey(int c, sf::Vector2f kPos, sf::Vector2f dPos);

@@ -10,6 +10,7 @@ class PausedScene : public Scene {
 		PausedScene() = default;
 		void update(const double& dt) override;
 		void load() override;
+		void unload() override;
 		void reload() override;
 		
 		void makeDescription(std::string t, sf::Vector2f p);

@@ -57,36 +57,50 @@ void Level1Scene::render() {
 	_ents.render();
 }
 
+void Level1Scene::unload() {
+}
+	
+void Level1Scene::destroy() {
+  _ents.list.clear();
+	Engine::changeLevel(nullptr);
+}
+	
 void Level1Scene::load() {
 	
-	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
-	
-	ls::loadLevel("res/levels/level1.txt", "res/sprites/level1.png", windowSize);
-	
-	playerSprites = Resources::get<sf::Texture>("player.png");
-	enemySprites = Resources::get<sf::Texture>("beetles-black.png");
-	
-	
-	
-	player = Level1Scene::makeEntity();
-	player->setPosition(ls::getTileCentre(ls::findTiles(ls::START)[0]));
-	auto s = player->addComponent<ShapeComponent>();
-	s->setShape<sf::CircleShape>(20.f);
-	s->getShape().setFillColor({255 , 255, 255});
-	s->getShape().setOrigin(Vector2f(20.f, 20.f));
-	s->setTexture(playerSprites, sf::IntRect(0,0,50,50));
-	auto m = player->addComponent<PlayerMovementComponent>();
-	m->setSpeed(200.f);
-	
-	auto ball = Level1Scene::makeEntity();
-	ball->setPosition(ls::getTileCentre(ls::findTiles(ls::BALL)[0]));
-	auto b = ball->addComponent<ShapeComponent>();
-	b->setShape<sf::CircleShape>(20.f);
-	b->getShape().setFillColor({255 , 255, 255});
-	b->getShape().setOrigin(Vector2f(20.f, 20.f));
-	b->setTexture(playerSprites, sf::IntRect(50,0,50,50));
-	// add ball movement component here?
-	
+	if (!loaded) {
+			
+		Engine::changeLevel(&level1);
+		
+		sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
+		
+		ls::loadLevel("res/levels/level1.txt", "res/sprites/level1.png", windowSize);
+		
+		playerSprites = Resources::get<sf::Texture>("player.png");
+		enemySprites = Resources::get<sf::Texture>("beetles-black.png");
+		
+		
+		
+		player = Level1Scene::makeEntity();
+		player->setPosition(ls::getTileCentre(ls::findTiles(ls::START)[0]));
+		auto s = player->addComponent<ShapeComponent>();
+		s->setShape<sf::CircleShape>(20.f);
+		s->getShape().setFillColor({255 , 255, 255});
+		s->getShape().setOrigin(Vector2f(20.f, 20.f));
+		s->setTexture(playerSprites, sf::IntRect(0,0,50,50));
+		auto m = player->addComponent<PlayerMovementComponent>();
+		m->setSpeed(200.f);
+		
+		auto ball = Level1Scene::makeEntity();
+		ball->setPosition(ls::getTileCentre(ls::findTiles(ls::BALL)[0]));
+		auto b = ball->addComponent<ShapeComponent>();
+		b->setShape<sf::CircleShape>(20.f);
+		b->getShape().setFillColor({255 , 255, 255});
+		b->getShape().setOrigin(Vector2f(20.f, 20.f));
+		b->setTexture(playerSprites, sf::IntRect(50,0,50,50));
+		// add ball movement component here?
+		
+		loaded = true;
+	}
 }
 
 void Level1Scene::reload() {

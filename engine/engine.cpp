@@ -12,6 +12,7 @@ using namespace sf;
 	
 
 Scene* Engine::_activeScene = nullptr;
+Scene* Engine::_activeLevel = nullptr;
 
 vector<sf::Keyboard::Key> Engine::controls;	
 vector<sf::Keyboard::Key> Engine::keys;	
@@ -20,8 +21,15 @@ vector<std::string> Engine::keyStrings;
 
 	
 void Engine::changeScene(Scene* s) {
+	if (_activeScene != nullptr) {
+		_activeScene->unload();
+	}
 	_activeScene = s;
 	_activeScene->load();
+}
+
+void Engine::changeLevel(Scene* s) {
+	_activeLevel = s;
 }
 
 void Engine::loadKeys() {

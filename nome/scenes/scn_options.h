@@ -10,6 +10,7 @@ class OptionsScene : public Scene {
 		OptionsScene() = default;
 		void update(const double& dt) override;
 		void load() override;
+		void unload() override;
 		void reload() override;
 		
 		std::vector<std::shared_ptr<Entity>> menuStates;

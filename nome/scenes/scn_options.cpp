@@ -230,10 +230,6 @@ void OptionsScene::resolutionIndicators(bool v, sf::Vector2f s, std::shared_ptr<
 
 void OptionsScene::load() {
 	
-  _ents.list.clear();
-  menuStates.clear();
-  menuState = nullptr;
-	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 
 	// background	
@@ -337,6 +333,13 @@ void OptionsScene::load() {
 	
 }
 
+void OptionsScene::unload() {
+	
+  _ents.list.clear();
+  menuStates.clear();
+  menuState = nullptr;
+}
+	
 void OptionsScene::reload() {
 	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();

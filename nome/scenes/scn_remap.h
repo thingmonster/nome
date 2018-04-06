@@ -17,6 +17,7 @@ class RemapScene : public Scene {
 		RemapScene() = default;
 		void update(const double& dt) override;
 		void load() override;
+		void unload() override;
 		void reload() override;
 		
 };

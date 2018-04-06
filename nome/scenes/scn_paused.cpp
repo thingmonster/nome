@@ -15,6 +15,11 @@ void PausedScene::update(const double& dt) {
 	
 		
 	if (Keyboard::isKeyPressed(Keyboard::Enter)) {
+		Engine::changeScene(&level1);
+	}
+	
+	if (Keyboard::isKeyPressed(Keyboard::Q)) {
+		Engine::changeScene(&menu);
 	}
 	
 }
@@ -121,10 +126,10 @@ void PausedScene::load() {
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 8 * 4 + 65, windowSize.y / 2 + 95));	
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 8 * 6 + 80, windowSize.y / 2 + 95));	
 	
-	makeKeyText("S", sf::Vector2f(windowSize.x / 8 * 0 + 70, windowSize.y / 2 + 90));	
-	makeKeyText("F", sf::Vector2f(windowSize.x / 8 * 2 + 50, windowSize.y / 2 + 90));	
-	makeKeyText("R", sf::Vector2f(windowSize.x / 8 * 4 + 65, windowSize.y / 2 + 90));	
-	makeKeyText("B", sf::Vector2f(windowSize.x / 8 * 6 + 80, windowSize.y / 2 + 90));	
+	makeKeyText("O", sf::Vector2f(windowSize.x / 8 * 0 + 70, windowSize.y / 2 + 90));	
+	makeKeyText("S", sf::Vector2f(windowSize.x / 8 * 2 + 50, windowSize.y / 2 + 90));	
+	makeKeyText("L", sf::Vector2f(windowSize.x / 8 * 4 + 65, windowSize.y / 2 + 90));	
+	makeKeyText("Q", sf::Vector2f(windowSize.x / 8 * 6 + 80, windowSize.y / 2 + 90));	
 	
 	
 	
@@ -145,6 +150,12 @@ void PausedScene::load() {
 	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
 	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
+	
+}
+
+void PausedScene::unload() {
+	
+  _ents.list.clear();
 	
 }
 

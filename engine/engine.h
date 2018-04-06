@@ -13,6 +13,7 @@ class Scene {
 		virtual void update(const double& dt);
 		virtual void render();
 		virtual void load() = 0;
+		virtual void unload() = 0;
 		virtual void reload() = 0;
 		std::shared_ptr<Entity> Scene::makeEntity();
 		
@@ -27,18 +28,21 @@ class Engine {
 	
 	private:
 		static Scene* _activeScene;
+		static Scene* _activeLevel;
 		static void update();
 		static void render();
+		static bool isRemapping;
+		static void loadKeys();
+		static void loadKeyStrings();
 	
 	public:
 		Engine() = delete;
 		~Engine() = delete;
 		static void Start(int width, int height, const std::string& name, Scene* s);
 		static void changeScene(Scene*);
+		static void changeLevel(Scene*);
 		static vector<sf::Keyboard::Key> controls;
 		static vector<sf::Keyboard::Key> keys;
 		static vector<std::string> keyStrings;
-		static bool isRemapping;
-		static void loadKeys();
-		static void loadKeyStrings();
+		
 };

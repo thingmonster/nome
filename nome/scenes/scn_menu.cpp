@@ -208,8 +208,6 @@ void MenuScene::textKey(int c, sf::Vector2f kPos, sf::Vector2f dPos, int directi
 
 void MenuScene::load() {
 	
-  _ents.list.clear();
-	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 
 	// background	
@@ -301,6 +299,13 @@ void MenuScene::load() {
 	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 150));
 	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
 	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	
+}
+
+void MenuScene::unload() {
+	
+  _ents.list.clear();
+	
 	
 }
 

@@ -46,8 +46,6 @@ void RemapScene::load() {
 	controlCount = 0;
 	finished = false;
 	
-  _ents.list.clear();
-	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 
 	// background	
@@ -90,6 +88,13 @@ void RemapScene::load() {
 	s->getShape().setPosition(sf::Vector2f(windowSize.x / 2, sn->getText().getLocalBounds().height * 2));
 	s->getShape().setFillColor(sf::Color(200 , 190, 183));
 	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	
+	
+}
+
+void RemapScene::unload() {
+	
+  _ents.list.clear();
 	
 	
 }
