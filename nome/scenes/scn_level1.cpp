@@ -24,6 +24,20 @@ std::shared_ptr<sf::Texture> Level1Scene::enemySprites;
 
 void Level1Scene::update(const double& dt) {
 	
+	if (Keyboard::isKeyPressed(Keyboard::O)) {
+		Engine::changeScene(&options);
+	}
+	
+	if (Keyboard::isKeyPressed(Keyboard::P)) {
+		Engine::changeScene(&paused);
+	}
+	
+	if (Keyboard::isKeyPressed(Keyboard::S)) {
+		// Engine::changeScene(&options);
+	}
+	
+	
+	
 	_ents.update(dt);
 	
 	static double timer = 1.0f;
