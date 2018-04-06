@@ -4,13 +4,6 @@
 using namespace sf;
 using namespace std;
 
-const Keyboard::Key controls[] = {
-    Keyboard::Left,
-    Keyboard::Right,
-    Keyboard::Up,
-    Keyboard::Down
-};
-
 double PlayerMovementComponent::_momentum(double * timer) {
 	
 	double move = 0;
@@ -26,8 +19,6 @@ double PlayerMovementComponent::_momentum(double * timer) {
 }
 
 void PlayerMovementComponent::update(double dt) {
-	
-	
 	
 	// player movement with momentum
 	
@@ -48,7 +39,7 @@ void PlayerMovementComponent::update(double dt) {
 	
 	// get current direction and apply momentum from recent moves
 	
-	if (Keyboard::isKeyPressed(controls[0])) {
+	if (Keyboard::isKeyPressed(Engine::controls[0])) {
 		lastMoveLeft = 10.f;
 		moveLeft = _speed * -1;
 	} else {
@@ -57,7 +48,7 @@ void PlayerMovementComponent::update(double dt) {
 		}
 	}
 	
-	if (Keyboard::isKeyPressed(controls[1])) {
+	if (Keyboard::isKeyPressed(Engine::controls[1])) {
 		lastMoveRight = 10.f;
 		moveRight = _speed;
 	} else {
@@ -66,7 +57,7 @@ void PlayerMovementComponent::update(double dt) {
 		}
 	}
 	
-	if (Keyboard::isKeyPressed(controls[2])) {
+	if (Keyboard::isKeyPressed(Engine::controls[2])) {
 		lastMoveUp = 10.f;
 		moveUp = _speed * -1;
 	} else {
@@ -75,7 +66,7 @@ void PlayerMovementComponent::update(double dt) {
 		}
 	}
 	
-	if (Keyboard::isKeyPressed(controls[3])) {
+	if (Keyboard::isKeyPressed(Engine::controls[3])) {
 		lastMoveDown = 10.f;
 		moveDown = _speed;
 	} else {
@@ -83,7 +74,7 @@ void PlayerMovementComponent::update(double dt) {
 			moveDown = _momentum(&lastMoveDown);
 		}
 	}
-
+ 
 	// update player's position
 	
 	float x = _parent->getPosition().x;

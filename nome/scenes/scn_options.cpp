@@ -21,6 +21,10 @@ void OptionsScene::update(const double& dt) {
 			Engine::changeScene(&menu);			
 		}
 		
+		if (Keyboard::isKeyPressed(Keyboard::R)) {
+			Engine::changeScene(&remap);		
+		}
+
 		if (Keyboard::isKeyPressed(Keyboard::S)) {
 			showResMenu();
 			menuOpen = true;
@@ -101,7 +105,7 @@ void OptionsScene::closeResMenu() {
 		m->setVisible(false);
 	}
 	
-	menuStates[2]->setVisible(true);
+	menuState->setVisible(true);
 	
 	if (menuState == menuStates[0]) {
 		Renderer::getWindow().setSize(sf::Vector2u(800,600));
@@ -262,16 +266,19 @@ void OptionsScene::load() {
 	std::shared_ptr<sf::Texture> keySprites = Resources::get<sf::Texture>("ui_key.png");
 	
 	makeDescription("Screen Resolution", sf::Vector2f(windowSize.x / 2 - 20, 290));	
-	makeDescription("Full Screen",sf::Vector2f(windowSize.x / 2 - 20, 345));	
-	makeDescription("Remap Controls", sf::Vector2f(windowSize.x / 2 - 20, 400));
+	makeDescription("Full Screen",sf::Vector2f(windowSize.x / 2 - 20, 340));	
+	makeDescription("Remap Controls", sf::Vector2f(windowSize.x / 2 - 20, 390));
+	makeDescription("Back to Start Screen", sf::Vector2f(windowSize.x / 2 - 20, 440));
 	
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 305));
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 360));
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 415));
+	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 355));
+	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 405));
+	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 455));
 	
 	makeKeyText("S", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 300));
-	makeKeyText("F", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 355));
-	makeKeyText("R", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 410));
+	makeKeyText("F", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 350));
+	makeKeyText("R", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 400));
+	makeKeyText("B", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 450));
 	
 	
 	// ============================== SCREEN MENUS ============================== // 
@@ -288,13 +295,13 @@ void OptionsScene::load() {
 	fsI->getShape().setOrigin(Vector2f(20,20));
 	fsI->getShape().setFillColor(sf::Color(255,255,255));
 	fsI->setTexture(fullScreenSprites, sf::IntRect(0,0,52,40));
-	fsI->getShape().setPosition(sf::Vector2f(windowSize.x / 2 + 80, 360));
+	fsI->getShape().setPosition(sf::Vector2f(windowSize.x / 2 + 80, 355));
 	
-	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,0,168,33), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,33,168,33), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,66,168,33), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	resolutionIndicators(false, sf::Vector2f(168, 102), screenResSprites, sf::IntRect(0,99,168,102), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 305));
+	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,0,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
+	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,33,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
+	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,66,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
+	resolutionIndicators(false, sf::Vector2f(168, 102), screenResSprites, sf::IntRect(0,99,168,102), sf::Vector2f(windowSize.x / 2 + 80, 308));
+	resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,167,168,34), sf::Vector2f(windowSize.x / 2 + 80, 373));
 	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 305));
 	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,235,168,34), sf::Vector2f(windowSize.x / 2 + 80, 339));
@@ -309,7 +316,7 @@ void OptionsScene::load() {
 	auto pe = petb->addComponent<TextComponent>("Press enter to begin", "WorstveldSling.ttf");
 	pe->setColor(sf::Color(200 , 190, 183));
 	pe->setCharacterSize(70);
-	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 490});
+	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 485});
 	
 	// line
 	auto line = makeEntity();

@@ -35,5 +35,7 @@ class Engine {
 		~Engine() = delete;
 		static void Start(int width, int height, const std::string& name, Scene* s);
 		static void changeScene(Scene*);
+		static vector<sf::Keyboard::Key> controls;
+		static bool isRemapping;
 		
 };

@@ -7,9 +7,11 @@ using namespace sf;
 Scene* Engine::_activeScene = nullptr;
 
 
+
 // ======================== ENGINE ======================== //
 	
-
+vector<sf::Keyboard::Key> Engine::controls;	
+	
 void Engine::changeScene(Scene* s) {
 	_activeScene = s;
 	_activeScene->load();
@@ -17,16 +19,31 @@ void Engine::changeScene(Scene* s) {
 
 void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	
+	Engine::controls.push_back(Keyboard::Left);
+	Engine::controls.push_back(Keyboard::Right);
+	Engine::controls.push_back(Keyboard::Up);
+	Engine::controls.push_back(Keyboard::Down);
+	
+	
 	RenderWindow window(sf::VideoMode(width, height), name);
 	window.setVerticalSyncEnabled(true);
 	
 	Renderer::initialise(window);
 	changeScene(s);
 	
+	
 	while (window.isOpen()) {
 		
 		Event event;
     while (window.pollEvent(event)) {
+			
+			if (controls.size() < 4) {
+					
+				if (event.type == sf::Event::EventType::KeyPressed){
+						cout << event.key.code << endl;
+				}
+			}	
+			
       if (event.type == Event::Closed) {
         window.close();
       } else if (event.type == sf::Event::Resized) {
@@ -39,6 +56,7 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
       window.close();
 		}
 		
+			
 		window.clear();
 		update();
 		render();
@@ -62,7 +80,12 @@ void Engine::render() {
 	Renderer::render();
 }
 
-
+// std::shared_ptr<sf::Keyboard::Key[4]> getControls() {
+	// return controls;
+// }
+// std::shared_ptr<sf::Keyboard::Key[4]> getC() {
+	// return _c;
+// }
 
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "ecm.h"
 #include "levelsystem.h"
+#include "engine.h"
 #include "../classes/steering.h"
 
 class MovementComponent : public Component {
