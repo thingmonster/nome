@@ -43,6 +43,8 @@ void Engine::restoreGame(std::vector<std::shared_ptr<Entity>> entities) {
 	_activeLevel->restore(entities);
 }
 
+
+
 void Engine::loadKeys() {
 	Engine::keys.push_back(Keyboard::A);
 	Engine::keys.push_back(Keyboard::B);
@@ -327,6 +329,7 @@ void Engine::render() {
 	Renderer::render();
 }
 
+
  void Engine::setReadingInput(bool b) {
 	readingInput = b;
 }
@@ -337,6 +340,16 @@ std::string Engine::getInput() {
 	return ret;
 }
 
+
+
+
+Scene* Engine::getLevel() {
+	return _activeLevel;
+}
+
+std::vector<std::shared_ptr<Entity>> Scene::getEntities() {
+	return Engine::getLevel()->_ents.list;
+}
 
 
 

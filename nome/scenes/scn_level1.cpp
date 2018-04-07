@@ -55,8 +55,11 @@ void Level1Scene::unload() {
 	
 void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 	
-	makePlayer(entities[0]);
-	makeBall(entities[1]);
+	player = entities[0];
+	makePlayer(player);
+	
+	ball = entities[1];
+	makeBall(ball);
 	
 	for (int i = 2; i < entities.size(); ++i) {
 		makeEnemy(entities[i]);

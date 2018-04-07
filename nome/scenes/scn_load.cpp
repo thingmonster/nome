@@ -135,7 +135,6 @@ void LoadScene::loadGame() {
 }
 
 std::shared_ptr<Entity> LoadScene::loadEntity(std::string s) {
-// void LoadScene::loadEntity(std::string s) {
 	
 	std::string delimiter = ",";
 

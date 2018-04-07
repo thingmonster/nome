@@ -150,11 +150,19 @@ void SaveScene::reload() {
 
 void SaveScene::saveGame() {
 	
-	// get every entity, it's position, it's state?
+	std::vector<std::shared_ptr<Entity>> entities = Scene::getEntities();
+	std::string str = "1";
+	
+	for (auto& e : entities) {
+		str += "\n";
+		str += std::to_string(e->getPosition().x);
+		str += ",";
+		str += std::to_string(e->getPosition().y);
+	}
 	
 	ofstream myfiles;
 	myfiles.open ("test.txt");
-	myfiles << "2";
+	myfiles << str;
 	myfiles.close();
 	
 }

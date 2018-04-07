@@ -21,13 +21,11 @@ const std::string controls[] = {
 void MenuScene::update(const double& dt) {
 	
 	if (Keyboard::isKeyPressed(Keyboard::Enter)) {
-		cout << "enter" << endl;
 		Engine::changeScene(&level1);
 		
 	}
 	
 	if (Keyboard::isKeyPressed(Keyboard::O)) {
-		cout << "o" << endl;
 		Engine::changeScene(&options);
 		
 	}

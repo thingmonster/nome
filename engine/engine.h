@@ -16,6 +16,7 @@ class Scene {
 		virtual void unload() = 0;
 		virtual void reload() = 0;
 		std::shared_ptr<Entity> Scene::makeEntity();
+		std::vector<std::shared_ptr<Entity>> Scene::getEntities();
 		
 	protected:
 		EntityManager _ents;
@@ -59,7 +60,9 @@ class Engine {
 		static void Start(int width, int height, const std::string& name, Scene* s);
 		static void changeScene(Scene*);
 		static void changeLevel(LevelScene*);
+		static Scene* getLevel();
 		static void restoreGame(std::vector<std::shared_ptr<Entity>> entities);
+		static std::vector<std::shared_ptr<Entity>> getEntities();
 		
 		static vector<sf::Keyboard::Key> controls;
 		static vector<sf::Keyboard::Key> keys;
