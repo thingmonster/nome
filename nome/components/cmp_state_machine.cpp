@@ -2,7 +2,8 @@
 
 using namespace std;
 
-StateMachineComponent::StateMachineComponent(Entity *p) : _current_state(nullptr), Component(p) {}
+StateMachineComponent::StateMachineComponent(Entity *p)
+ : _current_state(nullptr), Component(p) {}
 
 void StateMachineComponent::update(double dt) {
 	if (_current_state != nullptr) {
@@ -52,7 +53,8 @@ void SeekState::execute(Entity *owner, double dt) noexcept {
 	auto s = owner->getComponents<ShapeComponent>();
 	s[0]->getShape().setFillColor(Color::Green);
 	auto output = _steering.getSteering();
-	owner->setPosition(owner->getPosition() + (output.direction * (float)dt));
+	float speed = 1;
+	owner->setPosition(owner->getPosition() + (output.direction * _speed * (float)dt));
 }
 
 void FleeState::execute(Entity *owner, double dt) noexcept {
@@ -60,10 +62,9 @@ void FleeState::execute(Entity *owner, double dt) noexcept {
 	auto s = owner->getComponents<ShapeComponent>();
 	s[0]->getShape().setFillColor(Color::Yellow);
 	auto output = _steering.getSteering();
-	owner->setPosition(owner->getPosition() + (output.direction * (float)dt));
+	float speed = 1;
+	owner->setPosition(owner->getPosition() + (output.direction * _speed * (float)dt));
 }
-
-
 
 
 

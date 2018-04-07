@@ -3,12 +3,13 @@
 #include "ecm.h"
 #include "../classes/decision-branches.h"
 #include "../classes/decision-leaves.h"
+#include <iostream>
 
 
 
 class DecisionTreeComponent : public Component {
 	
-	private:
+	public:
 		std::shared_ptr<DecisionTreeNode> _decisionTree;
 		
 	public:
@@ -16,6 +17,9 @@ class DecisionTreeComponent : public Component {
 		void render() override {}
 		explicit DecisionTreeComponent(Entity *p, std::shared_ptr<DecisionTreeNode> decisionTree);
 		DecisionTreeComponent() = delete;
+		
+		void setDecisionTree(std::shared_ptr<DecisionTreeNode> tree);
+		// void setDecisionTree();
 		
 };
 

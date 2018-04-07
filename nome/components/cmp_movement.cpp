@@ -7,7 +7,7 @@ using namespace sf;
 void MovementComponent::update(double dt) {
 }
 
-MovementComponent::MovementComponent(Entity* p) : _speed(200.0f), Component(p) {}
+MovementComponent::MovementComponent(Entity* p) : _speed(ls::getTileSize()), Component(p) {}
 
 bool MovementComponent::validMove(const sf::Vector2f& pos) {
 	

@@ -396,10 +396,6 @@ void LevelScene::destroy() {
 }
 
 void LevelScene::resize() {
-	windowSize = (Vector2f)Renderer::getWindow().getSize();
-	if (ls::findTiles(ls::EMPTY).size() > 0) {
-		ls::resize("res/sprites/level1.png", windowSize);
-	}
 }
 
 

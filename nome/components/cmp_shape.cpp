@@ -21,6 +21,13 @@ sf::Shape& ShapeComponent::getShape() const {
 	return *_shape;
 }
 
+void ShapeComponent::setSize(float r) {
+	// _shape 
+	// destroy _shape
+	// craete new circle shape
+	// might have to reassign texture etc
+}
+
 void ShapeComponent::setTexture(std::shared_ptr<sf::Texture> t, sf::IntRect r) {
   _texture = t;
 	getShape().setTexture(_texture.get());

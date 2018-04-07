@@ -1,7 +1,7 @@
 #pragma once
-#include "ecm.h"
 #include <unordered_map>
 #include <string>
+#include "ecm.h"
 #include "../classes/steering.h"
 #include "../components/cmp_state_machine.h"
 #include "../components/cmp_shape.h"
@@ -9,6 +9,7 @@
 
 class State {
 	
+		
 	public:
 		virtual ~State() = default;
 		virtual void execute(Entity*, double) noexcept = 0;
@@ -41,19 +42,22 @@ class StateMachineComponent : public Component {
 
 class StationaryState : public State {
 	
-		public:
-			StationaryState() = default;
-			void execute(Entity*, double) noexcept override;
+	private:
+	
+	public:
+		StationaryState() = default;
+		void execute(Entity*, double) noexcept override;
 };
 
 class SeekState : public State {
 	
 	private:
 		SeekSteering _steering;
+		float _speed;
 	
 	public:
-		SeekState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player)
-			: _steering(owner.get(), player.get(), 50.0f) {}
+		SeekState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player, float speed)
+			: _speed(speed), _steering(owner.get(), player.get(), ls::getTileSize()) {}
 		void execute(Entity*, double) noexcept override;
 };
 
@@ -61,10 +65,11 @@ class FleeState : public State {
 	
 	private:
 		FleeSteering _steering;
+		float _speed;
 	
 	public:
-		FleeState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player)
-			: _steering(owner.get(), player.get(), 50.0f) {}
+		FleeState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player, float speed)
+			: _speed(speed), _steering(owner.get(), player.get(), ls::getTileSize()) {}
 		void execute(Entity*, double) noexcept override;
 };
 

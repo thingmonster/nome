@@ -38,10 +38,14 @@ class Level1Scene : public LevelScene {
 		void reload() override;
 		void render();
 		void spawn();
+		void resize();
 		void restore(std::vector<std::shared_ptr<Entity>> entities) override;
 		void makePlayer(std::shared_ptr<Entity> player);
 		void makeBall(std::shared_ptr<Entity> ball);
 		void makeEnemy(std::shared_ptr<Entity> enemy);
+		void addEnemyAI(std::shared_ptr<Entity> enemy);
+		void updateEnemyAI(std::shared_ptr<Entity> enemy);
+		std::shared_ptr<DistanceDecision> decisionTree();
 
 };
 
