@@ -5,6 +5,10 @@
 	
 
 
+void UIScene::resize() {
+	
+}
+	
 void UIScene::load() {
 	
 	windowSize = (Vector2f)Renderer::getWindow().getSize();

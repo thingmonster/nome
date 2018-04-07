@@ -264,7 +264,7 @@ void MenuScene::load() {
 	auto pe = petb->addComponent<TextComponent>("Press enter to begin", "WorstveldSling.ttf");
 	pe->setColor(sf::Color(200 , 190, 183));
 	pe->setCharacterSize(70);
-	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 490});
+	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, windowSize.y - 110});
 	
 	// line
 	auto line2 = makeEntity();

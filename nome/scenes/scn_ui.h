@@ -13,9 +13,8 @@ class UIScene : public Scene {
 		virtual void unload() = 0;
 		virtual void reload() = 0;
 		void load();
-		// virtual void render() = 0;
+		void resize();
 		
-		Vector2f windowSize;
 
 	
 };

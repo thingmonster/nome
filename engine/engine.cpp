@@ -299,9 +299,11 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 			
       if (event.type == Event::Closed) {
         window.close();
+				
       } else if (event.type == sf::Event::Resized) {
 				window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
 				changeScene(_activeScene);
+				resize();
 			}
     }
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
@@ -332,6 +334,10 @@ void Engine::render() {
 	Renderer::render();
 }
 
+void Engine::resize() {
+	_activeScene->resize();
+	// ls::resize(windowSize);
+}
 
  void Engine::setReadingInput(bool b) {
 	readingInput = b;
@@ -387,6 +393,13 @@ Scene::~Scene() {}
 
 void LevelScene::destroy() {
 	_ents.list.clear();
+}
+
+void LevelScene::resize() {
+	windowSize = (Vector2f)Renderer::getWindow().getSize();
+	if (ls::findTiles(ls::EMPTY).size() > 0) {
+		ls::resize("res/sprites/level1.png", windowSize);
+	}
 }
 
 

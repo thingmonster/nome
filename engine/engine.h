@@ -2,7 +2,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include <ecm.h>
+#include "ecm.h"
+#include "levelsystem.h"
 #include "system_renderer.h"
 
 class Scene {
@@ -15,8 +16,10 @@ class Scene {
 		virtual void load() = 0;
 		virtual void unload() = 0;
 		virtual void reload() = 0;
+		virtual void resize() = 0;
 		std::shared_ptr<Entity> Scene::makeEntity();
 		std::vector<std::shared_ptr<Entity>> Scene::getEntities();
+		Vector2f windowSize;
 		
 	protected:
 		EntityManager _ents;
@@ -36,6 +39,7 @@ class LevelScene : public Scene {
 		virtual void render() = 0;
 		virtual void restore(std::vector<std::shared_ptr<Entity>> entities) = 0;
 		
+		void resize();
 		void destroy();
 
 };
@@ -55,6 +59,8 @@ class Engine {
 		static void loadKeys();
 		static void loadKeyStrings();
 	
+		static void resize();
+		
 	public:
 		Engine() = delete;
 		~Engine() = delete;
@@ -73,5 +79,6 @@ class Engine {
 		static std::string userInput;
 		static void setReadingInput(bool b);
 		static std::string getInput();
+		
 		
 };

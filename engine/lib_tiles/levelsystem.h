@@ -23,7 +23,10 @@ class LevelSystem {
 		static size_t getWidth();
 		static size_t getHeight();
 		static float getTileSize();
+		static void resize(const std::string& sprites, sf::Vector2f windowSize = {800.f, 600.f});
+		static sf::Vector2f getOffset();
 		static sf::Vector2ul screenCoordsToIndexes(sf::Vector2f);
+		static sf::Vector2f getCoordsFromIndex(size_t index);
 		
 		static TILE getTile(sf::Vector2ul v);
 		static TILE getTileAt(sf::Vector2f);
@@ -44,6 +47,7 @@ class LevelSystem {
 		static size_t _width;
 		static size_t _height;
 		static float _tileSize;
+		static sf::Vector2f _offset;
 		static std::vector<std::unique_ptr<sf::RectangleShape>> _sprites;
 		static void buildSprites(const std::string&);
 

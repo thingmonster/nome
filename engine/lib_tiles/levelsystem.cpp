@@ -14,6 +14,7 @@ using namespace sf;
 std::unique_ptr<LevelSystem::TILE[]> LevelSystem::_tiles;
 size_t LevelSystem::_width;
 size_t LevelSystem::_height;
+sf::Vector2f LevelSystem::_offset;
 
 sf::Texture LevelSystem::texture;
 float LevelSystem::_tileSize(100.f);
@@ -52,8 +53,35 @@ float LevelSystem::getTileSize() {
 	return _tileSize;
 }
 
+void LevelSystem::resize(const std::string& sprites, sf::Vector2f windowSize) {
+	
+	
+	cout << windowSize.x << endl;
+	cout << windowSize.y << endl;
+	
+	if (windowSize.x / _width > windowSize.y / _height) {
+		_tileSize = windowSize.y / _height;
+		_offset = Vector2f((windowSize.x - _tileSize * _width) / 2, 0);
+	} else {
+		_tileSize = windowSize.x / _width;
+		_offset = Vector2f(0, (windowSize.y - _tileSize * _height) / 2);
+	}
+	
+	for (size_t y = 0; y < LevelSystem::getHeight(); ++y) {
+		for (size_t x = 0; x < LevelSystem::getWidth(); ++x) {
+			
+			Vector2f pos = getTilePosition({x, y});
+			_sprites[x + _width * y]->setPosition(getTilePosition({x, y}));
+			_sprites[x + _width * y]->setSize(Vector2f(_tileSize, _tileSize));
+			
+		}
+	}
+	
+}
+
 sf::Vector2ul LevelSystem::screenCoordsToIndexes(sf::Vector2f pos) {
-	pos /= _tileSize;
+	pos.x = (pos.x - _offset.x) / _tileSize;
+	pos.y = (pos.y - _offset.y) / _tileSize;
 	return (Vector2ul)pos;
 }
 
@@ -67,8 +95,8 @@ LevelSystem::TILE LevelSystem::getTileAt(sf::Vector2f v) {
 
 LevelSystem::TILE LevelSystem::getTileFromScreenCoords(sf::Vector2f v) {
 	
-	size_t x = floor(v.x) / _tileSize;
-	size_t y = floor(v.y) / _tileSize;
+	size_t x = floor(v.x - _offset.x) / _tileSize;
+	size_t y = floor(v.y - _offset.y) / _tileSize;
 	
 	size_t index = (y * _width) + x;
 	return _tiles[index];
@@ -82,15 +110,16 @@ LevelSystem::TILE LevelSystem::getTile(sf::Vector2ul v) {
 
 sf::Vector2f LevelSystem::getTilePosition(sf::Vector2ul v) {
 	
-	float xPos = v.x * _tileSize;
-	float yPos = v.y * _tileSize;
+	float xPos = (v.x * _tileSize) + _offset.x;
+	float yPos = v.y * _tileSize + _offset.y;
+	
 	return {xPos, yPos};	
 }
 
 sf::Vector2f LevelSystem::getTileCentre(sf::Vector2ul v) {
 	
-	float xPos = v.x * _tileSize + _tileSize / 2;
-	float yPos = v.y * _tileSize + _tileSize / 2;
+	float xPos = v.x * _tileSize + _tileSize / 2 + _offset.x;
+	float yPos = v.y * _tileSize + _tileSize / 2 + _offset.y;
 	return {xPos, yPos};	
 }
 
@@ -109,8 +138,8 @@ sf::Vector2f LevelSystem::getTileCoordinates(TILE t) {
 	
 	sf::Vector2f coords = getTilePosition({x,y});
 	
-	coords.x += _tileSize / 2;
-	coords.y += _tileSize / 2;
+	coords.x += _tileSize / 2 + _offset.x;
+	coords.y += _tileSize / 2 + _offset.y;
 	
 	return coords;
 }
@@ -220,8 +249,10 @@ void LevelSystem::loadLevel(const std::string &path, const std::string &sprites,
 	
 	if (windowSize.x / w > windowSize.y / h) {
 		_tileSize = windowSize.y / h;
+		_offset = Vector2f((windowSize.x - _tileSize * w) / 2, 0);
 	} else {
 		_tileSize = windowSize.x / w;
+		_offset = Vector2f(0, (windowSize.y - _tileSize * h) / 2);
 	}
 	
 	
@@ -235,7 +266,7 @@ void LevelSystem::buildSprites(const std::string &sprites) {
 	
 	_sprites.clear();
 	
-	texture.loadFromFile("res/sprites/level1.png");
+	texture.loadFromFile(sprites);
 	
 	for (size_t y = 0; y < LevelSystem::getHeight(); ++y) {
 		for (size_t x = 0; x < LevelSystem::getWidth(); ++x) {
