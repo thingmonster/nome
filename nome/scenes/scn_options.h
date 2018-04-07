@@ -1,8 +1,8 @@
 #pragma once
-#include "engine.h"
+#include "scn_ui.h"
 
 
-class OptionsScene : public Scene {
+class OptionsScene : public UIScene {
 	
 	private:
 	
@@ -16,11 +16,11 @@ class OptionsScene : public Scene {
 		std::vector<std::shared_ptr<Entity>> menuStates;
 		std::shared_ptr<Entity> menuState;
 
+		bool menuOpen;
 		void showResMenu();
 		void closeResMenu();
 		void preSelectResolution();
 		void updateResMenu(int direction, const double& dt);
-		bool menuOpen;
 		void makeDescription(std::string t, sf::Vector2f p);
 		void makeKeys(std::shared_ptr<sf::Texture> sp, sf::Vector2f p);
 		void makeKeyText(std::string t, std::string f, sf::Color c, float s, sf::Vector2f p);

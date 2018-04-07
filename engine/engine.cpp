@@ -289,7 +289,10 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 
 			if (readingInput) {
 					
-				if (event.type == sf::Event::EventType::KeyPressed){
+				if (
+					(event.type == sf::Event::EventType::KeyPressed) &&
+					(event.key.code < 37)
+				) {
 					userInput += keyStrings[event.key.code];
 				}
 			}

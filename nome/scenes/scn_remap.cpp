@@ -1,10 +1,6 @@
 
-#include "scn_remap.h"
-#include "../components/cmp_text.h"
-#include "../components/cmp_shape.h"
+
 #include "../game.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -41,26 +37,12 @@ void RemapScene::update(const double& dt) {
 
 void RemapScene::load() {
 	
+	UIScene::load();
+	
 	Engine::controls.clear();
 	remapping = true;
 	controlCount = 0;
 	finished = false;
-	
-	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
-
-	// background	
-	auto background = makeEntity();
-	auto b = background->addComponent<ShapeComponent>();
-	b->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x, windowSize.y));
-	b->getShape().setPosition(sf::Vector2f(0,0));
-	b->getShape().setFillColor(sf::Color(72,62,55));
-	
-	// "story of nome"
-	auto son = makeEntity();
-	auto sn = son->addComponent<TextComponent>("The Story of Nome", "WorstveldSling.ttf");
-	sn->setColor(sf::Color(200 , 190, 183));
-	sn->setCharacterSize(75);
-	sn->SetPosition({windowSize.x / 2 - sn->getText().getLocalBounds().width / 2, 10});
 	
 	
 	// ============================== CONTENT ============================== // 
@@ -79,16 +61,6 @@ void RemapScene::load() {
 	i->setCharacterSize(25);
 	i->SetPosition({windowSize.x / 2 - i->getText().getLocalBounds().width / 2, 225});
 	
-	// ============================== FOOT ============================== // 
-	
-	// line
-	auto line = makeEntity();
-	auto s = line->addComponent<ShapeComponent>();
-	s->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s->getShape().setPosition(sf::Vector2f(windowSize.x / 2, sn->getText().getLocalBounds().height * 2));
-	s->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
-	
 	
 }
 
@@ -105,8 +77,6 @@ void RemapScene::reload() {
 
 void RemapScene::queryKey() {
 	
-	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
-
 	auto entity = makeEntity();
 	auto text = entity->addComponent<TextComponent>(controls[controlCount], "Rubik-Medium.ttf");
 	text->setColor(sf::Color(200, 190, 183));

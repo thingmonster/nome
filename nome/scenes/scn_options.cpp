@@ -1,10 +1,6 @@
 
-#include "scn_options.h"
-#include "../components/cmp_text.h"
-#include "../components/cmp_shape.h"
+
 #include "../game.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -18,7 +14,11 @@ void OptionsScene::update(const double& dt) {
 	if (!menuOpen) {
 		
 		if (Keyboard::isKeyPressed(Keyboard::B)) {
-			Engine::changeScene(&menu);			
+			if (Engine::getLevel() != nullptr) {
+				Engine::changeScene(Engine::getLevel());
+			} else {
+				Engine::changeScene(&menu);
+			}	
 		}
 		
 		if (Keyboard::isKeyPressed(Keyboard::R)) {
@@ -82,7 +82,6 @@ void OptionsScene::showResMenu() {
 	} 
 }
 
-
 void OptionsScene::preSelectResolution() {
 	
 	if (Renderer::getWindow().getSize().x == 800 && Renderer::getWindow().getSize().y == 600) {
@@ -97,7 +96,6 @@ void OptionsScene::preSelectResolution() {
 	}  
 	
 }
-
 
 void OptionsScene::closeResMenu() {
 	
@@ -230,22 +228,7 @@ void OptionsScene::resolutionIndicators(bool v, sf::Vector2f s, std::shared_ptr<
 
 void OptionsScene::load() {
 	
-	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
-
-	// background	
-	auto background = makeEntity();
-	auto b = background->addComponent<ShapeComponent>();
-	b->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x, windowSize.y));
-	b->getShape().setPosition(sf::Vector2f(0,0));
-	b->getShape().setFillColor(sf::Color(72,62,55));
-	
-	// "story of nome"
-	auto son = makeEntity();
-	auto sn = son->addComponent<TextComponent>("The Story of Nome", "WorstveldSling.ttf");
-	sn->setColor(sf::Color(200 , 190, 183));
-	sn->setCharacterSize(75);
-	sn->SetPosition({windowSize.x / 2 - sn->getText().getLocalBounds().width / 2, 10});
-	
+	UIScene::load();
 	
 	// ============================== CONTENT ============================== // 
 	
@@ -256,15 +239,15 @@ void OptionsScene::load() {
 	pO->setCharacterSize(50);
 	pO->SetPosition({windowSize.x / 2 - pO->getText().getLocalBounds().width / 2, 200});
 	
-	// ============================== DESCRIPTIONS & KEYS ============================== // 
 	
+	// ============================== DESCRIPTIONS & KEYS ============================== // 
 	
 	std::shared_ptr<sf::Texture> keySprites = Resources::get<sf::Texture>("ui_key.png");
 	
 	makeDescription("Screen Resolution", sf::Vector2f(windowSize.x / 2 - 20, 290));	
 	makeDescription("Full Screen",sf::Vector2f(windowSize.x / 2 - 20, 340));	
 	makeDescription("Remap Controls", sf::Vector2f(windowSize.x / 2 - 20, 390));
-	makeDescription("Back to Start Screen", sf::Vector2f(windowSize.x / 2 - 20, 440));
+	makeDescription("Back", sf::Vector2f(windowSize.x / 2 - 20, 440));
 	
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 305));
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 355));
@@ -277,9 +260,8 @@ void OptionsScene::load() {
 	makeKeyText("B", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 450));
 	
 	
-	// ============================== SCREEN MENUS ============================== // 
 	
-	
+	// ============================== SCREEN CONTROLS ============================== // 
 	
 	std::shared_ptr<sf::Texture> screenResSprites = Resources::get<sf::Texture>("ui_screen_res.png");
 	std::shared_ptr<sf::Texture> fullScreenSprites = Resources::get<sf::Texture>("ui_fullscreen.png");
@@ -293,43 +275,13 @@ void OptionsScene::load() {
 	fsI->setTexture(fullScreenSprites, sf::IntRect(0,0,52,40));
 	fsI->getShape().setPosition(sf::Vector2f(windowSize.x / 2 + 80, 355));
 	
+	// resolution indicators
 	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,0,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,33,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,66,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	resolutionIndicators(false, sf::Vector2f(168, 102), screenResSprites, sf::IntRect(0,99,168,102), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 308));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,167,168,34), sf::Vector2f(windowSize.x / 2 + 80, 373));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,235,168,34), sf::Vector2f(windowSize.x / 2 + 80, 339));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,269,168,34), sf::Vector2f(windowSize.x / 2 + 80, 373));
 	preSelectResolution();
-	
-	
-	// ============================== FOOT ============================== // 
-	
-	// "press enter to begin"
-	// auto petb = makeEntity();
-	// auto pe = petb->addComponent<TextComponent>("Press enter to begin", "WorstveldSling.ttf");
-	// pe->setColor(sf::Color(200 , 190, 183));
-	// pe->setCharacterSize(70);
-	// pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 485});
-	
-	// line
-	auto line = makeEntity();
-	auto s = line->addComponent<ShapeComponent>();
-	s->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s->getShape().setPosition(sf::Vector2f(windowSize.x / 2, sn->getText().getLocalBounds().height * 2));
-	s->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
-	
-	// line
-	// auto line2 = makeEntity();
-	// auto s2 = line->addComponent<ShapeComponent>();
-	// s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	// s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, 500));
-	// s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	// s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
-	
 	
 }
 

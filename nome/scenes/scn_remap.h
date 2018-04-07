@@ -1,9 +1,8 @@
 #pragma once
-#include "engine.h"
-#include <algorithm>
+#include "scn_ui.h"
 
 
-class RemapScene : public Scene {
+class RemapScene : public UIScene {
 	
 	private:
 		void queryKey();

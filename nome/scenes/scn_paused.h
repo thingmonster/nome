@@ -1,8 +1,9 @@
 #pragma once
-#include "engine.h"
+#include "scn_ui.h"
+#include <algorithm>
 
 
-class PausedScene : public Scene {
+class PausedScene : public UIScene {
 	
 	private:
 	

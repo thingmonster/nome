@@ -1,10 +1,10 @@
 #pragma once
-#include "engine.h"
+#include "scn_ui.h"
 #include <fstream>
 
 
 
-class SaveScene : public Scene {
+class SaveScene : public UIScene {
 	
 	private:
 		void saveGame();
@@ -12,7 +12,6 @@ class SaveScene : public Scene {
 		std::string userInput;
 		std::shared_ptr<Entity> userText;
 		std::shared_ptr<Entity> cursor;
-		sf::Vector2f windowSize;
 		
 		
 	public:

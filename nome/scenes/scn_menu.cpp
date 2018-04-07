@@ -1,10 +1,5 @@
 
-#include "scn_menu.h"
-#include "../components/cmp_text.h"
-#include "../components/cmp_shape.h"
 #include "../game.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -28,6 +23,10 @@ void MenuScene::update(const double& dt) {
 	if (Keyboard::isKeyPressed(Keyboard::O)) {
 		Engine::changeScene(&options);
 		
+	}
+	
+	if (Keyboard::isKeyPressed(Keyboard::L)) {
+		Engine::changeScene(&loadGame);
 	}
 	
 }
@@ -206,30 +205,7 @@ void MenuScene::textKey(int c, sf::Vector2f kPos, sf::Vector2f dPos, int directi
 
 void MenuScene::load() {
 	
-	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
-
-	// background	
-	auto background = makeEntity();
-	auto b = background->addComponent<ShapeComponent>();
-	b->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x, windowSize.y));
-	b->getShape().setPosition(sf::Vector2f(0,0));
-	b->getShape().setFillColor(sf::Color(72,62,55));
-	
-	// "story of nome"
-	auto son = makeEntity();
-	auto sn = son->addComponent<TextComponent>("The Story of Nome", "WorstveldSling.ttf");
-	sn->setColor(sf::Color(200 , 190, 183));
-	sn->setCharacterSize(75);
-	sn->SetPosition({windowSize.x / 2 - sn->getText().getLocalBounds().width / 2, 10});
-	
-	// line
-	auto line = makeEntity();
-	auto s = line->addComponent<ShapeComponent>();
-	s->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s->getShape().setPosition(sf::Vector2f(windowSize.x / 2, sn->getText().getLocalBounds().height * 2));
-	s->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
-	
+	UIScene::load();
 	
 	// ============================== KEYS ============================== // 
 	

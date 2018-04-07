@@ -1,8 +1,8 @@
 #pragma once
-#include "engine.h"
+#include "scn_ui.h"
 
 
-class MenuScene : public Scene {
+class MenuScene : public UIScene {
 	
 	public:
 		MenuScene() = default;

@@ -42,6 +42,7 @@ class LevelScene : public Scene {
 
 
 
+
 class Engine {
 	
 	private:
@@ -61,6 +62,7 @@ class Engine {
 		static void changeScene(Scene*);
 		static void changeLevel(LevelScene*);
 		static Scene* getLevel();
+		
 		static void restoreGame(std::vector<std::shared_ptr<Entity>> entities);
 		static std::vector<std::shared_ptr<Entity>> getEntities();
 		

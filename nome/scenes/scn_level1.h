@@ -25,6 +25,7 @@ class Level1Scene : public LevelScene {
 		static std::shared_ptr<sf::Texture> playerSprites;
 		static std::shared_ptr<sf::Texture> enemySprites;
 		std::shared_ptr<Entity> player;
+		std::shared_ptr<Entity> ball;
 		int maxEnemies = 1;
 		bool loaded = false;
 		

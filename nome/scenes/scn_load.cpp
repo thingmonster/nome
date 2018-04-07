@@ -1,9 +1,5 @@
 
-#include "../components/cmp_text.h"
-#include "../components/cmp_shape.h"
 #include "../game.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -17,6 +13,11 @@ void LoadScene::update(const double& dt) {
 	}
 	
 	if (Keyboard::isKeyPressed(Keyboard::Tab)) {
+		if (Engine::getLevel() != nullptr) {
+			Engine::changeScene(Engine::getLevel());
+		} else {
+			Engine::changeScene(&menu);
+		}
 	}
 	
 }
@@ -25,30 +26,7 @@ void LoadScene::load() {
 	
 	levels.push_back(&level1);
 	
-	Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
-
-	// background	
-	auto background = makeEntity();
-	auto b = background->addComponent<ShapeComponent>();
-	b->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x, windowSize.y));
-	b->getShape().setPosition(sf::Vector2f(0,0));
-	b->getShape().setFillColor(sf::Color(72,62,55));
-	
-	// "story of nome"
-	auto son = makeEntity();
-	auto sn = son->addComponent<TextComponent>("The Story of Nome", "WorstveldSling.ttf");
-	sn->setColor(sf::Color(200 , 190, 183));
-	sn->setCharacterSize(75);
-	sn->SetPosition({windowSize.x / 2 - sn->getText().getLocalBounds().width / 2, 10});
-	
-	// line
-	auto line = makeEntity();
-	auto s = line->addComponent<ShapeComponent>();
-	s->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s->getShape().setPosition(sf::Vector2f(windowSize.x / 2, sn->getText().getLocalBounds().height * 2));
-	s->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
-	
+	UIScene::load();
 	
 	// ============================== CONTENT ============================== // 
 	
@@ -70,7 +48,7 @@ void LoadScene::load() {
 	pe->setCharacterSize(70);
 	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, windowSize.y - 135});
 	
-	//  C to cancel
+	//  Tab to cancel
 	auto cr = makeEntity();
 	auto c = cr->addComponent<TextComponent>("or TAB to cancel and go back", "WorstveldSling.ttf");
 	c->setColor(sf::Color(200 , 190, 183));
@@ -79,7 +57,7 @@ void LoadScene::load() {
 	
 	// line
 	auto line2 = makeEntity();
-	auto s2 = line->addComponent<ShapeComponent>();
+	auto s2 = line2->addComponent<ShapeComponent>();
 	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
 	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 165));
 	s2->getShape().setFillColor(sf::Color(200 , 190, 183));

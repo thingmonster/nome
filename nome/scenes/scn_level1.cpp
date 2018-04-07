@@ -55,6 +55,14 @@ void Level1Scene::unload() {
 	
 void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 	
+	if (ls::findTiles(ls::EMPTY).size() == 0) {
+		sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
+		ls::loadLevel("res/levels/level1.txt", "res/sprites/level1.png", windowSize);
+		playerSprites = Resources::get<sf::Texture>("player.png");
+		enemySprites = Resources::get<sf::Texture>("beetles-black.png");
+	}
+	
+	
 	player = entities[0];
 	makePlayer(player);
 	
@@ -176,7 +184,7 @@ void Level1Scene::load() {
 		// auto m = player->addComponent<PlayerMovementComponent>();
 		// m->setSpeed(200.f);
 		
-		auto ball = Level1Scene::makeEntity();
+		ball = Level1Scene::makeEntity();
 		ball->setPosition(ls::getTileCentre(ls::findTiles(ls::BALL)[0]));
 		makeBall(ball);
 		

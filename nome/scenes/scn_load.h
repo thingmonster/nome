@@ -1,10 +1,10 @@
 #pragma once
-#include "engine.h"
+#include "scn_ui.h"
 #include <fstream>
 
 
 
-class LoadScene : public Scene {
+class LoadScene : public UIScene {
 	
 	private:
 		void loadGame();
@@ -15,9 +15,10 @@ class LoadScene : public Scene {
 	public:
 		LoadScene() = default;
 		void update(const double& dt) override;
-		void load() override;
+		void load();
 		void unload() override;
 		void reload() override;
+		// void render();
 
 };
 
