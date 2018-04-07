@@ -24,13 +24,29 @@ class Scene {
 
 
 
+class LevelScene : public Scene {
+		
+	public:
+		LevelScene() = default;
+		void update(const double& dt) override;
+		void load() override;
+		void unload() override;
+		void reload() override;
+		void render() override;
+		void destroy();
+
+};
+
+
+
 class Engine {
 	
 	private:
 		static Scene* _activeScene;
-		static Scene* _activeLevel;
+		static LevelScene* _activeLevel;
 		static void update();
 		static void render();
+		
 		static bool readingInput;
 		static void loadKeys();
 		static void loadKeyStrings();
@@ -40,7 +56,9 @@ class Engine {
 		~Engine() = delete;
 		static void Start(int width, int height, const std::string& name, Scene* s);
 		static void changeScene(Scene*);
-		static void changeLevel(Scene*);
+		static void changeLevel(LevelScene*);
+		static void goToGame();
+		
 		static vector<sf::Keyboard::Key> controls;
 		static vector<sf::Keyboard::Key> keys;
 		static vector<std::string> keyStrings;

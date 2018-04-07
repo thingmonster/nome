@@ -12,7 +12,7 @@ using namespace sf;
 	
 
 Scene* Engine::_activeScene = nullptr;
-Scene* Engine::_activeLevel = nullptr;
+LevelScene* Engine::_activeLevel = nullptr;
 
 bool Engine::readingInput = false;
 std::string Engine::userInput;	
@@ -31,8 +31,15 @@ void Engine::changeScene(Scene* s) {
 	_activeScene->load();
 }
 
-void Engine::changeLevel(Scene* s) {
+void Engine::changeLevel(LevelScene* s) {
 	_activeLevel = s;
+}
+
+void Engine::goToGame() {
+	if (_activeLevel != nullptr) {
+		_activeLevel->destroy();
+	}
+	changeScene(_activeLevel);
 }
 
 void Engine::loadKeys() {
@@ -354,3 +361,23 @@ std::shared_ptr<Entity> Scene::makeEntity() {
 Scene::~Scene() {}
 
 
+
+
+
+// ======================== LEVELSCENE ======================== //
+	
+
+
+void LevelScene::update(const double& dt) {
+	
+}
+
+void LevelScene::render() {
+}
+
+void LevelScene::load() {}
+void LevelScene::unload() {}
+void LevelScene::reload() {}
+
+void LevelScene::destroy() {
+}

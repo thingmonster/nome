@@ -1,34 +1,20 @@
-
-#include "scn_menu.h"
-#include "../components/cmp_text.h"
-#include "../components/cmp_shape.h"
-#include "../components/cmp_movement.h"
-#include "../components/cmp_player_movement.h"
-#include "../components/cmp_steering.h"
-#include "../components/cmp_pathfinding.h"
-#include "../components/cmp_state_machine.h"
-#include "../components/cmp_decision_tree.h"
 #include "../game.h"
-#include "levelsystem.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <iostream>
-#include <random>
-#include <chrono>
+#include "scn_level1.h"
 
-#include <fstream>
-#include <iomanip>
-#include <sstream>
-#include <string>
 
 using namespace sf;
 using namespace std;
+
+
+
+
 
 
 std::shared_ptr<sf::Texture> Level1Scene::playerSprites;
 std::shared_ptr<sf::Texture> Level1Scene::enemySprites;
 
 void Level1Scene::update(const double& dt) {
-	
+		
 	if (Keyboard::isKeyPressed(Keyboard::O)) {
 		Engine::changeScene(&options);
 	}
@@ -41,31 +27,13 @@ void Level1Scene::update(const double& dt) {
 		Engine::changeScene(&save);
 	}
 	
-	if (Keyboard::isKeyPressed(Keyboard::T)) {
-		
-	}	
-	
 	if (Keyboard::isKeyPressed(Keyboard::L)) {
-		
-		ifstream myfile ("test.txt");
-		
-		string str;
-		if (myfile.is_open()) {
-			while (getline(myfile, str)) {
-				
-			}
-			myfile.close();
-		} else {
-			cout << "Unable to open file" << endl; 
-		}
-
-			
-		
+		Engine::changeScene(&loadGame);
 	}
 			
 	
 	_ents.update(dt);
-	
+
 	static double timer = 1.0f;
 	timer -= dt;
 	if (timer < 0.f)  {
@@ -75,6 +43,8 @@ void Level1Scene::update(const double& dt) {
 		}
 		timer = 4.f;
 	}
+	
+	LevelScene::update(dt);
 }
 
 void Level1Scene::render() {
@@ -86,7 +56,7 @@ void Level1Scene::unload() {
 }
 	
 void Level1Scene::destroy() {
-  _ents.list.clear();
+	_ents.list.clear();
 	Engine::changeLevel(nullptr);
 }
 	
@@ -94,7 +64,7 @@ void Level1Scene::load() {
 	
 	if (!loaded) {
 			
-		Engine::changeLevel(&level1);
+		// Engine::changeLevel(&level1);
 		
 		sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 		
@@ -189,7 +159,6 @@ void Level1Scene::spawn() {
 	
 	
 }
-
 
 
 
