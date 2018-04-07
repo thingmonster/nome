@@ -8,7 +8,8 @@ class LoadScene : public Scene {
 	
 	private:
 		void loadGame();
-		void loadEntity(std::string s);
+		std::shared_ptr<Entity> loadEntity(std::string s);
+		// void loadEntity(std::string s);
 		std::vector<LevelScene*> levels;
 		
 		

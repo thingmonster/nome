@@ -32,14 +32,15 @@ void Engine::changeScene(Scene* s) {
 }
 
 void Engine::changeLevel(LevelScene* s) {
-	_activeLevel = s;
-}
-
-void Engine::goToGame() {
 	if (_activeLevel != nullptr) {
 		_activeLevel->destroy();
 	}
-	changeScene(_activeLevel);
+	_activeLevel = s;
+}
+
+void Engine::restoreGame(std::vector<std::shared_ptr<Entity>> entities) {
+	_activeScene = _activeLevel;
+	_activeLevel->restore(entities);
 }
 
 void Engine::loadKeys() {
@@ -368,16 +369,8 @@ Scene::~Scene() {}
 	
 
 
-void LevelScene::update(const double& dt) {
-	
-}
-
-void LevelScene::render() {
-}
-
-void LevelScene::load() {}
-void LevelScene::unload() {}
-void LevelScene::reload() {}
-
 void LevelScene::destroy() {
+	_ents.list.clear();
 }
+
+

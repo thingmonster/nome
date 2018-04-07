@@ -46,6 +46,8 @@ void Entity::render() {
 
 Entity::Entity(Scene* s) : scene(s), _fordeletion(false) {}
 
+Entity::Entity(Scene* s, Vector2f pos) : scene(s), _position(pos), _fordeletion(false) {}
+
 
 
 

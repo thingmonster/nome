@@ -58,6 +58,7 @@ class Entity {
 		
 	public:
 		Entity(Scene* s);
+		Entity(Scene* s, Vector2f pos);
 		~Entity() = default;
 		Scene* const scene;
 		void update(const double dt);

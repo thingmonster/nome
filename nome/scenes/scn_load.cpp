@@ -100,34 +100,59 @@ void LoadScene::reload() {
 
 void LoadScene::loadGame() {
 	
-		bool topLineBeenRead = false;
+	int line = 1;
+	int level = -1;
+	std::string entity;
+	std::vector<std::shared_ptr<Entity>> entities;
 	
-		ifstream savedGame ("test.txt");
-		
-		string str;
-		if (savedGame.is_open()) {
-			while (getline(savedGame, str)) {
-				if (!topLineBeenRead) {
-					int level = std::stoi(str) - 1;
-					Engine::changeLevel(levels[level]);
-					// get level, 
-					// load level, 
-					// destroy current level?
-					topLineBeenRead = true;
-				} else {
-					// loadEntity(str);
-				}
+	ifstream savedGame ("test.txt");
+	
+	string str;
+	if (savedGame.is_open()) {
+		while (getline(savedGame, str)) {
+			if (line == 1) {
+				level = std::stoi(str) - 1;
+				line = 2;
+			} else {
+				// cout << str << endl;
+				// loadEntity(str);
+				// entity = loadEntity(str);
+				// auto ptr = make_shared<Entity>();
+				entities.push_back(loadEntity(str));
 			}
-			savedGame.close();
-		} else {
-			cout << "Unable to open file" << endl; 
 		}
-
-		Engine::goToGame();
+		savedGame.close();
+	} else {
+		cout << "Unable to open file" << endl; 
+	}
+	
+	if (level >= 0) {
+		Engine::changeLevel(levels[level]);
+		Engine::restoreGame(entities);
+	} else {
+		cout << "no content in file" << endl;
+	}
 }
 
+std::shared_ptr<Entity> LoadScene::loadEntity(std::string s) {
 // void LoadScene::loadEntity(std::string s) {
 	
+	std::string delimiter = ",";
+
+	size_t pos = 0;
+	vector<std::string> tokens;
+	std::string token;
 	
+	while ((pos = s.find(delimiter)) != std::string::npos) {
+		token = s.substr(0, pos);
+		tokens.push_back(token);
+		std::cout << token << std::endl;
+		s.erase(0, pos + delimiter.length());
+	}
+	tokens.push_back(s);
 	
-// }
+	sf::Vector2f p(stof(tokens[0]),stof(tokens[1]));
+	
+	auto e = make_shared<Entity>(this, p);
+	return e;
+}

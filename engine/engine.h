@@ -28,11 +28,13 @@ class LevelScene : public Scene {
 		
 	public:
 		LevelScene() = default;
-		void update(const double& dt) override;
-		void load() override;
-		void unload() override;
-		void reload() override;
-		void render() override;
+		virtual void update(const double& dt) = 0;
+		virtual void load() = 0;
+		virtual void unload() = 0;
+		virtual void reload() = 0;
+		virtual void render() = 0;
+		virtual void restore(std::vector<std::shared_ptr<Entity>> entities) = 0;
+		
 		void destroy();
 
 };
@@ -57,7 +59,7 @@ class Engine {
 		static void Start(int width, int height, const std::string& name, Scene* s);
 		static void changeScene(Scene*);
 		static void changeLevel(LevelScene*);
-		static void goToGame();
+		static void restoreGame(std::vector<std::shared_ptr<Entity>> entities);
 		
 		static vector<sf::Keyboard::Key> controls;
 		static vector<sf::Keyboard::Key> keys;

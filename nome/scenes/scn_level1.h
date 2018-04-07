@@ -31,13 +31,16 @@ class Level1Scene : public LevelScene {
 		
 	public:
 		Level1Scene() = default;
-		void update(const double& dt);
-		void load() ;
-		void unload() ;
-		void reload() ;
-		void render() ;
+		void update(const double& dt) override;
+		void load() override;
+		void unload() override;
+		void reload() override;
+		void render();
 		void spawn();
-		void destroy();
+		void restore(std::vector<std::shared_ptr<Entity>> entities) override;
+		void makePlayer(std::shared_ptr<Entity> player);
+		void makeBall(std::shared_ptr<Entity> ball);
+		void makeEnemy(std::shared_ptr<Entity> enemy);
 
 };
 
