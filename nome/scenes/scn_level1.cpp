@@ -62,7 +62,6 @@ void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 		enemySprites = Resources::get<sf::Texture>("beetles-black.png");
 	}
 	
-	
 	player = entities[0];
 	makePlayer(player);
 	
@@ -71,6 +70,7 @@ void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 	
 	for (int i = 2; i < entities.size(); ++i) {
 		makeEnemy(entities[i]);
+		updateEnemyAI(entities[i]);
 	}
 	
 	for (auto& e : entities) {
@@ -81,80 +81,56 @@ void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 	
 void Level1Scene::makePlayer(std::shared_ptr<Entity> player) {
 	
-	auto s = player->addComponent<ShapeComponent>();
-	s->setShape<sf::CircleShape>(20.f);
-	s->getShape().setFillColor({255 , 255, 255});
-	s->getShape().setOrigin(Vector2f(20.f, 20.f));
-	s->setTexture(playerSprites, sf::IntRect(0,0,50,50));
-	auto m = player->addComponent<PlayerMovementComponent>();
-	m->setSpeed(200.f);
-		
+	auto checkShapes = player->getComponents<ShapeComponent>();
+	if (checkShapes.size() == 0) {
+		player->addComponent<ShapeComponent>();
+	}
+	auto shape = player->getComponents<ShapeComponent>();
+	
+	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
+	shape[0]->getShape().setFillColor({255 , 255, 255});
+	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
+	shape[0]->setTexture(playerSprites, sf::IntRect(0,0,50,50));
+	
+	
+	auto checkMovement = player->getComponents<PlayerMovementComponent>();
+	if (checkMovement.size() == 0) {
+		player->addComponent<PlayerMovementComponent>();
+	}
+	auto movement = player->getComponents<PlayerMovementComponent>();
+	movement[0]->setSpeed(ls::getTileSize() * 4);
+	
+	cout << "hi" << endl;
 }
 
 void Level1Scene::makeBall(std::shared_ptr<Entity> ball) {
 	
-	auto b = ball->addComponent<ShapeComponent>();
-	b->setShape<sf::CircleShape>(20.f);
-	b->getShape().setFillColor({255 , 255, 255});
-	b->getShape().setOrigin(Vector2f(20.f, 20.f));
-	b->setTexture(playerSprites, sf::IntRect(50,0,50,50));
+	auto checkShapes = ball->getComponents<ShapeComponent>();
+	if (checkShapes.size() == 0) {
+		ball->addComponent<ShapeComponent>();
+	}
+	
+	auto shape = ball->getComponents<ShapeComponent>();
+	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
+	shape[0]->getShape().setFillColor({255 , 255, 255});
+	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
+	shape[0]->setTexture(playerSprites, sf::IntRect(50,0,50,50));
 	// add ball movement component here?
 	
 }
 
 void Level1Scene::makeEnemy(std::shared_ptr<Entity> enemy) {
 	
-	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
+	auto checkShapes = enemy->getComponents<ShapeComponent>();
+	if (checkShapes.size() == 0) {
+		enemy->addComponent<ShapeComponent>();
+	}
 	
-	auto shape = enemy->addComponent<ShapeComponent>();
-	shape->setShape<sf::CircleShape>(20.f);
-	shape->getShape().setFillColor({255 , 255, 255});
-	shape->getShape().setOrigin(Vector2f(20.f, 20.f));
-	shape->setTexture(enemySprites, sf::IntRect(0,0,50,50));
-	
-	/* // steering component
-	auto move = enemy->addComponent<SteeringComponent>(player.get()); */
-	
-	/* // pathfinding component
-	// auto path = pathFind(Vector2i(1, 1), Vector2i(ls::getWidth() - 2, ls::getHeight() - 2));
-	// auto move = enemy->addComponent<PathfindingComponent>();
-	// move->setPath(path); */
-	
-	/* // state machine component
-	auto sm = enemy->addComponent<StateMachineComponent>();
-	sm->addState("normal", make_shared<NormalState>(player));
-	sm->addState("near", make_shared<NearState>(player));
-	sm->changeState("normal"); */
-	
-	
-	// decision tree component
-	random_device dev;
-	default_random_engine engine(dev());
-	uniform_real_distribution<float> x_dist(0.0f, windowSize.x);
-	uniform_real_distribution<float> y_dist(0.0f, windowSize.y);
-	
-	auto decision = make_shared<DistanceDecision>(
-		player,
-		50.f,
-		make_shared<FleeDecision>(),
-		make_shared<DistanceDecision>(
-			player,
-			100.f,
-			make_shared<RandomDecision> (
-				make_shared<SeekDecision>(),
-				make_shared<StationaryDecision>()
-			),
-			make_shared<SeekDecision>()
-		)
-	);
-	
-	enemy->addComponent<DecisionTreeComponent>(decision);
-	
-	auto sm = enemy->addComponent<StateMachineComponent>();
-	sm->addState("stationary", make_shared<StationaryState>());
-	sm->addState("seek", make_shared<SeekState>(enemy, player));
-	sm->addState("flee", make_shared<FleeState>(enemy, player));
-	
+	auto shape = enemy->getComponents<ShapeComponent>();
+	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
+	shape[0]->getShape().setFillColor({255 , 255, 255});
+	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
+	shape[0]->setTexture(enemySprites, sf::IntRect(0,0,50,50));
 	
 }
 
@@ -171,10 +147,13 @@ void Level1Scene::load() {
 		
 		player = Level1Scene::makeEntity();
 		player->setPosition(ls::getTileCentre(ls::findTiles(ls::START)[0]));
+		player->addComponent<ShapeComponent>();
+		player->addComponent<PlayerMovementComponent>();
 		makePlayer(player);
 		
 		ball = Level1Scene::makeEntity();
 		ball->setPosition(ls::getTileCentre(ls::findTiles(ls::BALL)[0]));
+		ball->addComponent<ShapeComponent>();
 		makeBall(ball);
 		
 		loaded = true;
@@ -189,8 +168,156 @@ void Level1Scene::spawn() {
 	
 	auto entity = Level1Scene::makeEntity();
 	entity->setPosition(ls::getTileCentre(ls::findTiles(ls::HOLE)[0]));
+	entity->addComponent<ShapeComponent>();
 	makeEnemy(entity);
+	addEnemyAI(entity);
 }
+
+void Level1Scene::resize() {
+	
+	// get current player position
+	Vector2f pPos(
+		(player->getPosition().x - ls::getOffset().x) / (ls::getWidth() * ls::getTileSize()),
+		(player->getPosition().y - ls::getOffset().y) / (ls::getHeight() * ls::getTileSize())
+	);
+	
+	// get current ball position
+	Vector2f bPos(
+		(ball->getPosition().x - ls::getOffset().x) / (ls::getWidth() * ls::getTileSize()),
+		(ball->getPosition().y - ls::getOffset().y) / (ls::getHeight() * ls::getTileSize())
+	);
+	
+	// get current enemy positions
+	
+	std::vector<sf::Vector2f> ePos;
+	
+	for(int i = 2; i < _ents.list.size(); ++i) {
+		ePos.push_back(sf::Vector2f(
+			(_ents.list[i]->getPosition().x - ls::getOffset().x) / (ls::getWidth() * ls::getTileSize()),
+			(_ents.list[i]->getPosition().y - ls::getOffset().y) / (ls::getHeight() * ls::getTileSize())
+		));
+	}
+	
+	// resize level system
+	windowSize = (Vector2f)Renderer::getWindow().getSize();
+	if (ls::findTiles(ls::EMPTY).size() > 0) {
+		ls::resize("res/sprites/level1.png", windowSize);
+	}
+	
+	// move and restyle player
+	player->setPosition(Vector2f(
+		(pPos.x * (ls::getWidth() * ls::getTileSize())) + ls::getOffset().x,
+		(pPos.y * (ls::getHeight() * ls::getTileSize())) + ls::getOffset().y
+	));
+	makePlayer(player);
+	
+	// move and restyle ball
+	ball->setPosition(Vector2f(
+		(bPos.x * (ls::getWidth() * ls::getTileSize())) + ls::getOffset().x,
+		(bPos.y * (ls::getHeight() * ls::getTileSize())) + ls::getOffset().y
+	));
+	makeBall(ball);
+	
+	// move and restyle enemies
+	
+	for(int i = 2; i < _ents.list.size(); ++i) {
+		_ents.list[i]->setPosition(Vector2f(
+			(ePos[i-2].x * (ls::getWidth() * ls::getTileSize())) + ls::getOffset().x,
+			(ePos[i-2].y * (ls::getHeight() * ls::getTileSize())) + ls::getOffset().y
+		));
+		makeEnemy(_ents.list[i]);
+		updateEnemyAI(_ents.list[i]);
+	}
+	
+	
+	
+}
+
+
+void Level1Scene::addEnemyAI(std::shared_ptr<Entity> enemy) {
+	
+	/* // steering component
+	auto move = enemy->addComponent<SteeringComponent>(player.get()); */
+	
+	/* // pathfinding component
+	// auto path = pathFind(Vector2i(1, 1), Vector2i(ls::getWidth() - 2, ls::getHeight() - 2));
+	// auto move = enemy->addComponent<PathfindingComponent>();
+	// move->setPath(path); */
+	
+	/* // state machine component
+	auto sm = enemy->addComponent<StateMachineComponent>();
+	sm->addState("normal", make_shared<NormalState>(player));
+	sm->addState("near", make_shared<NearState>(player));
+	sm->changeState("normal"); */
+	
+	auto decision = decisionTree();
+	enemy->addComponent<DecisionTreeComponent>(decision);
+	
+	auto sm = enemy->addComponent<StateMachineComponent>();
+	sm->addState("stationary", make_shared<StationaryState>());
+	sm->addState("seek", make_shared<SeekState>(enemy, player, ls::getTileSize() / 75));
+	sm->addState("flee", make_shared<FleeState>(enemy, player, ls::getTileSize() / 75));
+	
+	
+	
+}
+
+void Level1Scene::updateEnemyAI(std::shared_ptr<Entity> enemy) {
+	
+	auto decision = decisionTree();
+	
+	auto checkForTree = enemy->getComponents<DecisionTreeComponent>();
+	if (checkForTree.size() == 0) {
+		enemy->addComponent<DecisionTreeComponent>(decision);
+	} else {
+		auto dt = enemy->getComponents<DecisionTreeComponent>();
+		dt[0]->setDecisionTree(decision);
+	}
+	
+	auto checkForStateMachine = enemy->getComponents<StateMachineComponent>();
+	if (checkForStateMachine.size() == 0) {
+		enemy->addComponent<StateMachineComponent>();
+	}
+	
+	auto sm = enemy->getComponents<StateMachineComponent>();
+	sm[0]->removeState("stationary");
+	sm[0]->removeState("seek");
+	sm[0]->removeState("flee");
+	sm[0]->addState("stationary", make_shared<StationaryState>());
+	sm[0]->addState("seek", make_shared<SeekState>(enemy, player, ls::getTileSize() / 75));
+	sm[0]->addState("flee", make_shared<FleeState>(enemy, player, ls::getTileSize() / 75));
+	
+	
+	
+}
+
+std::shared_ptr<DistanceDecision> Level1Scene::decisionTree() {
+	
+	auto decision = make_shared<DistanceDecision>(
+		player,
+		ls::getTileSize(),
+		make_shared<FleeDecision>(),
+		make_shared<DistanceDecision>(
+			player,
+			ls::getTileSize() * 2,
+			make_shared<RandomDecision> (
+				make_shared<SeekDecision>(),
+				make_shared<StationaryDecision>()
+			),
+			make_shared<SeekDecision>()
+		)
+	);
+	
+	return decision;
+}
+
+
+
+
+
+
+
+
 
 
 

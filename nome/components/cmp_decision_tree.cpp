@@ -11,3 +11,12 @@ DecisionTreeComponent::DecisionTreeComponent(Entity *p, shared_ptr<DecisionTreeN
 void DecisionTreeComponent::update(double dt) {
 	_decisionTree->makeDecision(_parent);
 }
+
+void DecisionTreeComponent::setDecisionTree(std::shared_ptr<DecisionTreeNode> tree) {
+	DecisionTreeComponent::_decisionTree = tree;
+}
+
+// void DecisionTreeComponent::setDecisionTree() {
+	// cout << "dt" << endl;
+	// DecisionTreeComponent::_decisionTree = tree;
+// }

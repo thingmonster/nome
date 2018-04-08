@@ -125,13 +125,18 @@ void SaveScene::reload() {
 void SaveScene::saveGame() {
 	
 	std::vector<std::shared_ptr<Entity>> entities = Scene::getEntities();
-	std::string str = "1";
+	std::string str = "1"; // needs replaced with current level
+	sf::Vector2f pos;
 	
 	for (auto& e : entities) {
+		
+		pos.x = (e->getPosition().x - ls::getOffset().x) / (ls::getWidth() * ls::getTileSize());
+		pos.y = (e->getPosition().y - ls::getOffset().y) / (ls::getHeight() * ls::getTileSize());
+		
 		str += "\n";
-		str += std::to_string(e->getPosition().x);
+		str += std::to_string(pos.x);
 		str += ",";
-		str += std::to_string(e->getPosition().y);
+		str += std::to_string(pos.y);
 	}
 	
 	ofstream myfiles;

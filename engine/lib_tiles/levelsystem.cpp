@@ -53,6 +53,10 @@ float LevelSystem::getTileSize() {
 	return _tileSize;
 }
 
+sf::Vector2f LevelSystem::getOffset() {
+	return _offset;
+}
+
 void LevelSystem::resize(const std::string& sprites, sf::Vector2f windowSize) {
 	
 	
