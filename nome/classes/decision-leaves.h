@@ -39,3 +39,14 @@ class FleeDecision : public DecisionTreeNode {
 		}
 };
 
+
+class WanderDecision : public DecisionTreeNode {
+	
+	public: 
+		void makeDecision(Entity *owner) final {
+			// cout << "wander" << endl;
+			auto sm = owner->getComponents<StateMachineComponent>();
+			sm[0]->changeState("wander");
+		}
+};
+

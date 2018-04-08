@@ -14,7 +14,7 @@ std::shared_ptr<sf::Texture> Level1Scene::playerSprites;
 std::shared_ptr<sf::Texture> Level1Scene::enemySprites;
 
 void Level1Scene::update(const double& dt) {
-		
+	
 	if (Keyboard::isKeyPressed(Keyboard::O)) {
 		Engine::changeScene(&options);
 	}
@@ -76,7 +76,7 @@ void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 	for (auto& e : entities) {
 		_ents.list.push_back(e);
 	}
-	cout << _ents.list.size() << endl;
+	
 }
 	
 void Level1Scene::makePlayer(std::shared_ptr<Entity> player) {
@@ -100,7 +100,6 @@ void Level1Scene::makePlayer(std::shared_ptr<Entity> player) {
 	auto movement = player->getComponents<PlayerMovementComponent>();
 	movement[0]->setSpeed(ls::getTileSize() * 4);
 	
-	cout << "hi" << endl;
 }
 
 void Level1Scene::makeBall(std::shared_ptr<Entity> ball) {
@@ -113,7 +112,7 @@ void Level1Scene::makeBall(std::shared_ptr<Entity> ball) {
 	auto shape = ball->getComponents<ShapeComponent>();
 	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
 	shape[0]->getShape().setFillColor({255 , 255, 255});
-	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
+	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
 	shape[0]->setTexture(playerSprites, sf::IntRect(50,0,50,50));
 	// add ball movement component here?
 	
@@ -129,8 +128,13 @@ void Level1Scene::makeEnemy(std::shared_ptr<Entity> enemy) {
 	auto shape = enemy->getComponents<ShapeComponent>();
 	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
 	shape[0]->getShape().setFillColor({255 , 255, 255});
-	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
+	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
 	shape[0]->setTexture(enemySprites, sf::IntRect(0,0,50,50));
+	
+	auto checkMovement = enemy->getComponents<MovementComponent>();
+	if (checkMovement.size() == 0) {
+		enemy->addComponent<MovementComponent>();
+	}
 	
 }
 
@@ -257,6 +261,7 @@ void Level1Scene::addEnemyAI(std::shared_ptr<Entity> enemy) {
 	sm->addState("stationary", make_shared<StationaryState>());
 	sm->addState("seek", make_shared<SeekState>(enemy, player, ls::getTileSize() / 75));
 	sm->addState("flee", make_shared<FleeState>(enemy, player, ls::getTileSize() / 75));
+	sm->addState("wander", make_shared<WanderState>(enemy, player, ls::getTileSize() / 75));
 	
 	
 	
@@ -283,9 +288,11 @@ void Level1Scene::updateEnemyAI(std::shared_ptr<Entity> enemy) {
 	sm[0]->removeState("stationary");
 	sm[0]->removeState("seek");
 	sm[0]->removeState("flee");
+	sm[0]->removeState("wander");
 	sm[0]->addState("stationary", make_shared<StationaryState>());
 	sm[0]->addState("seek", make_shared<SeekState>(enemy, player, ls::getTileSize() / 75));
 	sm[0]->addState("flee", make_shared<FleeState>(enemy, player, ls::getTileSize() / 75));
+	sm[0]->addState("wander", make_shared<WanderState>(enemy, player, ls::getTileSize() / 75));
 	
 	
 	
@@ -295,16 +302,19 @@ std::shared_ptr<DistanceDecision> Level1Scene::decisionTree() {
 	
 	auto decision = make_shared<DistanceDecision>(
 		player,
-		ls::getTileSize(),
+		ls::getTileSize() * 1,
 		make_shared<FleeDecision>(),
 		make_shared<DistanceDecision>(
 			player,
-			ls::getTileSize() * 2,
-			make_shared<RandomDecision> (
-				make_shared<SeekDecision>(),
-				make_shared<StationaryDecision>()
-			),
-			make_shared<SeekDecision>()
+			ls::getTileSize() * 3,
+			// make_shared<DistanceDecision> (
+				// player,
+				// ls::getTileSize() * 4,
+				// make_shared<SeekDecision>(),
+				// make_shared<StationaryDecision>()
+			// ),
+			make_shared<WanderDecision>(),
+			make_shared<WanderDecision>()
 		)
 	);
 	

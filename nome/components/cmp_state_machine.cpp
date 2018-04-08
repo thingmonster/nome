@@ -52,18 +52,44 @@ void SeekState::execute(Entity *owner, double dt) noexcept {
 	// cout << "seek" << endl;
 	auto s = owner->getComponents<ShapeComponent>();
 	s[0]->getShape().setFillColor(Color::Green);
+	
 	auto output = _steering.getSteering();
-	float speed = 1;
-	owner->setPosition(owner->getPosition() + (output.direction * _speed * (float)dt));
+	auto movement = owner->getComponents<MovementComponent>();
+	// sf::Vector2f direction = movement[0]->getDirection();
+	movement[0]->move((output.direction * _speed * (float)dt));
+	movement[0]->setDirection( output.direction);
+		
 }
 
 void FleeState::execute(Entity *owner, double dt) noexcept {
 	// cout << "flee" << endl;
 	auto s = owner->getComponents<ShapeComponent>();
 	s[0]->getShape().setFillColor(Color::Yellow);
+	
 	auto output = _steering.getSteering();
-	float speed = 1;
-	owner->setPosition(owner->getPosition() + (output.direction * _speed * (float)dt));
+	auto movement = owner->getComponents<MovementComponent>();
+	movement[0]->move((output.direction * _speed * (float)dt));
+	movement[0]->setDirection( output.direction);
+}
+
+void WanderState::execute(Entity *owner, double dt) noexcept {
+	// cout << "wander" << endl;
+	
+	auto s = owner->getComponents<ShapeComponent>();
+	s[0]->getShape().setFillColor(Color::Red);
+	
+	auto movement = owner->getComponents<MovementComponent>();
+	sf::Vector2f direction = movement[0]->getDirection();
+	
+	auto output = _steering.getSteering(direction);
+	movement[0]->setDirection( output.direction);
+	
+	if (!movement[0]->move((output.direction * _speed * (float)dt)))  {
+		output = _steering.getSteering();
+		movement[0]->move(output.direction * _speed * (float)dt);
+	}
+	
+	movement[0]->setDirection( output.direction);
 }
 
 

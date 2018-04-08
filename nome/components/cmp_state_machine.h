@@ -1,10 +1,11 @@
 #pragma once
 #include <unordered_map>
 #include <string>
-#include "ecm.h"
+#include "engine.h"
+#include "cmp_state_machine.h"
+#include "cmp_shape.h"
+#include "cmp_movement.h"
 #include "../classes/steering.h"
-#include "../components/cmp_state_machine.h"
-#include "../components/cmp_shape.h"
 
 
 class State {
@@ -54,6 +55,7 @@ class SeekState : public State {
 	private:
 		SeekSteering _steering;
 		float _speed;
+		int _direction;
 	
 	public:
 		SeekState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player, float speed)
@@ -69,6 +71,18 @@ class FleeState : public State {
 	
 	public:
 		FleeState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player, float speed)
+			: _speed(speed), _steering(owner.get(), player.get(), ls::getTileSize()) {}
+		void execute(Entity*, double) noexcept override;
+};
+
+class WanderState : public State {
+	
+	private:
+		WanderSteering _steering;
+		float _speed;
+	
+	public:
+		WanderState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player, float speed)
 			: _speed(speed), _steering(owner.get(), player.get(), ls::getTileSize()) {}
 		void execute(Entity*, double) noexcept override;
 };

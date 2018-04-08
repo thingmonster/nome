@@ -18,7 +18,7 @@ bool MovementComponent::validMove(const sf::Vector2f& pos) {
 
 bool MovementComponent::move(const sf::Vector2f& p) {
 	auto pp = _parent->getPosition() + p;
-	if (validMove(pp)) {
+	if (validMove(Vector2f(pp.x + (ls::getTileSize() / 400 * _direction.x), pp.y + (ls::getTileSize() / 400 * _direction.y)))) {
 		_parent->setPosition(pp);
 		return true;
 	} else {
@@ -40,4 +40,12 @@ float MovementComponent::getSpeed() const {
 
 void MovementComponent::setSpeed(float speed) {
 	_speed = speed;
+}
+
+sf::Vector2f MovementComponent::getDirection() const {
+	return _direction;
+}
+
+void MovementComponent::setDirection(sf::Vector2f direction) {
+	_direction = direction;
 }

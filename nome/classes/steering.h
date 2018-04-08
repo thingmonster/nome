@@ -1,6 +1,8 @@
 #pragma once
+#include <cstdlib>
+#include <iostream>
+#include <ctime>
 #include "engine.h"
-#include "levelsystem.h"
 
 
 
@@ -56,8 +58,9 @@ class WanderSteering : public SteeringBehaviour {
 		
 	public:
 		WanderSteering() = delete;
-		WanderSteering(Entity *character, Entity *target, float maxSpeed);
+		WanderSteering(Entity *character, Entity *target, float maxSpeed)
+			: _character(character), _target(target), _maxSpeed(maxSpeed) {}
 		SteeringOutput getSteering() const noexcept;
-		SteeringOutput getSteering(Vector2f direction);
+		SteeringOutput getSteering(sf::Vector2f direction);
 };
 		

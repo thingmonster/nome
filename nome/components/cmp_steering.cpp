@@ -13,7 +13,7 @@ SteeringComponent::SteeringComponent(Entity* p, Entity *player) :
 	_wander(WanderSteering(p, player, 100.0f)), 
 	MovementComponent(p) {
 		
-	}
+}
 
 	
 void SteeringComponent::update(double dt) {

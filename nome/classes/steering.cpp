@@ -1,7 +1,4 @@
 #include "steering.h"
-#include <cstdlib>
-#include <iostream>
-#include <ctime>
 
 SteeringOutput SeekSteering::getSteering() const noexcept {
 	SteeringOutput steering;
@@ -23,10 +20,8 @@ SteeringOutput FleeSteering::getSteering() const noexcept {
 
 SteeringOutput WanderSteering::getSteering() const noexcept {
 	
-	Vector2f test = Vector2f(std::rand() % 100, std::rand() % 100) - Vector2f(std::rand() % 100, std::rand() % 100);
-	
 	SteeringOutput steering;
-	steering.direction = test;
+	steering.direction = Vector2f(std::rand() % 100, std::rand() % 100) - Vector2f(std::rand() % 100, std::rand() % 100);
 	steering.direction = normalize(steering.direction);
 	steering.direction *= _maxSpeed;
 	steering.rotation = 0.0f;	
@@ -34,34 +29,37 @@ SteeringOutput WanderSteering::getSteering() const noexcept {
 
 }
 
-
-SteeringOutput WanderSteering::getSteering(Vector2f direction) {
+SteeringOutput WanderSteering::getSteering(sf::Vector2f direction) {
 	
 	SteeringOutput steering;
-	int odds = std::rand() % 100;
+	steering.direction = Vector2f(0,0);
 	
-	if (odds < 2) {		
-		steering.direction = Vector2f(std::rand() % 100, std::rand() % 100);
-		steering.direction = normalize(steering.direction);
-		steering.direction *= _maxSpeed;
-		steering.rotation = 0.0f;	
-	} else {		
-		steering.direction = direction;
+	if (direction.x == 0 && direction.y == 0) {
+		// cout << "no direction " << endl;
+		Vector2f newDirection = Vector2f(std::rand() % 100, std::rand() % 100) - Vector2f(std::rand() % 100, std::rand() % 100);
+		steering.direction = newDirection;
+	} else {
+		int odds = std::rand() % 100;
+		if (odds < 2) {		
+			// cout << "random direction " << endl;
+			Vector2f newDirection = Vector2f(std::rand() % 100, std::rand() % 100);
+			steering.direction = newDirection;
+		} else {	
+			// cout << "same direction " << endl;
+			steering.direction = direction;
+		}
 	}
 	
+	steering.direction = normalize(steering.direction);
+	steering.direction *= _maxSpeed;
+	steering.rotation = 0.0f;	
 	return steering;
 
+	
 }
 
 
 
 
-
-WanderSteering::WanderSteering(Entity *character, Entity *target, float maxSpeed) 
-	: _character(character), _target(target), _maxSpeed(maxSpeed) {
-		
-	std::srand(std::time(nullptr));
-	
-	}
 
 
