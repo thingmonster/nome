@@ -1,0 +1,9 @@
+images: 
+  - Visual Studio 2017
+clone_folder: C:\Users\earl_\Desktop\nome
+build_script:
+  -cmd: >-
+  mkdir build
+  cd build
+  cmake C:\Users\earl_\Desktop\nome -G "Visual Studio 15"
+  cmake --build . --config "Debug"
