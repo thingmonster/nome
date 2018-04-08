@@ -73,6 +73,7 @@ class Engine {
 		static std::vector<std::shared_ptr<Entity>> getEntities();
 		
 		static vector<sf::Keyboard::Key> controls;
+		static vector<sf::Joystick::Axis> joycon;
 		static vector<sf::Keyboard::Key> keys;
 		static vector<std::string> keyStrings;
 		

@@ -17,7 +17,8 @@ LevelScene* Engine::_activeLevel = nullptr;
 bool Engine::readingInput = false;
 std::string Engine::userInput;	
 
-vector<sf::Keyboard::Key> Engine::controls;	
+vector<sf::Keyboard::Key> Engine::controls;
+vector<sf::Joystick::Axis> Engine::joycon;
 vector<sf::Keyboard::Key> Engine::keys;	
 vector<std::string> Engine::keyStrings;	
 	
@@ -264,7 +265,8 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	Engine::controls.push_back(Keyboard::Right);
 	Engine::controls.push_back(Keyboard::Up);
 	Engine::controls.push_back(Keyboard::Down);
-	
+	Engine::joycon.push_back(Joystick::X);
+	Engine::joycon.push_back(Joystick::Y);
 	loadKeys();
 	loadKeyStrings();
 	

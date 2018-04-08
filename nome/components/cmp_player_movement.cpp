@@ -1,6 +1,6 @@
 
 #include "cmp_player_movement.h"
-
+#include <iostream>	
 using namespace sf;
 using namespace std;
 
@@ -38,43 +38,53 @@ void PlayerMovementComponent::update(double dt) {
 	lastMoveDown -= dt;
 	
 	// get current direction and apply momentum from recent moves
-	
-	if (Keyboard::isKeyPressed(Engine::controls[0])) {
-		lastMoveLeft = 10.f;
-		moveLeft = _speed * -1;
-	} else {
-		if (lastMoveLeft > 0) {
-			moveLeft = _momentum(&lastMoveLeft) * -1;
+	if (sf::Joystick::isConnected(0))
+	{
+		std::cout << "Joystick 0 connected" << std::endl;
+	}
+	else
+	{
+		if (Keyboard::isKeyPressed(Engine::controls[0])) {
+			lastMoveLeft = 10.f;
+			moveLeft = _speed * -1;
+		}
+		else {
+			if (lastMoveLeft > 0) {
+				moveLeft = _momentum(&lastMoveLeft) * -1;
+			}
+		}
+
+		if (Keyboard::isKeyPressed(Engine::controls[1])) {
+			lastMoveRight = 10.f;
+			moveRight = _speed;
+		}
+		else {
+			if (lastMoveRight > 0) {
+				moveRight = _momentum(&lastMoveRight);
+			}
+		}
+
+		if (Keyboard::isKeyPressed(Engine::controls[2])) {
+			lastMoveUp = 10.f;
+			moveUp = _speed * -1;
+		}
+		else {
+			if (lastMoveUp > 0) {
+				moveUp = _momentum(&lastMoveUp) * -1;
+			}
+		}
+
+		if (Keyboard::isKeyPressed(Engine::controls[3])) {
+			lastMoveDown = 10.f;
+			moveDown = _speed;
+		}
+		else {
+			if (lastMoveDown > 0) {
+				moveDown = _momentum(&lastMoveDown);
+			}
 		}
 	}
 	
-	if (Keyboard::isKeyPressed(Engine::controls[1])) {
-		lastMoveRight = 10.f;
-		moveRight = _speed;
-	} else {
-		if (lastMoveRight > 0) {
-			moveRight = _momentum(&lastMoveRight);
-		}
-	}
-	
-	if (Keyboard::isKeyPressed(Engine::controls[2])) {
-		lastMoveUp = 10.f;
-		moveUp = _speed * -1;
-	} else {
-		if (lastMoveUp > 0) {
-			moveUp = _momentum(&lastMoveUp) * -1;
-		}
-	}
-	
-	if (Keyboard::isKeyPressed(Engine::controls[3])) {
-		lastMoveDown = 10.f;
-		moveDown = _speed;
-	} else {
-		if (lastMoveDown > 0) {
-			moveDown = _momentum(&lastMoveDown);
-		}
-	}
- 
 	// update player's position
 	
 	float x = _parent->getPosition().x;
