@@ -62,7 +62,6 @@ void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 		enemySprites = Resources::get<sf::Texture>("beetles-black.png");
 	}
 	
-	
 	player = entities[0];
 	makePlayer(player);
 	
@@ -71,6 +70,7 @@ void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 	
 	for (int i = 2; i < entities.size(); ++i) {
 		makeEnemy(entities[i]);
+		updateEnemyAI(entities[i]);
 	}
 	
 	for (auto& e : entities) {
@@ -81,28 +81,50 @@ void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 	
 void Level1Scene::makePlayer(std::shared_ptr<Entity> player) {
 	
-	auto s = player->getComponents<ShapeComponent>();
-	s[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
-	s[0]->getShape().setFillColor({255 , 255, 255});
-	s[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
-	s[0]->setTexture(playerSprites, sf::IntRect(0,0,50,50));
-	auto m = player->getComponents<PlayerMovementComponent>();
-	m[0]->setSpeed(ls::getTileSize() * 4);
-		
+	auto checkShapes = player->getComponents<ShapeComponent>();
+	if (checkShapes.size() == 0) {
+		player->addComponent<ShapeComponent>();
+	}
+	auto shape = player->getComponents<ShapeComponent>();
+	
+	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
+	shape[0]->getShape().setFillColor({255 , 255, 255});
+	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
+	shape[0]->setTexture(playerSprites, sf::IntRect(0,0,50,50));
+	
+	
+	auto checkMovement = player->getComponents<PlayerMovementComponent>();
+	if (checkMovement.size() == 0) {
+		player->addComponent<PlayerMovementComponent>();
+	}
+	auto movement = player->getComponents<PlayerMovementComponent>();
+	movement[0]->setSpeed(ls::getTileSize() * 4);
+	
+	cout << "hi" << endl;
 }
 
 void Level1Scene::makeBall(std::shared_ptr<Entity> ball) {
 	
-	auto s = ball->getComponents<ShapeComponent>();
-	s[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
-	s[0]->getShape().setFillColor({255 , 255, 255});
-	s[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
-	s[0]->setTexture(playerSprites, sf::IntRect(50,0,50,50));
+	auto checkShapes = ball->getComponents<ShapeComponent>();
+	if (checkShapes.size() == 0) {
+		ball->addComponent<ShapeComponent>();
+	}
+	
+	auto shape = ball->getComponents<ShapeComponent>();
+	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
+	shape[0]->getShape().setFillColor({255 , 255, 255});
+	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
+	shape[0]->setTexture(playerSprites, sf::IntRect(50,0,50,50));
 	// add ball movement component here?
 	
 }
 
 void Level1Scene::makeEnemy(std::shared_ptr<Entity> enemy) {
+	
+	auto checkShapes = enemy->getComponents<ShapeComponent>();
+	if (checkShapes.size() == 0) {
+		enemy->addComponent<ShapeComponent>();
+	}
 	
 	auto shape = enemy->getComponents<ShapeComponent>();
 	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
@@ -243,8 +265,19 @@ void Level1Scene::addEnemyAI(std::shared_ptr<Entity> enemy) {
 void Level1Scene::updateEnemyAI(std::shared_ptr<Entity> enemy) {
 	
 	auto decision = decisionTree();
-	auto dt = enemy->getComponents<DecisionTreeComponent>();
-	dt[0]->setDecisionTree(decision);
+	
+	auto checkForTree = enemy->getComponents<DecisionTreeComponent>();
+	if (checkForTree.size() == 0) {
+		enemy->addComponent<DecisionTreeComponent>(decision);
+	} else {
+		auto dt = enemy->getComponents<DecisionTreeComponent>();
+		dt[0]->setDecisionTree(decision);
+	}
+	
+	auto checkForStateMachine = enemy->getComponents<StateMachineComponent>();
+	if (checkForStateMachine.size() == 0) {
+		enemy->addComponent<StateMachineComponent>();
+	}
 	
 	auto sm = enemy->getComponents<StateMachineComponent>();
 	sm[0]->removeState("stationary");
