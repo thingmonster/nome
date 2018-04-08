@@ -4,7 +4,7 @@
 The Story of Nome is a 2D top down single player game. The player controls Nome and has to keep him alive for long enough for him to escape. Fight against beetles using Nome's trusty ball to surive. Eat Mushrooms to unlock new areas!
 
 ## Install the game 
-Download the <a href="https://1drv.ms/u/s!AuOFTIjdOXFWh45ieIzbIMApHN3Rrw" target="_blank">v0.1 setup.exe</a> file and follow the instructions to install on your computer.
+Download the <a href="https://github.com/thingmonster/nome/releases/download/v0.1/setup.exe" target="_blank">v0.1 setup.exe</a> file and follow the instructions to install on your computer.
 
 ## Source Code
 <a href="https://github.com/thingmonster/nome/archive/v0.1.zip">v0.1 .zip download</a>
