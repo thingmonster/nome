@@ -37,12 +37,60 @@ void PlayerMovementComponent::update(double dt) {
 	lastMoveUp -= dt;
 	lastMoveDown -= dt;
 	
-	// get current direction and apply momentum from recent moves
-	if (sf::Joystick::isConnected(0))
+	
+	if (Joystick::isConnected(0))
 	{
-		std::cout << "Joystick 0 connected" << std::endl;
+		//testing axes
+		/*
+		std::cout << "Current X Axis: " << Joystick::getAxisPosition(0, Joystick::X) << std::endl;
+		std::cout << "Current Y Axis: " << Joystick::getAxisPosition(0, Joystick::Y) << std::endl;
+		*/
+
+		//testing buttons
+		/*
+		if (Joystick::isButtonPressed(0, 0))
+		{
+			std::cout << "cross" << std::endl;
+		}
+		if (Joystick::isButtonPressed(0, 1))
+		{
+			std::cout << "circle" << std::endl;
+		}
+		if (Joystick::isButtonPressed(0, 2))
+		{
+			std::cout << "square" << std::endl;
+		}
+		if (Joystick::isButtonPressed(0, 3))
+		{
+			std::cout << "triangle" << std::endl;
+		}
+		if (Joystick::isButtonPressed(0, 4))
+		{
+			std::cout << "L1" << std::endl;
+		}
+		if (Joystick::isButtonPressed(0, 5))
+		{
+			std::cout << "R1" << std::endl;
+		}
+		if (Joystick::isButtonPressed(0, 6))
+		{
+			std::cout << "Select" << std::endl;
+		}
+		if (Joystick::isButtonPressed(0, 7))
+		{
+			std::cout << "Start" << std::endl;
+		}
+		if (Joystick::isButtonPressed(0, 8))
+		{
+			std::cout << "L3" << std::endl;
+		}
+		if (Joystick::isButtonPressed(0, 9))
+		{
+			std::cout << "R3" << std::endl;
+		}
+		*/
 	}
-	else
+	else// get current direction and apply momentum from recent moves
 	{
 		if (Keyboard::isKeyPressed(Engine::controls[0])) {
 			lastMoveLeft = 10.f;
