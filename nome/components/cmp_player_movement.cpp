@@ -18,8 +18,57 @@ double PlayerMovementComponent::_momentum(double * timer) {
 	
 }
 
-void PlayerMovementComponent::update(double dt) {
-	
+void PlayerMovementComponent::update(double dt) 
+{
+	//testing axes
+	/*
+	std::cout << "Current X Axis: " << Joystick::getAxisPosition(0, Joystick::X) << std::endl;
+	std::cout << "Current Y Axis: " << Joystick::getAxisPosition(0, Joystick::Y) << std::endl;
+	*/
+
+	//testing buttons
+	/*
+	if (Joystick::isButtonPressed(0, 0))
+	{
+	std::cout << "cross" << std::endl;
+	}
+	if (Joystick::isButtonPressed(0, 1))
+	{
+	std::cout << "circle" << std::endl;
+	}
+	if (Joystick::isButtonPressed(0, 2))
+	{
+	std::cout << "square" << std::endl;
+	}
+	if (Joystick::isButtonPressed(0, 3))
+	{
+	std::cout << "triangle" << std::endl;
+	}
+	if (Joystick::isButtonPressed(0, 4))
+	{
+	std::cout << "L1" << std::endl;
+	}
+	if (Joystick::isButtonPressed(0, 5))
+	{
+	std::cout << "R1" << std::endl;
+	}
+	if (Joystick::isButtonPressed(0, 6))
+	{
+	std::cout << "Select" << std::endl;
+	}
+	if (Joystick::isButtonPressed(0, 7))
+	{
+	std::cout << "Start" << std::endl;
+	}
+	if (Joystick::isButtonPressed(0, 8))
+	{
+	std::cout << "L3" << std::endl;
+	}
+	if (Joystick::isButtonPressed(0, 9))
+	{
+	std::cout << "R3" << std::endl;
+	}*/
+
 	// player movement with momentum
 	
 	double moveLeft = 0;
@@ -37,144 +86,69 @@ void PlayerMovementComponent::update(double dt) {
 	lastMoveUp -= dt;
 	lastMoveDown -= dt;
 	
-	if (Joystick::isConnected(0))
+	if ((Keyboard::isKeyPressed(Engine::controls[0])) || (Joystick::getAxisPosition(0, Joystick::Axis::X) < -60.00f))//left
 	{
-		if (Joystick::getAxisPosition(0, Joystick::Axis::X) < -20.00f)//left
-		{
-			lastMoveLeft = 10.f;
-			moveLeft = _speed * -1;
-		}
-		else {
-			if (lastMoveLeft > 0) {
-				moveLeft = _momentum(&lastMoveLeft) * -1;
-			}
-		}//end left
-
-		if (Joystick::getAxisPosition(0, Joystick::Axis::X) > 20.00f)//right
-		{
-			lastMoveRight = 10.f;
-			moveRight = _speed;
-		}
-		else {
-			if (lastMoveRight > 0) {
-				moveRight = _momentum(&lastMoveRight);
-			}
-		}//end right
-
-		if (Joystick::getAxisPosition(0, Joystick::Axis::Y) < -20.00f)//up
-		{
-			lastMoveUp = 10.f;
-			moveUp = _speed * -1;
-		}
-		else {
-			if (lastMoveUp > 0) {
-				moveUp = _momentum(&lastMoveUp) * -1;
-			}
-		}//end up
-
-		if (Joystick::getAxisPosition(0, Joystick::Axis::Y) > 20.00f)//down
-		{
-			lastMoveDown = 10.f;
-			moveDown = _speed;
-		}
-		else {
-			if (lastMoveDown > 0) {
-				moveDown = _momentum(&lastMoveDown);
-			}
-		}//end down
-
-		//testing axes
-		/*
-		std::cout << "Current X Axis: " << Joystick::getAxisPosition(0, Joystick::X) << std::endl;
-		std::cout << "Current Y Axis: " << Joystick::getAxisPosition(0, Joystick::Y) << std::endl;
-		*/
-
-		//testing buttons
-		/*
-		if (Joystick::isButtonPressed(0, 0))
-		{
-			std::cout << "cross" << std::endl;
-		}
-		if (Joystick::isButtonPressed(0, 1))
-		{
-			std::cout << "circle" << std::endl;
-		}
-		if (Joystick::isButtonPressed(0, 2))
-		{
-			std::cout << "square" << std::endl;
-		}
-		if (Joystick::isButtonPressed(0, 3))
-		{
-			std::cout << "triangle" << std::endl;
-		}
-		if (Joystick::isButtonPressed(0, 4))
-		{
-			std::cout << "L1" << std::endl;
-		}
-		if (Joystick::isButtonPressed(0, 5))
-		{
-			std::cout << "R1" << std::endl;
-		}
-		if (Joystick::isButtonPressed(0, 6))
-		{
-			std::cout << "Select" << std::endl;
-		}
-		if (Joystick::isButtonPressed(0, 7))
-		{
-			std::cout << "Start" << std::endl;
-		}
-		if (Joystick::isButtonPressed(0, 8))
-		{
-			std::cout << "L3" << std::endl;
-		}
-		if (Joystick::isButtonPressed(0, 9))
-		{
-			std::cout << "R3" << std::endl;
-		}
-		*/
+		lastMoveLeft = 10.f;
+		moveLeft = _speed * -1;
 	}
-	else// get current direction and apply momentum from recent moves
-	{	
-		if (Keyboard::isKeyPressed(Engine::controls[0])) {
-			lastMoveLeft = 10.f;
-			moveLeft = _speed * -1;
-		}
-		else {
-			if (lastMoveLeft > 0) {
-				moveLeft = _momentum(&lastMoveLeft) * -1;
-			}
-		}
-
-		if (Keyboard::isKeyPressed(Engine::controls[1])) {
-			lastMoveRight = 10.f;
-			moveRight = _speed;
-		}
-		else {
-			if (lastMoveRight > 0) {
-				moveRight = _momentum(&lastMoveRight);
-			}
-		}
-
-		if (Keyboard::isKeyPressed(Engine::controls[2])) {
-			lastMoveUp = 10.f;
-			moveUp = _speed * -1;
-		}
-		else {
-			if (lastMoveUp > 0) {
-				moveUp = _momentum(&lastMoveUp) * -1;
-			}
-		}
-
-		if (Keyboard::isKeyPressed(Engine::controls[3])) {
-			lastMoveDown = 10.f;
-			moveDown = _speed;
-		}
-		else {
-			if (lastMoveDown > 0) {
-				moveDown = _momentum(&lastMoveDown);
-			}
-		}
+	else if (Joystick::getAxisPosition(0, Joystick::Axis::X) < -20.00f)
+	{
+		moveLeft = (_speed / 3) * -1;
 	}
+	else 
+	{
+		if (lastMoveLeft > 0) {
+			moveLeft = _momentum(&lastMoveLeft) * -1;
+		}
+	}//end left
+
+	if ((Keyboard::isKeyPressed(Engine::controls[1])) || (Joystick::getAxisPosition(0, Joystick::Axis::X) > 60.00f))//right
+	{
+		lastMoveRight = 10.f;
+		moveRight = _speed;
+	}
+	else if (Joystick::getAxisPosition(0, Joystick::Axis::X) > 20.00f)
+	{
+		moveRight = (_speed / 3);
+	}
+	else 
+	{
+		if (lastMoveRight > 0) {
+			moveRight = _momentum(&lastMoveRight);
+		}
+	}//end right
+
+	if ((Keyboard::isKeyPressed(Engine::controls[2])) || (Joystick::getAxisPosition(0, Joystick::Axis::Y) < -60.00f))//up
+	{
+		lastMoveUp = 10.f;
+		moveUp = _speed * -1;
+	}
+	else if (Joystick::getAxisPosition(0, Joystick::Axis::Y) < -20.00f)
+	{
+		moveUp = (_speed / 3) * -1;
+	}
+	else 
+	{
+		if (lastMoveUp > 0) {
+			moveUp = _momentum(&lastMoveUp) * -1;
+		}
+	}//end up
+
+	if ((Keyboard::isKeyPressed(Engine::controls[3])) || (Joystick::getAxisPosition(0, Joystick::Axis::Y) > 60.00f))//down
+	{
+		lastMoveDown = 10.f;
+		moveDown = _speed;
+	}
+	else if (Joystick::getAxisPosition(0, Joystick::Axis::Y) > 20.00f)
+	{
+		moveDown = (_speed / 3);
+	}
+	else 
+	{
+		if (lastMoveDown > 0) {
+			moveDown = _momentum(&lastMoveDown);
+		}
+	}//end down
 	
 	// update player's position
 	
