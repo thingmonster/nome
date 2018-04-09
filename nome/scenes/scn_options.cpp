@@ -149,8 +149,10 @@ void OptionsScene::updateResMenu(int direction, const double& dt) {
 				pos.y += 34;
 				intRect.top = 269;
 				menuState = menuStates[2];
-			} else {
-				intRect.top = 269;
+			} else  if (pos.y == 373) { //loop back round 
+				pos.y -= 68;
+				intRect.top = 201;
+				menuState = menuStates[0];
 			}
 			
 		} else {
