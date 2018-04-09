@@ -13,7 +13,8 @@ void OptionsScene::update(const double& dt) {
 	
 	if (!menuOpen) {
 		
-		if (Keyboard::isKeyPressed(Keyboard::B)) {
+		if ((Keyboard::isKeyPressed(Keyboard::B)) || (Joystick::isButtonPressed(0, 1))) //circle
+		{
 			if (Engine::getLevel() != nullptr) {
 				Engine::changeScene(Engine::getLevel());
 			} else {
@@ -21,28 +22,33 @@ void OptionsScene::update(const double& dt) {
 			}	
 		}
 		
-		if (Keyboard::isKeyPressed(Keyboard::R)) {
+		if ((Keyboard::isKeyPressed(Keyboard::R)) || (Joystick::isButtonPressed(0, 2))) //square
+		{
 			Engine::changeScene(&remap);		
 		}
-
-		if (Keyboard::isKeyPressed(Keyboard::S)) {
+		
+		if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 3))) //triangle
+		{
 			showResMenu();
 			menuOpen = true;
 		}
 
 	} else {
-		
-		if (Keyboard::isKeyPressed(Keyboard::Enter)) {
+		int x = 0;
+		if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
+		{
 			menuOpen = false;
 			closeResMenu();
 		}
-		
 		if (Keyboard::isKeyPressed(Keyboard::Down)) {
 			updateResMenu(1, dt);
 		}
-		
 		if (Keyboard::isKeyPressed(Keyboard::Up)) {
 			updateResMenu(-1, dt);
+		}
+		if (Joystick::isButtonPressed(0, 3)) //triangle
+		{
+			updateResMenu(1, dt);
 		}
 	}
 }

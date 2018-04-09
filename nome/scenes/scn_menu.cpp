@@ -15,20 +15,20 @@ const std::string controls[] = {
 
 void MenuScene::update(const double& dt) {
 	
-	if (Keyboard::isKeyPressed(Keyboard::Enter)) {
-		Engine::changeScene(&level1);
-		
+	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
+	{
+		Engine::changeScene(&level1);	
 	}
 	
-	if (Keyboard::isKeyPressed(Keyboard::O)) {
+	if ((Keyboard::isKeyPressed(Keyboard::O)) || (Joystick::isButtonPressed(0, 6))) //select
+	{
 		Engine::changeScene(&options);
-		
 	}
 	
-	if (Keyboard::isKeyPressed(Keyboard::L)) {
+	if ((Keyboard::isKeyPressed(Keyboard::L)) || (Joystick::isButtonPressed(0, 3))) //triangle
+	{
 		Engine::changeScene(&loadGame);
 	}
-	
 }
 
 void MenuScene::buildKeys() {

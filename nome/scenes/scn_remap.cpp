@@ -22,7 +22,8 @@ void RemapScene::update(const double& dt) {
 			finish();
 		}
 			
-		if (Keyboard::isKeyPressed(Keyboard::B)) {
+		if ((Keyboard::isKeyPressed(Keyboard::B)) || (Joystick::isButtonPressed(0, 1))) //circle
+		{
 			Engine::changeScene(&menu);			
 		}
 		

@@ -8,18 +8,19 @@ using namespace std;
 void LoadScene::update(const double& dt) {
 	
 	
-	if (Keyboard::isKeyPressed(Keyboard::Enter)) {
+	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
+	{
 		loadGame();
 	}
 	
-	if (Keyboard::isKeyPressed(Keyboard::Tab)) {
+	if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
+	{
 		if (Engine::getLevel() != nullptr) {
 			Engine::changeScene(Engine::getLevel());
 		} else {
 			Engine::changeScene(&menu);
 		}
-	}
-	
+	}	
 }
 
 void LoadScene::load() {

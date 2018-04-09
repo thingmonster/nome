@@ -9,19 +9,20 @@ using namespace std;
 
 void PausedScene::update(const double& dt) {
 	
-		
-	if (Keyboard::isKeyPressed(Keyboard::Enter)) {
+	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
+	{
 		Engine::changeScene(&level1);
 	}
 	
-	if (Keyboard::isKeyPressed(Keyboard::Q)) {
+	if ((Keyboard::isKeyPressed(Keyboard::Q)) || (Joystick::isButtonPressed(0, 1))) //circle
+	{
 		Engine::changeScene(&menu);
 	}
 	
-	if (Keyboard::isKeyPressed(Keyboard::S)) {
+	if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 2))) //square
+	{
 		Engine::changeScene(&save);
 	}
-	
 }
 
 void PausedScene::makeDescription(std::string t, sf::Vector2f p) {

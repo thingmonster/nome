@@ -10,13 +10,15 @@ std::shared_ptr<sf::Texture> SaveScene::inputField;
 void SaveScene::update(const double& dt) {
 	
 	
-	if (Keyboard::isKeyPressed(Keyboard::Enter)) {
+	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
+	{
 		saveGame();
 		Engine::setReadingInput(false);
 		Engine::changeScene(&level1);
 	}
 	
-	if (Keyboard::isKeyPressed(Keyboard::Tab)) {
+	if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
+	{
 		Engine::setReadingInput(false);
 		Engine::changeScene(&level1);
 	}

@@ -6,28 +6,28 @@ using namespace sf;
 using namespace std;
 
 
-
-
-
-
 std::shared_ptr<sf::Texture> Level1Scene::playerSprites;
 std::shared_ptr<sf::Texture> Level1Scene::enemySprites;
 
 void Level1Scene::update(const double& dt) {
 	
-	if (Keyboard::isKeyPressed(Keyboard::O)) {
+	if ((Keyboard::isKeyPressed(Keyboard::O)) || (Joystick::isButtonPressed(0, 6))) //select
+	{
 		Engine::changeScene(&options);
 	}
 	
-	if (Keyboard::isKeyPressed(Keyboard::P)) {
+	if ((Keyboard::isKeyPressed(Keyboard::P)) || (Joystick::isButtonPressed(0, 1))) //circle
+	{
 		Engine::changeScene(&paused);
 	}
-	
-	if (Keyboard::isKeyPressed(Keyboard::S)) {
+
+	if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 2))) //square
+	{
 		Engine::changeScene(&save);
 	}
 	
-	if (Keyboard::isKeyPressed(Keyboard::L)) {
+	if ((Keyboard::isKeyPressed(Keyboard::L)) || (Joystick::isButtonPressed(0, 3))) //triangle
+	{
 		Engine::changeScene(&loadGame);
 	}
 			

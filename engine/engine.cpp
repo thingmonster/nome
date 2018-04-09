@@ -311,8 +311,7 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
       window.close();
 		}
-		
-			
+				
 		window.clear();
 		update();
 		render();
