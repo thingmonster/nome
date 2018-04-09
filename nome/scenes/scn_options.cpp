@@ -12,27 +12,26 @@ std::shared_ptr<Entity> menuState;
 void OptionsScene::update(const double& dt) {
 	
 	if (!menuOpen) {
-		
 		if ((Keyboard::isKeyPressed(Keyboard::B)) || (Joystick::isButtonPressed(0, 1))) //circle
 		{
 			if (Engine::getLevel() != nullptr) {
 				Engine::changeScene(Engine::getLevel());
-			} else {
+			}
+			else {
 				Engine::changeScene(&menu);
-			}	
+			}
 		}
-		
+
 		if ((Keyboard::isKeyPressed(Keyboard::R)) || (Joystick::isButtonPressed(0, 2))) //square
 		{
-			Engine::changeScene(&remap);		
+			Engine::changeScene(&remap);
 		}
-		
+
 		if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 3))) //triangle
 		{
 			showResMenu();
 			menuOpen = true;
 		}
-
 	} else {
 		int x = 0;
 		if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start

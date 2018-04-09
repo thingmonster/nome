@@ -37,9 +37,52 @@ void PlayerMovementComponent::update(double dt) {
 	lastMoveUp -= dt;
 	lastMoveDown -= dt;
 	
-	
 	if (Joystick::isConnected(0))
 	{
+		if (Joystick::getAxisPosition(0, Joystick::Axis::X) < -20.00f)//left
+		{
+			lastMoveLeft = 10.f;
+			moveLeft = _speed * -1;
+		}
+		else {
+			if (lastMoveLeft > 0) {
+				moveLeft = _momentum(&lastMoveLeft) * -1;
+			}
+		}//end left
+
+		if (Joystick::getAxisPosition(0, Joystick::Axis::X) > 20.00f)//right
+		{
+			lastMoveRight = 10.f;
+			moveRight = _speed;
+		}
+		else {
+			if (lastMoveRight > 0) {
+				moveRight = _momentum(&lastMoveRight);
+			}
+		}//end right
+
+		if (Joystick::getAxisPosition(0, Joystick::Axis::Y) < -20.00f)//up
+		{
+			lastMoveUp = 10.f;
+			moveUp = _speed * -1;
+		}
+		else {
+			if (lastMoveUp > 0) {
+				moveUp = _momentum(&lastMoveUp) * -1;
+			}
+		}//end up
+
+		if (Joystick::getAxisPosition(0, Joystick::Axis::Y) > 20.00f)//down
+		{
+			lastMoveDown = 10.f;
+			moveDown = _speed;
+		}
+		else {
+			if (lastMoveDown > 0) {
+				moveDown = _momentum(&lastMoveDown);
+			}
+		}//end down
+
 		//testing axes
 		/*
 		std::cout << "Current X Axis: " << Joystick::getAxisPosition(0, Joystick::X) << std::endl;
@@ -91,7 +134,7 @@ void PlayerMovementComponent::update(double dt) {
 		*/
 	}
 	else// get current direction and apply momentum from recent moves
-	{
+	{	
 		if (Keyboard::isKeyPressed(Engine::controls[0])) {
 			lastMoveLeft = 10.f;
 			moveLeft = _speed * -1;
