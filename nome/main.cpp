@@ -16,7 +16,7 @@ using namespace sf;
 
 int main() {
 
-	FreeConsole();//Hides CMD window	
+	// FreeConsole();//Hides CMD window	
 	Engine::Start(800, 600, "The Story of Nome", &menu);
 	
 } 

@@ -55,9 +55,11 @@ class Entity {
 		sf::Vector2f _position;
 		bool _fordeletion;
 		bool _visible;
+		std::string _tag;
 		
 	public:
 		Entity(Scene* s);
+		Entity(Scene* s, std::string tag);
 		Entity(Scene* s, Vector2f pos);
 		~Entity() = default;
 		Scene* const scene;
@@ -67,6 +69,7 @@ class Entity {
 		void setPosition(const sf::Vector2f &pos);
 		void setVisible(bool v);
 		bool getVisible();
+		std::string getTag();
 		// void move(const sf::Vector2f &pos);
 		// float getRadius();
 		// void setForDelete();

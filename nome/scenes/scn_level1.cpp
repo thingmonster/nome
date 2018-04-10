@@ -147,7 +147,7 @@ void Level1Scene::load() {
     for (auto w : walls) {
 			auto pos = ls::getTilePosition(w);
 			pos += Vector2f(ls::getTileSize() / 2, ls::getTileSize() / 2); 
-			auto e = makeEntity();
+			auto e = makeEntity("wall");
 			e->setPosition(pos);
 			e->addComponent<PhysicsComponent>(false, Vector2f(ls::getTileSize(), ls::getTileSize()));
     }
@@ -156,11 +156,11 @@ void Level1Scene::load() {
 		playerSprites = Resources::get<sf::Texture>("player.png");
 		enemySprites = Resources::get<sf::Texture>("beetles-black.png");
 		
-		player = Level1Scene::makeEntity();
+		player = Level1Scene::makeEntity("player");
 		player->setPosition(ls::getTileCentre(ls::findTiles(ls::START)[0]));
 		makePlayer(player);
 		
-		ball = Level1Scene::makeEntity();
+		ball = Level1Scene::makeEntity("ball");
 		ball->setPosition(ls::getTileCentre(ls::findTiles(ls::BALL)[0]));
 		makeBall(ball);
 		
@@ -174,7 +174,7 @@ void Level1Scene::reload() {
 
 void Level1Scene::spawn() {
 	
-	auto entity = Level1Scene::makeEntity();
+	auto entity = Level1Scene::makeEntity("beetle");
 	entity->setPosition(ls::getTileCentre(ls::findTiles(ls::HOLE)[0]));
 	makeEnemy(entity);
 	addEnemyAI(entity);

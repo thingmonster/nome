@@ -20,6 +20,10 @@ bool Entity::getVisible() {
 	return _visible;
 }
 
+std::string Entity::getTag() {
+	return _tag;
+}
+
 // void Entity::setForDelete() {
 	// _fordeletion = true;
 // }
@@ -45,6 +49,8 @@ void Entity::render() {
 }
 
 Entity::Entity(Scene* s) : scene(s), _fordeletion(false) {}
+
+Entity::Entity(Scene* s, std::string tag) : scene(s), _fordeletion(false), _tag(tag) {}
 
 Entity::Entity(Scene* s, Vector2f pos) : scene(s), _position(pos), _fordeletion(false) {}
 

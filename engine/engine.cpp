@@ -378,6 +378,12 @@ void Scene::update(const double& dt) {
 	_ents.update(dt); 
 }
 
+std::shared_ptr<Entity> Scene::makeEntity(std::string tag) {
+	auto e = make_shared<Entity>(this, tag);
+	_ents.list.push_back(e);
+	return std::move(e);
+}
+
 std::shared_ptr<Entity> Scene::makeEntity() {
 	auto e = make_shared<Entity>(this);
 	_ents.list.push_back(e);

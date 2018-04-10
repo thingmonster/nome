@@ -15,25 +15,26 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
   BodyDef.position = sv2_to_bv2(invert_height(p->getPosition()));
 
   // Create the body
+	cout << typeid(_parent).name() << endl;
   _body = Physics::GetWorld()->CreateBody(&BodyDef);
-  _body->SetActive(true);
 	_body->SetUserData(p);
-  {
-    // Create the fixture shape
-    b2PolygonShape Shape;
-		
-    // SetAsBox box takes HALF-Widths!
-    Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
-    b2FixtureDef FixtureDef;
-    FixtureDef.friction = _dynamic ? 0.1f : 0.8f;
-    FixtureDef.restitution = .2;
-    FixtureDef.shape = &Shape;
-		
-    // Add to body
-    _fixture = _body->CreateFixture(&FixtureDef);
-    //_fixture->SetRestitution(.9)
-    FixtureDef.restitution = .2;
-  }
+  _body->SetActive(true);
+
+	// Create the fixture shape
+	b2PolygonShape Shape;
+
+	// SetAsBox box takes HALF-Widths!
+	Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
+	b2FixtureDef FixtureDef;
+	FixtureDef.friction = _dynamic ? 0.1f : 0.8f;
+	FixtureDef.restitution = .2;
+	FixtureDef.shape = &Shape;
+
+	// Add to body
+	_fixture = _body->CreateFixture(&FixtureDef);
+	//_fixture->SetRestitution(.9)
+	FixtureDef.restitution = .2;
+
 
 }
 
@@ -76,9 +77,6 @@ std::vector<const b2Contact const*> PhysicsComponent::getTouching() const {
     if (contact->IsTouching()) {
       ret.push_back(contact);
     }
-		const b2Fixture* a = contact->GetFixtureA();
-		cout << typeid(a->GetBody()->GetUserData()).name() << endl;
-    
     edge = edge->next;
   }
 
@@ -156,7 +154,36 @@ bool PlayerPhysicsComponent::checkContacts() const {
 	auto touch = getTouching();
 	const auto& pos = _body->GetPosition();
 	for (const auto& contact : touch) {
-		cout << typeid(contact).name() <<  "player collision" << endl;
+		
+		std::string tagA;
+		std::string tagB;
+		
+		void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+		if ( bodyUserDataA ) {
+			Entity* entityA = static_cast<Entity*>( contact->GetFixtureA()->GetBody()->GetUserData() );
+			if (entityA != NULL) {
+				tagA = entityA->getTag();
+			}
+		}
+		
+		void* bodyUserDataB = contact->GetFixtureA()->GetBody()->GetUserData();
+		if ( bodyUserDataB ) {
+			Entity* entityB = static_cast<Entity*>( contact->GetFixtureB()->GetBody()->GetUserData() );
+			if (entityB != NULL) {
+				tagB = entityB->getTag();
+			}
+		}
+		
+		cout << tagA << endl;
+		cout << tagB << endl;
+		cout << endl;
+		
+		if ((tagA == "beetle") || (tagB == "beetle")) {
+			_parent->setVisible(false);
+			// END GAME!
+		}
+		
+		
 	}
 	
   return false;
@@ -191,7 +218,35 @@ bool EnemyPhysicsComponent::checkContacts() const {
 	auto touch = getTouching();
 	const auto& pos = _body->GetPosition();
 	for (const auto& contact : touch) {
-		// cout << "beetle collision" << endl;;
+		
+		std::string tagA;
+		std::string tagB;
+		
+		void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+		if ( bodyUserDataA ) {
+			Entity* entityA = static_cast<Entity*>( contact->GetFixtureA()->GetBody()->GetUserData() );
+			if (entityA != NULL) {
+				tagA = entityA->getTag();
+			}
+		}
+		
+		void* bodyUserDataB = contact->GetFixtureA()->GetBody()->GetUserData();
+		if ( bodyUserDataB ) {
+			Entity* entityB = static_cast<Entity*>( contact->GetFixtureB()->GetBody()->GetUserData() );
+			if (entityB != NULL) {
+				tagB = entityB->getTag();
+			}
+		}
+		
+		cout << tagA << endl;
+		cout << tagB << endl;
+		cout << endl;
+		
+		if ((tagA == "ball") || (tagB == "ball")) {
+			_parent->setVisible(false);
+			// KILL THIS BEETLE!
+		}
+		
 		return true;
 	}
 	
