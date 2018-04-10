@@ -274,6 +274,7 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	window.setVerticalSyncEnabled(true);
 	
 	Renderer::initialise(window);
+	Physics::initialise();
 	changeScene(s);
 	
 	
@@ -325,6 +326,7 @@ void Engine::update() {
 	float dt = clock.restart().asSeconds();
 		
 	if (_activeScene != nullptr) {
+    Physics::update(dt);
     _activeScene->update(dt);
 	}
 	

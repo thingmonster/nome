@@ -1,4 +1,5 @@
 
+
 #include "game.h"
 #include <Windows.h>
 
@@ -19,3 +20,10 @@ int main() {
 	Engine::Start(800, 600, "The Story of Nome", &menu);
 	
 } 
+
+
+
+
+
+
+

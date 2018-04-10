@@ -5,6 +5,7 @@
 #include "ecm.h"
 #include "levelsystem.h"
 #include "system_renderer.h"
+#include "physics.h"
 
 class Scene {
 	

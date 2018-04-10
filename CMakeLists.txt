@@ -34,6 +34,10 @@ add_subdirectory("lib/sfml")
 set(SFML_INCS "lib/sfml/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 
+add_subdirectory("lib/b2d/Box2D")
+set(B2D_INCS "lib/b2d/Box2D/")
+link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
+
 
 
 
@@ -41,8 +45,8 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 ####  Nome ####
 file(GLOB_RECURSE SOURCES nome/*.cpp  nome/*.h)
 add_executable(NOME ${SOURCES})
-target_include_directories(NOME PRIVATE ${SFML_INCS})
-target_link_libraries(NOME sfml-graphics engine lib_ecm lib_tiles lib_maths)
+target_include_directories(NOME PRIVATE ${SFML_INCS} ${B2D_INCS})
+target_link_libraries(NOME sfml-graphics Box2D engine lib_ecm lib_tiles lib_maths)
 
 set_target_properties(NOME PROPERTIES
 	VS_DEBUGGER_WORKING_DIRECTORY 
@@ -59,8 +63,9 @@ add_library(engine STATIC ${ENGINE})
 target_include_directories(engine 
 	INTERFACE "${CMAKE_SOURCE_DIR}/engine/" 
 	PRIVATE ${SFML_INCS}
+	PUBLIC SYSTEM ${B2D_INCS}
 )
-target_link_libraries(engine lib_ecm lib_tiles lib_maths sfml-graphics)
+target_link_libraries(engine lib_ecm lib_tiles lib_maths sfml-graphics Box2D)
 
 
 #### ECM ####
