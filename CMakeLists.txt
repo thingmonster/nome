@@ -42,7 +42,7 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 file(GLOB_RECURSE SOURCES nome/*.cpp  nome/*.h)
 add_executable(NOME ${SOURCES})
 target_include_directories(NOME PRIVATE ${SFML_INCS})
-target_link_libraries(NOME sfml-graphics engine lib_ecm lib_tiles lib_maths)
+target_link_libraries(NOME sfml-graphics sfml-audio engine lib_ecm lib_tiles lib_maths)
 
 set_target_properties(NOME PROPERTIES
 	VS_DEBUGGER_WORKING_DIRECTORY 
