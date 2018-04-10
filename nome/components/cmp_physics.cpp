@@ -15,7 +15,6 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
   BodyDef.position = sv2_to_bv2(invert_height(p->getPosition()));
 
   // Create the body
-	cout << typeid(_parent).name() << endl;
   _body = Physics::GetWorld()->CreateBody(&BodyDef);
 	_body->SetUserData(p);
   _body->SetActive(true);
@@ -38,7 +37,13 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 
 }
 
-PhysicsComponent::~PhysicsComponent() {}
+PhysicsComponent::~PhysicsComponent() {
+	if (Physics::GetWorld() != nullptr) {
+		_body->SetActive(false);
+		Physics::GetWorld()->DestroyBody(_body);
+		_body = nullptr;
+	}
+}
 
 void PhysicsComponent::update(double dt) {
   _parent->setPosition(invert_height(bv2_to_sv2(_body->GetPosition())));
@@ -174,12 +179,9 @@ bool PlayerPhysicsComponent::checkContacts() const {
 			}
 		}
 		
-		cout << tagA << endl;
-		cout << tagB << endl;
-		cout << endl;
-		
 		if ((tagA == "beetle") || (tagB == "beetle")) {
 			_parent->setVisible(false);
+			cout << "beetle / player" << endl;
 			// END GAME!
 		}
 		
@@ -238,14 +240,12 @@ bool EnemyPhysicsComponent::checkContacts() const {
 			}
 		}
 		
-		cout << tagA << endl;
-		cout << tagB << endl;
-		cout << endl;
-		
 		if ((tagA == "ball") || (tagB == "ball")) {
 			_parent->setVisible(false);
-			// KILL THIS BEETLE!
+			_parent->setForDelete();
+			cout << "beetle / ball" << endl;
 		}
+		
 		
 		return true;
 	}

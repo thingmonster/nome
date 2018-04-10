@@ -318,6 +318,10 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 		render();
 		window.display();
 	}
+	
+  window.close();
+	Physics::shutdown();
+	
 }
 
 void Engine::update() {

@@ -32,14 +32,20 @@ void Level1Scene::update(const double& dt) {
 	}
 			
 
+	int beetles = 0;
+	for (auto &e : _ents.list) {
+		if (e->getTag() == "beetle") {
+			beetles++;
+		}
+	}
+	
 	static double timer = 1.0f;
 	timer -= dt;
 	if (timer < 0.f)  {
-		if (maxEnemies > 0) {
+		if (maxEnemies > beetles) {
 			spawn();
-			maxEnemies--;
 		}
-		timer = 4.f;
+		timer = 5.f;
 	}
 	
 	Scene::update(dt);
