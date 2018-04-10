@@ -1,5 +1,6 @@
 
 #include "game.h"
+#include <Windows.h>
 
 MenuScene menu;
 OptionsScene options;
@@ -13,6 +14,8 @@ using namespace std;
 using namespace sf;
 
 int main() {
-	
+
+	FreeConsole();//Hides CMD window	
 	Engine::Start(800, 600, "The Story of Nome", &menu);
+	
 } 
