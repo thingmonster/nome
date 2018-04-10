@@ -1,5 +1,6 @@
 
 #include "../game.h"
+#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -19,8 +20,9 @@ void MenuScene::update(const double& dt) {
 
 	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
-		//audio->LoadAudio("Enter_Press.wav");
-		//audio->PlayAudio();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();//doesn't play here :(
+		std::cout << "Sound plays here" << std::endl;
 		Engine::changeScene(&level1);	
 	}
 	

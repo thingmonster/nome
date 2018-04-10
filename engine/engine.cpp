@@ -274,6 +274,7 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	window.setVerticalSyncEnabled(true);
 	
 	Renderer::initialise(window);
+	Physics::initialise();
 	changeScene(s);
 	
 	
@@ -317,6 +318,10 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 		render();
 		window.display();
 	}
+	
+  window.close();
+	Physics::shutdown();
+	
 }
 
 void Engine::update() {
@@ -325,6 +330,7 @@ void Engine::update() {
 	float dt = clock.restart().asSeconds();
 		
 	if (_activeScene != nullptr) {
+    Physics::update(dt);
     _activeScene->update(dt);
 	}
 	
@@ -374,6 +380,12 @@ void Scene::render() {
 
 void Scene::update(const double& dt) { 
 	_ents.update(dt); 
+}
+
+std::shared_ptr<Entity> Scene::makeEntity(std::string tag) {
+	auto e = make_shared<Entity>(this, tag);
+	_ents.list.push_back(e);
+	return std::move(e);
 }
 
 std::shared_ptr<Entity> Scene::makeEntity() {

@@ -36,9 +36,10 @@ void UIScene::load() {
 	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 
 	//testing audio component
+	
 	auto jukebox = makeEntity();
 	auto audio = jukebox->addComponent<AudioComponent>();
-	audio->LoadAudio("Enter_Press.wav");
+	audio->LoadAudio("Level_Complete.wav");
 	audio->PlayAudio();
 	
 }

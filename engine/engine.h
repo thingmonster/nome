@@ -5,6 +5,7 @@
 #include "ecm.h"
 #include "levelsystem.h"
 #include "system_renderer.h"
+#include "physics.h"
 
 class Scene {
 	
@@ -18,6 +19,7 @@ class Scene {
 		virtual void reload() = 0;
 		virtual void resize() = 0;
 		std::shared_ptr<Entity> Scene::makeEntity();
+		std::shared_ptr<Entity> Scene::makeEntity(std::string tag);
 		std::vector<std::shared_ptr<Entity>> Scene::getEntities();
 		Vector2f windowSize;
 		

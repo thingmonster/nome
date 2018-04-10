@@ -11,6 +11,7 @@
 #include "../components/cmp_pathfinding.h"
 #include "../components/cmp_state_machine.h"
 #include "../components/cmp_decision_tree.h"
+#include "../components/cmp_physics.h"
 
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
@@ -26,7 +27,7 @@ class Level1Scene : public LevelScene {
 		static std::shared_ptr<sf::Texture> enemySprites;
 		std::shared_ptr<Entity> player;
 		std::shared_ptr<Entity> ball;
-		int maxEnemies = 1;
+		int maxEnemies = 3;
 		bool loaded = false;
 		
 		

@@ -1,6 +1,7 @@
 #include "steering.h"
 
 SteeringOutput SeekSteering::getSteering() const noexcept {
+	// cout << "seek ";
 	SteeringOutput steering;
 	steering.direction = _target->getPosition() - _character->getPosition();
 	steering.direction = normalize(steering.direction);
@@ -10,6 +11,7 @@ SteeringOutput SeekSteering::getSteering() const noexcept {
 }
 
 SteeringOutput FleeSteering::getSteering() const noexcept {
+	// cout << "flee ";
 	SteeringOutput steering;
 	steering.direction = _character->getPosition() - _target->getPosition();
 	steering.direction = normalize(steering.direction);
@@ -19,6 +21,7 @@ SteeringOutput FleeSteering::getSteering() const noexcept {
 }
 
 SteeringOutput WanderSteering::getSteering() const noexcept {
+	// cout << "wander ";
 	
 	SteeringOutput steering;
 	steering.direction = Vector2f(std::rand() % 100, std::rand() % 100) - Vector2f(std::rand() % 100, std::rand() % 100);
@@ -30,6 +33,7 @@ SteeringOutput WanderSteering::getSteering() const noexcept {
 }
 
 SteeringOutput WanderSteering::getSteering(sf::Vector2f direction) {
+	// cout << "wander ";
 	
 	SteeringOutput steering;
 	steering.direction = Vector2f(0,0);

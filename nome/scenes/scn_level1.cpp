@@ -32,14 +32,20 @@ void Level1Scene::update(const double& dt) {
 	}
 			
 
+	int beetles = 0;
+	for (auto &e : _ents.list) {
+		if (e->getTag() == "beetle") {
+			beetles++;
+		}
+	}
+	
 	static double timer = 1.0f;
 	timer -= dt;
 	if (timer < 0.f)  {
-		if (maxEnemies > 0) {
+		if (maxEnemies > beetles) {
 			spawn();
-			maxEnemies--;
 		}
-		timer = 4.f;
+		timer = 5.f;
 	}
 	
 	Scene::update(dt);
@@ -87,18 +93,12 @@ void Level1Scene::makePlayer(std::shared_ptr<Entity> player) {
 	}
 	auto shape = player->getComponents<ShapeComponent>();
 	
-	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
+	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 3);
 	shape[0]->getShape().setFillColor({255 , 255, 255});
-	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 8, ls::getTileSize() / 8));
+	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 3, ls::getTileSize() / 3));
 	shape[0]->setTexture(playerSprites, sf::IntRect(0,0,50,50));
 	
-	
-	auto checkMovement = player->getComponents<PlayerMovementComponent>();
-	if (checkMovement.size() == 0) {
-		player->addComponent<PlayerMovementComponent>();
-	}
-	auto movement = player->getComponents<PlayerMovementComponent>();
-	movement[0]->setSpeed(ls::getTileSize() * 4);
+	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(ls::getTileSize() / 3, ls::getTileSize() / 3));
 	
 }
 
@@ -114,7 +114,9 @@ void Level1Scene::makeBall(std::shared_ptr<Entity> ball) {
 	shape[0]->getShape().setFillColor({255 , 255, 255});
 	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
 	shape[0]->setTexture(playerSprites, sf::IntRect(50,0,50,50));
-	// add ball movement component here?
+
+	auto physics = ball->addComponent<PhysicsComponent>(true, Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
+	
 	
 }
 
@@ -146,18 +148,26 @@ void Level1Scene::load() {
 		windowSize = (Vector2f)Renderer::getWindow().getSize();
 		ls::loadLevel("res/levels/level1.txt", "res/sprites/level1.png", windowSize);
 		
+		
+    auto walls = ls::findTiles(ls::WALL);
+    for (auto w : walls) {
+			auto pos = ls::getTilePosition(w);
+			pos += Vector2f(ls::getTileSize() / 2, ls::getTileSize() / 2); 
+			auto e = makeEntity("wall");
+			e->setPosition(pos);
+			e->addComponent<PhysicsComponent>(false, Vector2f(ls::getTileSize(), ls::getTileSize()));
+    }
+		
+		
 		playerSprites = Resources::get<sf::Texture>("player.png");
 		enemySprites = Resources::get<sf::Texture>("beetles-black.png");
 		
-		player = Level1Scene::makeEntity();
+		player = Level1Scene::makeEntity("player");
 		player->setPosition(ls::getTileCentre(ls::findTiles(ls::START)[0]));
-		player->addComponent<ShapeComponent>();
-		player->addComponent<PlayerMovementComponent>();
 		makePlayer(player);
 		
-		ball = Level1Scene::makeEntity();
+		ball = Level1Scene::makeEntity("ball");
 		ball->setPosition(ls::getTileCentre(ls::findTiles(ls::BALL)[0]));
-		ball->addComponent<ShapeComponent>();
 		makeBall(ball);
 		
 		loaded = true;
@@ -170,11 +180,13 @@ void Level1Scene::reload() {
 
 void Level1Scene::spawn() {
 	
-	auto entity = Level1Scene::makeEntity();
+	auto entity = Level1Scene::makeEntity("beetle");
 	entity->setPosition(ls::getTileCentre(ls::findTiles(ls::HOLE)[0]));
-	entity->addComponent<ShapeComponent>();
 	makeEnemy(entity);
 	addEnemyAI(entity);
+	
+	auto physics = entity->addComponent<EnemyPhysicsComponent>(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
+	
 }
 
 void Level1Scene::resize() {

@@ -34,6 +34,10 @@ add_subdirectory("lib/sfml")
 set(SFML_INCS "lib/sfml/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 
+add_subdirectory("lib/b2d/Box2D")
+set(B2D_INCS "lib/b2d/Box2D/")
+link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
+
 
 
 
@@ -42,7 +46,7 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 file(GLOB_RECURSE SOURCES nome/*.cpp  nome/*.h)
 add_executable(NOME ${SOURCES})
 target_include_directories(NOME PRIVATE ${SFML_INCS})
-target_link_libraries(NOME sfml-graphics sfml-audio engine lib_ecm lib_tiles lib_maths)
+target_link_libraries(NOME sfml-graphics sfml-audio Box2D engine lib_ecm lib_tiles lib_maths)
 
 set_target_properties(NOME PROPERTIES
 	VS_DEBUGGER_WORKING_DIRECTORY 
@@ -59,8 +63,9 @@ add_library(engine STATIC ${ENGINE})
 target_include_directories(engine 
 	INTERFACE "${CMAKE_SOURCE_DIR}/engine/" 
 	PRIVATE ${SFML_INCS}
+	PUBLIC SYSTEM ${B2D_INCS}
 )
-target_link_libraries(engine lib_ecm lib_tiles lib_maths sfml-graphics)
+target_link_libraries(engine lib_ecm lib_tiles lib_maths sfml-graphics Box2D)
 
 
 #### ECM ####
@@ -68,7 +73,7 @@ file(GLOB_RECURSE SOURCE_FILES engine/lib_ecm/*.cpp engine/lib_ecm/*.h)
 add_library(lib_ecm STATIC ${SOURCE_FILES})
 target_include_directories(lib_ecm 	INTERFACE "${CMAKE_SOURCE_DIR}/engine/lib_ecm/")
 
-target_link_libraries(lib_ecm PRIVATE sfml-graphics lib_tiles lib_maths)
+target_link_libraries(lib_ecm PRIVATE sfml-graphics sfml-audio lib_tiles lib_maths)
 
 
 #### Tile Loader ####

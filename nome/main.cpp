@@ -28,7 +28,14 @@ int main() {
 	sound.setBuffer(buffer);
 	sound.play();
 	*/
-	FreeConsole();//Hides CMD window	
+	// FreeConsole();//Hides CMD window	
 	Engine::Start(800, 600, "The Story of Nome", &menu);
 	
 } 
+
+
+
+
+
+
+

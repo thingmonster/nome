@@ -55,7 +55,6 @@ void SeekState::execute(Entity *owner, double dt) noexcept {
 	
 	auto output = _steering.getSteering();
 	auto movement = owner->getComponents<MovementComponent>();
-	// sf::Vector2f direction = movement[0]->getDirection();
 	movement[0]->move((output.direction * _speed * (float)dt));
 	movement[0]->setDirection( output.direction);
 		
