@@ -2,6 +2,7 @@
 #include "engine.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_shape.h"
+#include "../components/cmp_audio.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 

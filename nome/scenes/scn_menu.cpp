@@ -14,9 +14,13 @@ const std::string controls[] = {
 
 
 void MenuScene::update(const double& dt) {
-	
+	auto jukebox = makeEntity();
+	auto audio = jukebox->addComponent<AudioComponent>();
+
 	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
+		//audio->LoadAudio("Enter_Press.wav");
+		//audio->PlayAudio();
 		Engine::changeScene(&level1);	
 	}
 	

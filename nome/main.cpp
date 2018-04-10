@@ -1,8 +1,7 @@
-
 #include "game.h"
 #include <Windows.h>
-#include <SFML/Audio.hpp>
-#include <iostream>	
+//#include <SFML/Audio.hpp>
+//#include <iostream>	
 
 MenuScene menu;
 OptionsScene options;
@@ -16,8 +15,9 @@ using namespace std;
 using namespace sf;
 
 int main() {
-
-	sf::SoundBuffer buffer;
+	//testing sound fx
+	
+	/*sf::SoundBuffer buffer;
 	sf::Sound sound;
 
 	if (!buffer.loadFromFile("res/fx/Level_Complete.wav"))
@@ -27,7 +27,7 @@ int main() {
 
 	sound.setBuffer(buffer);
 	sound.play();
-	
+	*/
 	FreeConsole();//Hides CMD window	
 	Engine::Start(800, 600, "The Story of Nome", &menu);
 	

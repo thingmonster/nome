@@ -34,6 +34,12 @@ void UIScene::load() {
 	s->getShape().setPosition(sf::Vector2f(windowSize.x / 2, sn->getText().getLocalBounds().height * 2));
 	s->getShape().setFillColor(sf::Color(200 , 190, 183));
 	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+
+	//testing audio component
+	auto jukebox = makeEntity();
+	auto audio = jukebox->addComponent<AudioComponent>();
+	audio->LoadAudio("Enter_Press.wav");
+	audio->PlayAudio();
 	
 }
 
