@@ -17,22 +17,36 @@ const std::string controls[] = {
 void MenuScene::update(const double& dt) {
 	auto jukebox = makeEntity();
 	auto audio = jukebox->addComponent<AudioComponent>();
-
 	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
 		audio->LoadAudio("Enter_Press.wav");
-		audio->PlayAudio();//doesn't play here :(
-		std::cout << "Sound plays here" << std::endl;
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&level1);	
 	}
 	
 	if ((Keyboard::isKeyPressed(Keyboard::O)) || (Joystick::isButtonPressed(0, 6))) //select
 	{
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&options);
 	}
 	
 	if ((Keyboard::isKeyPressed(Keyboard::L)) || (Joystick::isButtonPressed(0, 3))) //triangle
 	{
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&loadGame);
 	}
 }

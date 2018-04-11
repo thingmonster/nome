@@ -15,6 +15,7 @@ public:
 
 	void LoadAudio(const std::string &file);
 	void PlayAudio();
+	bool AudioIsPlaying();
 	void render() override;
 	void update(double dt) override;
 protected:

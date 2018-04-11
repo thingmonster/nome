@@ -19,6 +19,18 @@ void AudioComponent::PlayAudio()
 	_sound.play();
 }
 
+bool AudioComponent::AudioIsPlaying()
+{
+	if (_sound.getStatus() == 0)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
 void AudioComponent::render() {
 
 }
