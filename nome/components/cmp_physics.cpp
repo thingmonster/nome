@@ -121,24 +121,52 @@ void PlayerPhysicsComponent::update(double dt) {
 	
   const auto pos = _parent->getPosition();
 
-	if (Keyboard::isKeyPressed(Keyboard::Up)) {
+	if ((Keyboard::isKeyPressed(Keyboard::Up)) || (Joystick::getAxisPosition(0, Joystick::Axis::Y) < -60.00f))//up 
+	{
 		if (getVelocity().x < _maxVelocity.x) {
 			impulse({0, -(float)(dt * _speed)});
 		}
 	} 
-	if (Keyboard::isKeyPressed(Keyboard::Down)) {
+	else if (Joystick::getAxisPosition(0, Joystick::Axis::Y) < -20.00f)
+	{
+		if (getVelocity().x < _maxVelocity.x) {
+			impulse({ 0, -(float)(dt * (_speed / 3)) });
+		}
+	}
+	if ((Keyboard::isKeyPressed(Keyboard::Down)) || (Joystick::getAxisPosition(0, Joystick::Axis::Y) > 60.00f))//down
+	{
 		if (getVelocity().x < _maxVelocity.x) {
 			impulse({0, (float)(dt * _speed)});
 		}
-	} 
-	if (Keyboard::isKeyPressed(Keyboard::Right)) {
+	}
+	else if (Joystick::getAxisPosition(0, Joystick::Axis::Y) > 20.00f)
+	{
+		if (getVelocity().x < _maxVelocity.x) {
+			impulse({ 0, (float)(dt * (_speed / 3)) });
+		}
+	}
+	if ((Keyboard::isKeyPressed(Keyboard::Right)) || (Joystick::getAxisPosition(0, Joystick::Axis::X) > 60.00f))//right
+	{
 		if (getVelocity().x < _maxVelocity.x) {
 			impulse({(float)(dt * _speed), 0});
 		}
 	} 
-	if (Keyboard::isKeyPressed(Keyboard::Left)) {
+	else if (Joystick::getAxisPosition(0, Joystick::Axis::X) > 20.00f)
+	{
+		if (getVelocity().x < _maxVelocity.x) {
+			impulse({ (float)(dt * (_speed / 3)), 0 });
+		}
+	}
+	if ((Keyboard::isKeyPressed(Keyboard::Left)) || (Joystick::getAxisPosition(0, Joystick::Axis::X) < -60.00f))//left
+	{
 		if (getVelocity().x > -_maxVelocity.x) {
 			impulse({-(float)(dt * _speed), 0});
+		}
+	}
+	else if (Joystick::getAxisPosition(0, Joystick::Axis::X) < -20.00f)
+	{
+		if (getVelocity().x > -_maxVelocity.x) {
+			impulse({ -(float)(dt * (_speed / 3) ), 0 });
 		}
 	}
 	dampen({0.9f, 1.0f});
