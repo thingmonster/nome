@@ -10,10 +10,18 @@ std::shared_ptr<Entity> menuState;
 
 
 void OptionsScene::update(const double& dt) {
-	
+
 	if (!menuOpen) {
 		if ((Keyboard::isKeyPressed(Keyboard::B)) || (Joystick::isButtonPressed(0, 1))) //circle
 		{
+			auto jukebox = makeEntity();
+			auto audio = jukebox->addComponent<AudioComponent>();
+			audio->LoadAudio("Enter_Press.wav");
+			audio->PlayAudio();
+			while (audio->AudioIsPlaying())
+			{
+				//do nothing
+			}
 			if (Engine::getLevel() != nullptr) {
 				Engine::changeScene(Engine::getLevel());
 			}
@@ -24,11 +32,27 @@ void OptionsScene::update(const double& dt) {
 
 		if ((Keyboard::isKeyPressed(Keyboard::R)) || (Joystick::isButtonPressed(0, 2))) //square
 		{
+			auto jukebox = makeEntity();
+			auto audio = jukebox->addComponent<AudioComponent>();
+			audio->LoadAudio("Enter_Press.wav");
+			audio->PlayAudio();
+			while (audio->AudioIsPlaying())
+			{
+				//do nothing
+			}
 			Engine::changeScene(&remap);
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 3))) //triangle
 		{
+			auto jukebox = makeEntity();
+			auto audio = jukebox->addComponent<AudioComponent>();
+			audio->LoadAudio("Enter_Press.wav");
+			audio->PlayAudio();
+			while (audio->AudioIsPlaying())
+			{
+				//do nothing
+			}
 			showResMenu();
 			menuOpen = true;
 		}
@@ -36,6 +60,14 @@ void OptionsScene::update(const double& dt) {
 		int x = 0;
 		if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 		{
+			auto jukebox = makeEntity();
+			auto audio = jukebox->addComponent<AudioComponent>();
+			audio->LoadAudio("Enter_Press.wav");
+			audio->PlayAudio();
+			while (audio->AudioIsPlaying())
+			{
+				//do nothing
+			}
 			menuOpen = false;
 			closeResMenu();
 		}
@@ -290,6 +322,7 @@ void OptionsScene::load() {
 	resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	preSelectResolution();
 	
+
 }
 
 void OptionsScene::unload() {

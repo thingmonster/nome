@@ -15,10 +15,10 @@ const std::string controls[] = {
 
 
 void MenuScene::update(const double& dt) {
-	auto jukebox = makeEntity();
-	auto audio = jukebox->addComponent<AudioComponent>();
 	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
 		audio->LoadAudio("Enter_Press.wav");
 		audio->PlayAudio();
 		while (audio->AudioIsPlaying())
@@ -30,6 +30,8 @@ void MenuScene::update(const double& dt) {
 	
 	if ((Keyboard::isKeyPressed(Keyboard::O)) || (Joystick::isButtonPressed(0, 6))) //select
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
 		audio->LoadAudio("Enter_Press.wav");
 		audio->PlayAudio();
 		while (audio->AudioIsPlaying())
@@ -41,6 +43,8 @@ void MenuScene::update(const double& dt) {
 	
 	if ((Keyboard::isKeyPressed(Keyboard::L)) || (Joystick::isButtonPressed(0, 3))) //triangle
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
 		audio->LoadAudio("Enter_Press.wav");
 		audio->PlayAudio();
 		while (audio->AudioIsPlaying())

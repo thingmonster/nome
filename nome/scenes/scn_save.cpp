@@ -12,6 +12,14 @@ void SaveScene::update(const double& dt) {
 	
 	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		saveGame();
 		Engine::setReadingInput(false);
 		Engine::changeScene(&level1);
@@ -19,6 +27,14 @@ void SaveScene::update(const double& dt) {
 	
 	if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::setReadingInput(false);
 		Engine::changeScene(&level1);
 	}

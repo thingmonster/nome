@@ -21,12 +21,13 @@ double PlayerMovementComponent::_momentum(double * timer) {
 void PlayerMovementComponent::update(double dt) 
 {
 	//testing axes
-	
+	/*
 	std::cout << "Current X Axis: " << Joystick::getAxisPosition(0, Joystick::X) << std::endl;
 	std::cout << "Current Y Axis: " << Joystick::getAxisPosition(0, Joystick::Y) << std::endl;
-	
+	*/
 
 	//testing buttons
+	/*
 	if (Joystick::isButtonPressed(0, 0))
 	{
 	std::cout << "cross" << std::endl;
@@ -67,7 +68,7 @@ void PlayerMovementComponent::update(double dt)
 	{
 	std::cout << "R3" << std::endl;
 	}
-
+	*/
 	// player movement with momentum
 	
 	double moveLeft = 0;
