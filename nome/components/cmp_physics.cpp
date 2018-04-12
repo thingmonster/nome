@@ -210,7 +210,7 @@ bool PlayerPhysicsComponent::checkContacts() const {
 		if ((tagA == "beetle") || (tagB == "beetle")) {
 			_parent->setVisible(false);
 			cout << "beetle / player" << endl;
-			// END GAME!
+			Engine::changeScene(&death);
 		}
 		
 		

@@ -7,6 +7,7 @@
 #include "scenes/scn_save.h"
 #include "scenes/scn_load.h"
 #include "scenes/scn_level1.h"
+#include "scenes/scn_of_death.h"
 
 extern MenuScene menu;
 extern OptionsScene options;
@@ -15,6 +16,7 @@ extern PausedScene paused;
 extern SaveScene save;
 extern LoadScene loadGame;
 extern Level1Scene level1;
+extern DeathScene death;
 
 
 

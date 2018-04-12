@@ -8,6 +8,7 @@ PausedScene paused;
 SaveScene save;
 LoadScene loadGame;
 Level1Scene level1;
+DeathScene death;
 
 using namespace std;
 using namespace sf;
