@@ -56,7 +56,9 @@ void OptionsScene::update(const double& dt) {
 			showResMenu();
 			menuOpen = true;
 		}
-	} else {
+	} 
+	
+	else {
 		int x = 0;
 		if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 		{
@@ -159,7 +161,7 @@ void OptionsScene::closeResMenu() {
 
 void OptionsScene::updateResMenu(int direction, const double& dt) {
 	
-	static double timer = 0.05f;
+	static double timer = 0.f;
 	timer -= dt;
 	
 	if (timer < 0) {
@@ -205,7 +207,7 @@ void OptionsScene::updateResMenu(int direction, const double& dt) {
 		shape[0]->getShape().setPosition(pos);
 		shape[0]->getShape().setTextureRect(intRect);
 		
-		timer = 0.05f;
+		timer = 0.12f;
 		
 	}		 
 }

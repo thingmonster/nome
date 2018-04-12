@@ -16,32 +16,39 @@ const std::string controls[] = {
 
 void RemapScene::update(const double& dt) {
 	
-	if (controlCount == 4) {
-		
-		if (!finished) {
-			finish();
-		}
-			
-		if ((Keyboard::isKeyPressed(Keyboard::B)) || (Joystick::isButtonPressed(0, 1))) //circle
-		{
-			auto jukebox = makeEntity();
-			auto audio = jukebox->addComponent<AudioComponent>();
-			audio->LoadAudio("Enter_Press.wav");
-			audio->PlayAudio();
-			while (audio->AudioIsPlaying())
-			{
-				//do nothing
-			}
-			Engine::changeScene(&menu);			
-		}
-		
-	} else if (controlCount < Engine::controls.size()) {
-		
-		queryKey();
-		controlCount = Engine::controls.size();
-		
-	}
+	static double timer = 0.f;
+	timer -= dt;
 	
+	if (timer < 0) {
+	
+		if (controlCount == 4) {
+			
+			if (!finished) {
+				finish();
+			}
+				
+			if ((Keyboard::isKeyPressed(Keyboard::B)) || (Joystick::isButtonPressed(0, 1))) //circle
+			{
+				auto jukebox = makeEntity();
+				auto audio = jukebox->addComponent<AudioComponent>();
+				audio->LoadAudio("Enter_Press.wav");
+				audio->PlayAudio();
+				while (audio->AudioIsPlaying())
+				{
+					//do nothing
+				}
+				Engine::changeScene(&menu);			
+			}
+			
+		} else if (controlCount < Engine::controls.size()) {
+			
+			queryKey();
+			controlCount = Engine::controls.size();
+			
+		}
+		timer = 0.12f;
+	}
+		
 }
 
 void RemapScene::load() {
