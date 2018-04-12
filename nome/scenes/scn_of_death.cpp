@@ -30,22 +30,30 @@ void DeathScene::load() {
 	// ============================== CONTENT ============================== // 
 	
 	// "You died"
-	auto po = makeEntity();
-	auto pO = po->addComponent<TextComponent>("You Died!!", "WorstveldSling.ttf");
-	pO->setColor(sf::Color(200 , 190, 183));
-	pO->setCharacterSize(100);
-	pO->SetPosition({windowSize.x / 2 - pO->getText().getLocalBounds().width / 2, 170});
-	
-	
+	auto youDied = makeEntity();
+	auto deadItellYou = youDied->addComponent<TextComponent>("You Died!!", "WorstveldSling.ttf");
+	deadItellYou->setColor(sf::Color(200 , 190, 183));
+	deadItellYou->setCharacterSize(100);
+	deadItellYou->SetPosition({windowSize.x / 2 - deadItellYou->getText().getLocalBounds().width / 2, 170});
 		
+	// "but you killed HOW MANY beetles!?"
+	std::string deathCount = std::to_string(Engine::getLevel()->getDeathCount());
+	auto beetleDeaths = makeEntity();
+	auto deaths = beetleDeaths->addComponent<TextComponent>("But you killed "+deathCount+" beetles!", "WorstveldSling.ttf");
+	deaths->setColor(sf::Color(200 , 190, 183));
+	deaths->setCharacterSize(40);
+	deaths->SetPosition({windowSize.x / 2 - deaths->getText().getLocalBounds().width / 2, windowSize.y / 2});
+	
+	
+	
 	// ============================== FOOT ============================== // 
 	
 	// "press enter to start over"
-	auto petb = makeEntity();
-	auto pe = petb->addComponent<TextComponent>("Press ENTER to go back to the start screen", "WorstveldSling.ttf");
-	pe->setColor(sf::Color(200 , 190, 183));
-	pe->setCharacterSize(40);
-	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, windowSize.y - 135});
+	auto pressEnter = makeEntity();
+	auto toStartOver = pressEnter->addComponent<TextComponent>("Press ENTER to go back to the start screen", "WorstveldSling.ttf");
+	toStartOver->setColor(sf::Color(200 , 190, 183));
+	toStartOver->setCharacterSize(40);
+	toStartOver->SetPosition({windowSize.x / 2 - toStartOver->getText().getLocalBounds().width / 2, windowSize.y - 135});
 	
 	// line
 	auto line2 = makeEntity();

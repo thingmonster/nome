@@ -43,6 +43,10 @@ class LevelScene : public Scene {
 		
 		void resize();
 		void destroy();
+		
+		int deathCount = 0;
+		void setDeathCount();
+		int getDeathCount();
 
 };
 
@@ -69,7 +73,7 @@ class Engine {
 		static void Start(int width, int height, const std::string& name, Scene* s);
 		static void changeScene(Scene*);
 		static void changeLevel(LevelScene*);
-		static Scene* getLevel();
+		static LevelScene* getLevel();
 		
 		static void restoreGame(std::vector<std::shared_ptr<Entity>> entities);
 		static std::vector<std::shared_ptr<Entity>> getEntities();

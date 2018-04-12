@@ -359,7 +359,7 @@ std::string Engine::getInput() {
 
 
 
-Scene* Engine::getLevel() {
+LevelScene* Engine::getLevel() {
 	return _activeLevel;
 }
 
@@ -409,6 +409,14 @@ void LevelScene::destroy() {
 }
 
 void LevelScene::resize() {
+}
+
+void LevelScene::setDeathCount() {
+	deathCount++;
+}
+
+int LevelScene::getDeathCount() {
+	return deathCount;
 }
 
 

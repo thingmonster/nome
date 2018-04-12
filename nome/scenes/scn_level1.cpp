@@ -406,5 +406,3 @@ std::shared_ptr<DistanceDecision> Level1Scene::decisionTree() {
 
 
 
-
-

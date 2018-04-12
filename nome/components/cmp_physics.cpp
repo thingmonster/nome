@@ -269,6 +269,7 @@ bool EnemyPhysicsComponent::checkContacts() const {
 		}
 		
 		if ((tagA == "ball") || (tagB == "ball")) {
+			Engine::getLevel()->setDeathCount();
 			_parent->setVisible(false);
 			_parent->setForDelete();
 			cout << "beetle / ball" << endl;
