@@ -211,7 +211,10 @@ void Level1Scene::reload() {
 }
 
 void Level1Scene::spawn() {
-	
+	auto jukebox = makeEntity();
+	auto audio = jukebox->addComponent<AudioComponent>();
+	audio->LoadAudio("Beetle_Walking.wav");
+	audio->PlayAudio();
 	auto entity = Level1Scene::makeEntity("beetle");
 	entity->setPosition(ls::getTileCentre(ls::findTiles(ls::HOLE)[0]));
 	makeEnemy(entity);
