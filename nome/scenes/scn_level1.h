@@ -12,6 +12,7 @@
 #include "../components/cmp_state_machine.h"
 #include "../components/cmp_decision_tree.h"
 #include "../components/cmp_physics.h"
+#include "../components/cmp_audio.h"
 
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>

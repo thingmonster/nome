@@ -13,21 +13,53 @@ void Level1Scene::update(const double& dt) {
 	
 	if ((Keyboard::isKeyPressed(Keyboard::O)) || (Joystick::isButtonPressed(0, 6))) //select
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&options);
 	}
 	
 	if ((Keyboard::isKeyPressed(Keyboard::P)) || (Joystick::isButtonPressed(0, 1))) //circle
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&paused);
 	}
 
 	if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 2))) //square
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&save);
 	}
 	
 	if ((Keyboard::isKeyPressed(Keyboard::L)) || (Joystick::isButtonPressed(0, 3))) //triangle
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&loadGame);
 	}
 			

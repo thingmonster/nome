@@ -24,6 +24,14 @@ void RemapScene::update(const double& dt) {
 			
 		if ((Keyboard::isKeyPressed(Keyboard::B)) || (Joystick::isButtonPressed(0, 1))) //circle
 		{
+			auto jukebox = makeEntity();
+			auto audio = jukebox->addComponent<AudioComponent>();
+			audio->LoadAudio("Enter_Press.wav");
+			audio->PlayAudio();
+			while (audio->AudioIsPlaying())
+			{
+				//do nothing
+			}
 			Engine::changeScene(&menu);			
 		}
 		

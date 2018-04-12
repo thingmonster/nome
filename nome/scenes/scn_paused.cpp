@@ -11,16 +11,40 @@ void PausedScene::update(const double& dt) {
 	
 	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&level1);
 	}
 	
 	if ((Keyboard::isKeyPressed(Keyboard::Q)) || (Joystick::isButtonPressed(0, 1))) //circle
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&menu);
 	}
 	
 	if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 2))) //square
 	{
+		auto jukebox = makeEntity();
+		auto audio = jukebox->addComponent<AudioComponent>();
+		audio->LoadAudio("Enter_Press.wav");
+		audio->PlayAudio();
+		while (audio->AudioIsPlaying())
+		{
+			//do nothing
+		}
 		Engine::changeScene(&save);
 	}
 }
