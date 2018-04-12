@@ -60,7 +60,7 @@ class Entity {
 	public:
 		Entity(Scene* s);
 		Entity(Scene* s, std::string tag);
-		Entity(Scene* s, Vector2f pos);
+		Entity(Scene* s, std::string tag, Vector2f pos);
 		~Entity();
 		Scene* const scene;
 		void update(const double dt);

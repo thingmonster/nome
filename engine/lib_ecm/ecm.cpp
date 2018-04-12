@@ -49,7 +49,7 @@ Entity::Entity(Scene* s) : scene(s), _fordeletion(false) {}
 
 Entity::Entity(Scene* s, std::string tag) : scene(s), _fordeletion(false), _tag(tag) {}
 
-Entity::Entity(Scene* s, Vector2f pos) : scene(s), _position(pos), _fordeletion(false) {}
+Entity::Entity(Scene* s, std::string tag, Vector2f pos) : scene(s), _fordeletion(false), _position(pos), _tag(tag) {}
 
 Entity::~Entity() {
 	

@@ -118,8 +118,6 @@ void LoadScene::loadGame() {
 		cout << "Unable to open file" << endl; 
 	}
 	
-	cout << "esize " << entities.size() << endl;
-	
 	if (level >= 0) {
 		Engine::changeLevel(levels[level]);
 		Engine::restoreGame(entities);
@@ -143,11 +141,9 @@ std::shared_ptr<Entity> LoadScene::loadEntity(std::string s) {
 	}
 	tokens.push_back(s);
 	
-	sf::Vector2f p(stof(tokens[0]),stof(tokens[1]));
+	sf::Vector2f p(stof(tokens[1]),stof(tokens[2]));
 	
-	p.x = (p.x * (ls::getWidth() * ls::getTileSize())) + ls::getOffset().x;
-	p.y = (p.y * (ls::getHeight() * ls::getTileSize())) + ls::getOffset().y;
+	auto e = make_shared<Entity>(this, tokens[0], p);
 	
-	auto e = make_shared<Entity>(this, p);
 	return e;
 }

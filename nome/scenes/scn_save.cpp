@@ -151,10 +151,14 @@ void SaveScene::saveGame() {
 		pos.x = (e->getPosition().x - ls::getOffset().x) / (ls::getWidth() * ls::getTileSize());
 		pos.y = (e->getPosition().y - ls::getOffset().y) / (ls::getHeight() * ls::getTileSize());
 		
-		str += "\n";
-		str += std::to_string(pos.x);
-		str += ",";
-		str += std::to_string(pos.y);
+		if (e->getTag().length() > 0) {
+			str += "\n";
+			str += e->getTag();
+			str += ",";
+			str += std::to_string(pos.x);
+			str += ",";
+			str += std::to_string(pos.y);
+		}
 	}
 	
 	ofstream myfiles;

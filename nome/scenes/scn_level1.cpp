@@ -100,15 +100,32 @@ void Level1Scene::restore(std::vector<std::shared_ptr<Entity>> entities) {
 		enemySprites = Resources::get<sf::Texture>("beetles-black.png");
 	}
 	
-	player = entities[0];
-	makePlayer(player);
-	
-	ball = entities[1];
-	makeBall(ball);
-	
-	for (int i = 2; i < entities.size(); ++i) {
-		makeEnemy(entities[i]);
-		updateEnemyAI(entities[i]);
+	for (auto& e : entities) {
+		
+		Vector2f pos = Vector2f(
+			(e->getPosition().x * (ls::getWidth() * ls::getTileSize())) + ls::getOffset().x,
+			(e->getPosition().y * (ls::getHeight() * ls::getTileSize())) + ls::getOffset().y
+		);
+		
+		if (e->getTag() == "player") {
+			player = e;
+			player->setPosition(pos);
+			makePlayer(player);
+		}
+		if (e->getTag() == "ball") {
+			ball = e;
+			ball->setPosition(Vector2f(pos));
+			makeBall(ball);
+		}
+		if (e->getTag() == "beetle") {
+			e->setPosition(Vector2f(pos));
+			makeEnemy(e);
+			updateEnemyAI(e);
+		}
+		if (e->getTag() == "wall") {	
+			e->setPosition(pos);
+			e->addComponent<PhysicsComponent>(false, Vector2f(ls::getTileSize(), ls::getTileSize()));
+		}
 	}
 	
 	for (auto& e : entities) {
@@ -130,8 +147,10 @@ void Level1Scene::makePlayer(std::shared_ptr<Entity> player) {
 	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 3, ls::getTileSize() / 3));
 	shape[0]->setTexture(playerSprites, sf::IntRect(0,0,300,300));
 	
-	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(ls::getTileSize() / 3, ls::getTileSize() / 3));
-	
+	auto checkPhysics = player->getComponents<PhysicsComponent>();
+	if (checkPhysics.size() == 0) {
+		player->addComponent<PlayerPhysicsComponent>(Vector2f(ls::getTileSize() / 3, ls::getTileSize() / 3));
+	}
 }
 
 void Level1Scene::makeBall(std::shared_ptr<Entity> ball) {
@@ -170,6 +189,10 @@ void Level1Scene::makeEnemy(std::shared_ptr<Entity> enemy) {
 		enemy->addComponent<MovementComponent>();
 	}
 	
+	auto checkPhysics = enemy->getComponents<EnemyPhysicsComponent>();
+	if (checkPhysics.size() == 0) {
+		enemy->addComponent<EnemyPhysicsComponent>(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
+	}
 }
 
 void Level1Scene::load() {
@@ -211,10 +234,12 @@ void Level1Scene::reload() {
 }
 
 void Level1Scene::spawn() {
-	auto jukebox = makeEntity();
+	
+	auto jukebox = makeEntity("audio");
 	auto audio = jukebox->addComponent<AudioComponent>();
 	audio->LoadAudio("Beetle_Walking.wav");
 	audio->PlayAudio();
+	
 	auto entity = Level1Scene::makeEntity("beetle");
 	entity->setPosition(ls::getTileCentre(ls::findTiles(ls::HOLE)[0]));
 	makeEnemy(entity);
@@ -241,12 +266,16 @@ void Level1Scene::resize() {
 	// get current enemy positions
 	
 	std::vector<sf::Vector2f> ePos;
+	std::vector<std::shared_ptr<Entity>> beetles;
 	
 	for(int i = 2; i < _ents.list.size(); ++i) {
-		ePos.push_back(sf::Vector2f(
-			(_ents.list[i]->getPosition().x - ls::getOffset().x) / (ls::getWidth() * ls::getTileSize()),
-			(_ents.list[i]->getPosition().y - ls::getOffset().y) / (ls::getHeight() * ls::getTileSize())
-		));
+		if (_ents.list[i]->getTag() == "beetle") {
+			ePos.push_back(sf::Vector2f(
+				(_ents.list[i]->getPosition().x - ls::getOffset().x) / (ls::getWidth() * ls::getTileSize()),
+				(_ents.list[i]->getPosition().y - ls::getOffset().y) / (ls::getHeight() * ls::getTileSize())
+			));
+			beetles.push_back(_ents.list[i]);
+		}
 	}
 	
 	// resize level system
@@ -270,14 +299,13 @@ void Level1Scene::resize() {
 	makeBall(ball);
 	
 	// move and restyle enemies
-	
-	for(int i = 2; i < _ents.list.size(); ++i) {
-		_ents.list[i]->setPosition(Vector2f(
-			(ePos[i-2].x * (ls::getWidth() * ls::getTileSize())) + ls::getOffset().x,
-			(ePos[i-2].y * (ls::getHeight() * ls::getTileSize())) + ls::getOffset().y
+	for(int i = 0; i < beetles.size(); ++i) {
+		beetles[i]->setPosition(Vector2f(
+			(ePos[i].x * (ls::getWidth() * ls::getTileSize())) + ls::getOffset().x,
+			(ePos[i].y * (ls::getHeight() * ls::getTileSize())) + ls::getOffset().y
 		));
-		makeEnemy(_ents.list[i]);
-		updateEnemyAI(_ents.list[i]);
+		makeEnemy(beetles[i]);
+		updateEnemyAI(beetles[i]);
 	}
 	
 	
