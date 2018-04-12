@@ -45,13 +45,13 @@ void StateMachineComponent::changeState(const string &name) noexcept {
 void StationaryState::execute(Entity *owner, double dt) noexcept {
 	// cout << "stationary" << endl;
 	auto s = owner->getComponents<ShapeComponent>();
-	s[0]->getShape().setFillColor(Color::Red);
+	// s[0]->getShape().setFillColor(Color::Red);
 }
 
 void SeekState::execute(Entity *owner, double dt) noexcept {
 	// cout << "seek" << endl;
 	auto s = owner->getComponents<ShapeComponent>();
-	s[0]->getShape().setFillColor(Color::Green);
+	// s[0]->getShape().setFillColor(Color::Green);
 	
 	auto output = _steering.getSteering();
 	auto movement = owner->getComponents<MovementComponent>();
@@ -63,7 +63,7 @@ void SeekState::execute(Entity *owner, double dt) noexcept {
 void FleeState::execute(Entity *owner, double dt) noexcept {
 	// cout << "flee" << endl;
 	auto s = owner->getComponents<ShapeComponent>();
-	s[0]->getShape().setFillColor(Color::Yellow);
+	// s[0]->getShape().setFillColor(Color::Yellow);
 	
 	auto output = _steering.getSteering();
 	auto movement = owner->getComponents<MovementComponent>();
@@ -75,7 +75,7 @@ void WanderState::execute(Entity *owner, double dt) noexcept {
 	// cout << "wander" << endl;
 	
 	auto s = owner->getComponents<ShapeComponent>();
-	s[0]->getShape().setFillColor(Color::Red);
+	// s[0]->getShape().setFillColor(Color::Red);
 	
 	auto movement = owner->getComponents<MovementComponent>();
 	sf::Vector2f direction = movement[0]->getDirection();

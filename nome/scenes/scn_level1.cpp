@@ -128,7 +128,7 @@ void Level1Scene::makePlayer(std::shared_ptr<Entity> player) {
 	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 3);
 	shape[0]->getShape().setFillColor({255 , 255, 255});
 	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 3, ls::getTileSize() / 3));
-	shape[0]->setTexture(playerSprites, sf::IntRect(0,0,50,50));
+	shape[0]->setTexture(playerSprites, sf::IntRect(0,0,300,300));
 	
 	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(ls::getTileSize() / 3, ls::getTileSize() / 3));
 	
@@ -145,7 +145,7 @@ void Level1Scene::makeBall(std::shared_ptr<Entity> ball) {
 	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
 	shape[0]->getShape().setFillColor({255 , 255, 255});
 	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
-	shape[0]->setTexture(playerSprites, sf::IntRect(50,0,50,50));
+	shape[0]->setTexture(playerSprites, sf::IntRect(300,0,300,300));
 
 	auto physics = ball->addComponent<PhysicsComponent>(true, Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
 	
@@ -163,7 +163,7 @@ void Level1Scene::makeEnemy(std::shared_ptr<Entity> enemy) {
 	shape[0]->setShape<sf::CircleShape>(ls::getTileSize() / 4);
 	shape[0]->getShape().setFillColor({255 , 255, 255});
 	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
-	shape[0]->setTexture(enemySprites, sf::IntRect(0,0,50,50));
+	shape[0]->setTexture(enemySprites, sf::IntRect(0,0,300,300));
 	
 	auto checkMovement = enemy->getComponents<MovementComponent>();
 	if (checkMovement.size() == 0) {
