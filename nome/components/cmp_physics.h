@@ -14,6 +14,7 @@ class PhysicsComponent : public Component {
 	public:
 		PhysicsComponent(Entity* p, bool dyn, const sf::Vector2f& size);
 
+		void PhysicsComponent::setRestitution(float r);
 		bool isTouching(const PhysicsComponent& pc) const;
 		bool isTouching(const PhysicsComponent& pc, b2Contact const* bc) const;
 		std::vector<const b2Contact*> getTouching() const;

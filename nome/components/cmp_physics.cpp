@@ -25,14 +25,12 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 	// SetAsBox box takes HALF-Widths!
 	Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
 	b2FixtureDef FixtureDef;
-	FixtureDef.friction = _dynamic ? 0.1f : 0.8f;
-	FixtureDef.restitution = .2;
+	FixtureDef.friction = _dynamic ? 1.f : 0.8f;
+	FixtureDef.restitution = .1;
 	FixtureDef.shape = &Shape;
 
 	// Add to body
 	_fixture = _body->CreateFixture(&FixtureDef);
-	//_fixture->SetRestitution(.9)
-	FixtureDef.restitution = .2;
 
 
 }
@@ -47,17 +45,14 @@ PhysicsComponent::~PhysicsComponent() {
 
 void PhysicsComponent::update(double dt) {
   _parent->setPosition(invert_height(bv2_to_sv2(_body->GetPosition())));
-	// _parent->setRotation((180 / b2_pi) * _body->GetAngle());
+	// _parent->setRotation((180 / b2_pi) * _body->GetAngle());	
+	dampen({0.995f, 0.995f});	
 }
 
 void PhysicsComponent::render() {
   // cout << "physics render" << endl;
 }
 
-
-const sf::Vector2f PhysicsComponent::getVelocity() const {
-  return bv2_to_sv2(_body->GetLinearVelocity(), true);
-}
 
 void PhysicsComponent::impulse(const sf::Vector2f& i) {
   auto a = b2Vec2(i.x, i.y * -1.0f);
@@ -96,8 +91,16 @@ bool PhysicsComponent::isTouching(const PhysicsComponent& pc, b2Contact const* b
 	return true;
 }
 
+void PhysicsComponent::setRestitution(float r) {
+	_fixture->SetRestitution(r);
+}
+
 void PhysicsComponent::setVelocity(const sf::Vector2f& v) {
 	_body->SetLinearVelocity(sv2_to_bv2(v, true));
+}
+
+const sf::Vector2f PhysicsComponent::getVelocity() const {
+  return bv2_to_sv2(_body->GetLinearVelocity(), true);
 }
 
 
@@ -113,6 +116,7 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) 
   _speed = 50.f;
   _body->SetSleepingAllowed(false);
   _body->SetFixedRotation(false);
+	_fixture->SetRestitution(.1);
   //Bullet items have higher-res collision detection
   // _body->SetBullet(true);
 }
@@ -170,8 +174,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		}
 	}
 	
-	dampen({0.9f, 1.0f});
-	dampen({1.0f, .9f});
+	dampen({0.92f, 0.92f});
 	
 	checkContacts();
 
@@ -245,7 +248,6 @@ void EnemyPhysicsComponent::update(double dt) {
 	
 	checkContacts();
 	_body->SetTransform(sv2_to_bv2(invert_height(_parent->getPosition())), 1 );
-	
 }
 
 bool EnemyPhysicsComponent::checkContacts() const {

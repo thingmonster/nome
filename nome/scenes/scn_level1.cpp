@@ -166,9 +166,12 @@ void Level1Scene::makeBall(std::shared_ptr<Entity> ball) {
 	shape[0]->getShape().setOrigin(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
 	shape[0]->setTexture(playerSprites, sf::IntRect(300,0,300,300));
 
-	auto physics = ball->addComponent<PhysicsComponent>(true, Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
-	
-	
+	auto checkPhysics = ball->getComponents<PhysicsComponent>();
+	if (checkPhysics.size() == 0) {
+		ball->addComponent<PhysicsComponent>(true, Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
+	}
+	auto physics = ball->getComponents<PhysicsComponent>();
+	physics[0]->setRestitution(1);
 }
 
 void Level1Scene::makeEnemy(std::shared_ptr<Entity> enemy) {
