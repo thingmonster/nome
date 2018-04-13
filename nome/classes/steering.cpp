@@ -5,8 +5,8 @@ SteeringOutput SeekSteering::getSteering() const noexcept {
 	SteeringOutput steering;
 	steering.direction = _target->getPosition() - _character->getPosition();
 	steering.direction = normalize(steering.direction);
+	steering.rotation = vector2degrees(steering.direction);
 	steering.direction *= _maxSpeed;
-	steering.rotation = 0.0f;
 	return steering;
 }
 
@@ -15,8 +15,8 @@ SteeringOutput FleeSteering::getSteering() const noexcept {
 	SteeringOutput steering;
 	steering.direction = _character->getPosition() - _target->getPosition();
 	steering.direction = normalize(steering.direction);
+	steering.rotation = vector2degrees(steering.direction);
 	steering.direction *= _maxSpeed;
-	steering.rotation = 0.0f;
 	return steering;
 }
 
@@ -27,7 +27,7 @@ SteeringOutput WanderSteering::getSteering() const noexcept {
 	steering.direction = Vector2f(std::rand() % 100, std::rand() % 100) - Vector2f(std::rand() % 100, std::rand() % 100);
 	steering.direction = normalize(steering.direction);
 	steering.direction *= _maxSpeed;
-	steering.rotation = 0.0f;	
+	steering.rotation = vector2degrees(steering.direction);
 	return steering;
 
 }
@@ -55,8 +55,8 @@ SteeringOutput WanderSteering::getSteering(sf::Vector2f direction) {
 	}
 	
 	steering.direction = normalize(steering.direction);
+	steering.rotation = vector2degrees(steering.direction);
 	steering.direction *= _maxSpeed;
-	steering.rotation = 0.0f;	
 	return steering;
 
 	

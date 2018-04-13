@@ -184,7 +184,7 @@ void PlayerPhysicsComponent::update(double dt) {
   setVelocity(v);
 
 	auto shape = _parent->getComponents<ShapeComponent>();
-	shape[0]->setRotation(vector2degrees(v));
+	shape[0]->setRotation(inverseVector2degrees(v));
 	
   PhysicsComponent::update(dt);
 }
