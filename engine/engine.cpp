@@ -20,7 +20,8 @@ std::string Engine::userInput;
 vector<sf::Keyboard::Key> Engine::controls;
 vector<sf::Joystick::Axis> Engine::joycon;
 vector<sf::Keyboard::Key> Engine::keys;	
-vector<std::string> Engine::keyStrings;	
+vector<std::string> Engine::keyStrings;
+static sf::Clock lifeSpan;	
 	
 
 	
@@ -43,7 +44,6 @@ void Engine::restoreGame(std::vector<std::shared_ptr<Entity>> entities) {
 	_activeScene = _activeLevel;
 	_activeLevel->restore(entities);
 }
-
 
 
 void Engine::loadKeys() {
@@ -258,7 +258,11 @@ void Engine::loadKeyStrings() {
 	
 }
 	
-
+float Engine::getLifespan() {	
+	float lifespan = lifeSpan.restart().asSeconds();
+	return lifespan;
+}
+	
 void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	
 	Engine::controls.push_back(Keyboard::Left);
@@ -275,8 +279,7 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	
 	Renderer::initialise(window);
 	Physics::initialise();
-	changeScene(s);
-	
+	changeScene(s);			
 	
 	while (window.isOpen()) {
 		

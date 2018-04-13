@@ -1,5 +1,9 @@
 #pragma once
 #include "scn_ui.h"
+#include "engine.h"
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 
 

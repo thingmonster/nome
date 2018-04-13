@@ -87,5 +87,7 @@ class Engine {
 		static void setReadingInput(bool b);
 		static std::string getInput();
 		
+		static float getLifespan();
+		
 		
 };

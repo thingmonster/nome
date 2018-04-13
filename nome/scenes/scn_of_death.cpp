@@ -38,11 +38,39 @@ void DeathScene::load() {
 		
 	// "but you killed HOW MANY beetles!?"
 	std::string deathCount = std::to_string(Engine::getLevel()->getDeathCount());
+	std::string deathMessage;
+	if (Engine::getLevel()->getDeathCount() == 0) {
+		deathMessage = "And you didn't kill any beetles";
+	} else if (Engine::getLevel()->getDeathCount() == 1) {
+		deathMessage = "But you killed a beetle!";
+	} else {
+		deathMessage = "But you killed "+deathCount+" beetles!";
+	}
 	auto beetleDeaths = makeEntity();
-	auto deaths = beetleDeaths->addComponent<TextComponent>("But you killed "+deathCount+" beetles!", "WorstveldSling.ttf");
+	auto deaths = beetleDeaths->addComponent<TextComponent>(deathMessage, "WorstveldSling.ttf");
 	deaths->setColor(sf::Color(200 , 190, 183));
 	deaths->setCharacterSize(40);
 	deaths->SetPosition({windowSize.x / 2 - deaths->getText().getLocalBounds().width / 2, windowSize.y / 2});
+	
+	// "and you lasted HOW LONG!?"
+	float lifespan = Engine::getLifespan();
+	
+	stringstream stream;
+	stream << fixed << setprecision(2) << lifespan;
+	string yourLifeSpan = stream.str();
+	
+	std::string prefix;
+	if (Engine::getLevel()->getDeathCount() == 0) {
+		prefix = "But";
+	} else {
+		prefix = "And";
+	}
+
+	auto yourLife = makeEntity();
+	auto tooYoung = yourLife->addComponent<TextComponent>(prefix+" you lasted a whole "+yourLifeSpan+" seconds!", "WorstveldSling.ttf");
+	tooYoung->setColor(sf::Color(200 , 190, 183));
+	tooYoung->setCharacterSize(40);
+	tooYoung->SetPosition({windowSize.x / 2 - tooYoung->getText().getLocalBounds().width / 2, windowSize.y / 2 + 40});
 	
 	
 	
