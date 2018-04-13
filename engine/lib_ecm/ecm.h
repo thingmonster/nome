@@ -70,8 +70,6 @@ class Entity {
 		void setVisible(bool v);
 		bool getVisible();
 		std::string getTag();
-		// void move(const sf::Vector2f &pos);
-		// float getRadius();
 		void setForDelete();
 		bool is_fordeletion();
 		std::vector<std::shared_ptr<Component>> _components;

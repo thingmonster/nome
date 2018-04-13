@@ -59,4 +59,14 @@ namespace sf {
 		return os;
 	}
 	
+	// Vector to degrees
+	static float vector2degrees(sf::Vector2f v) {
+		
+		v.y *= -1;
+		float angle = atan2 (v.y,v.x) * 180 / PI;		
+		angle += 90;
+		
+		return angle;
+	}
+	
 }

@@ -120,7 +120,7 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) 
 void PlayerPhysicsComponent::update(double dt) {
 	
   const auto pos = _parent->getPosition();
-
+	
 	if ((Keyboard::isKeyPressed(Keyboard::Up)) || (Joystick::getAxisPosition(0, Joystick::Axis::Y) < -60.00f))//up 
 	{
 		if (getVelocity().x < _maxVelocity.x) {
@@ -169,6 +169,7 @@ void PlayerPhysicsComponent::update(double dt) {
 			impulse({ -(float)(dt * (_speed / 3) ), 0 });
 		}
 	}
+	
 	dampen({0.9f, 1.0f});
 	dampen({1.0f, .9f});
 	
@@ -179,6 +180,9 @@ void PlayerPhysicsComponent::update(double dt) {
   v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
   setVelocity(v);
 
+	auto shape = _parent->getComponents<ShapeComponent>();
+	shape[0]->setRotation(vector2degrees(v));
+	
   PhysicsComponent::update(dt);
 }
 

@@ -18,8 +18,7 @@ class ShapeComponent : public Component {
 		void render() override;
 		sf::Shape &getShape() const;
 		void setTexture(std::shared_ptr<sf::Texture> t, sf::IntRect r);
-		void setSize(float r);
-		void setSize(Vector2f);
+		void setRotation(float);
 		
 		template <typename T, typename... Targs>
 		void setShape(Targs... params) {
