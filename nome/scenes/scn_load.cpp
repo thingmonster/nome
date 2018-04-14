@@ -60,8 +60,16 @@ void LoadScene::load() {
 	// ============================== FOOT ============================== // 
 	
 	// Tab to cancel
+	
+	std::string backText;
+	if (Engine::getLevel() == nullptr) {
+		backText = "Press TAB to cancel and go back";
+	} else {
+		backText = "Press TAB to cancel and resume game";
+	}
+	
 	auto cancel = makeEntity();
-	auto goBack = cancel->addComponent<TextComponent>("Press TAB to cancel and go back", "WorstveldSling.ttf");
+	auto goBack = cancel->addComponent<TextComponent>(backText, "WorstveldSling.ttf");
 	goBack->setColor(sf::Color(200 , 190, 183));
 	goBack->setCharacterSize(50);
 	goBack->SetPosition({windowSize.x / 2 - goBack->getText().getLocalBounds().width / 2, windowSize.y - 135});

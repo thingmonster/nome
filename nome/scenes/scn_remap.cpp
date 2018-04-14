@@ -170,8 +170,15 @@ void RemapScene::finish() {
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 
 	// "Finished"
+	
+	std::string backText;
+	if (Engine::getLevel() == nullptr) {
+		backText = "Press TAB to go back";
+	} else {
+		backText = "Press TAB to resume game";
+	}
 	auto petb = makeEntity();
-	auto pe = petb->addComponent<TextComponent>("Finished - Press TAB to go back", "WorstveldSling.ttf");
+	auto pe = petb->addComponent<TextComponent>("Finished - "+backText, "WorstveldSling.ttf");
 	pe->setColor(sf::Color(200 , 190, 183));
 	pe->setCharacterSize(40);
 	pe->SetPosition({

@@ -352,8 +352,15 @@ void OptionsScene::load() {
 	// ============================== FOOT ============================== // 
 	
 	// go back
+	
+	std::string backText;
+	if (Engine::getLevel() == nullptr) {
+		backText = "Press TAB to go back";
+	} else {
+		backText = "Press TAB to resume game";
+	}
 	auto back = makeEntity();
-	auto goBack = back->addComponent<TextComponent>("Press TAB to go back", "WorstveldSling.ttf");
+	auto goBack = back->addComponent<TextComponent>(backText, "WorstveldSling.ttf");
 	goBack->setColor(sf::Color(200 , 190, 183));
 	goBack->setCharacterSize(50);
 	goBack->SetPosition({
