@@ -32,6 +32,10 @@ void Engine::changeMode()  {
 	changingMode = true;
 }
 
+std::string Engine::getMode()  {
+	return windowMode;
+}
+
 void Engine::changeScene(Scene* s) {
 	if (_activeScene != nullptr) {
 		_activeScene->unload();
@@ -281,7 +285,7 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	loadKeys();
 	loadKeyStrings();
 	
-	window.create(sf::VideoMode(width, height), name, sf::Style::Fullscreen);
+	window.create(sf::VideoMode(width, height), name, sf::Style::Default);
 	window.setVerticalSyncEnabled(true);
 	
 	Renderer::initialise(window);
@@ -296,10 +300,10 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 			if (changingMode) {
 				window.close();
 				if (windowMode == "default") {
-					window.create(sf::VideoMode(width, height), name, sf::Style::Default);
+					window.create(sf::VideoMode(width, height), name, sf::Style::Fullscreen);
 					windowMode = "fullscreen";
 				} else {
-					window.create(sf::VideoMode(width, height), name, sf::Style::Fullscreen);
+					window.create(sf::VideoMode(width, height), name, sf::Style::Default);
 					windowMode = "default";
 				}
 				window.setVerticalSyncEnabled(true);

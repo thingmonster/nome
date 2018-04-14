@@ -5,6 +5,7 @@
 class OptionsScene : public UIScene {
 	
 	private:
+		std::shared_ptr<Entity> fullscreenIndicator;
 	
 	public:
 		OptionsScene() = default;

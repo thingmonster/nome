@@ -54,6 +54,13 @@ void OptionsScene::update(const double& dt) {
 				//do nothing
 			}
 			Engine::changeMode();
+			
+			auto shape = fullscreenIndicator->getComponents<ShapeComponent>();
+			if (Engine::getMode() == "fullscreen") {
+				shape[0]->getShape().setTextureRect(IntRect(0,0,52,40));
+			} else {
+				shape[0]->getShape().setTextureRect(IntRect(52,0,52,40));
+			}
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 3))) //triangle
@@ -321,8 +328,8 @@ void OptionsScene::load() {
 	std::shared_ptr<sf::Texture> fullScreenSprites = Resources::get<sf::Texture>("ui_fullscreen.png");
 	
 	// fullscreen indicator
-	auto fsi = makeEntity();
-	auto fsI = fsi->addComponent<ShapeComponent>();
+	fullscreenIndicator = makeEntity();
+	auto fsI = fullscreenIndicator->addComponent<ShapeComponent>();
 	fsI->setShape<sf::RectangleShape>(sf::Vector2f(52, 40));
 	fsI->getShape().setOrigin(Vector2f(20,20));
 	fsI->getShape().setFillColor(sf::Color(255,255,255));

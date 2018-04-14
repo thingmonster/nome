@@ -94,6 +94,6 @@ class Engine {
 		static float getLifespan();
 		
 		static void changeMode();
-		
+		static std::string getMode();
 		
 };
