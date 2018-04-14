@@ -144,7 +144,7 @@ void SaveScene::reload() {
 void SaveScene::saveGame() {
 	
 	std::vector<std::shared_ptr<Entity>> entities = Scene::getEntities();
-	std::string str = "1"; // needs replaced with current level
+	std::string gameString = "1"; // needs replaced with current level
 	sf::Vector2f pos;
 	
 	for (auto& e : entities) {
@@ -153,19 +153,38 @@ void SaveScene::saveGame() {
 		pos.y = (e->getPosition().y - ls::getOffset().y) / (ls::getHeight() * ls::getTileSize());
 		
 		if (e->getTag().length() > 0) {
-			str += "\n";
-			str += e->getTag();
-			str += ",";
-			str += std::to_string(pos.x);
-			str += ",";
-			str += std::to_string(pos.y);
+			gameString += "\n";
+			gameString += e->getTag();
+			gameString += ",";
+			gameString += std::to_string(pos.x);
+			gameString += ",";
+			gameString += std::to_string(pos.y);
 		}
 	}
 	
-	ofstream myfiles;
-	myfiles.open ("test.txt");
-	myfiles << str;
-	myfiles.close();
+	ofstream gameFile;
+	gameFile.open (userInput+".txt");
+	gameFile << gameString;
+	gameFile.close();
+	
+	
+	ifstream savedGames ("games.txt");
+	
+	string filenames = userInput;
+	string filenamesString;
+	if (savedGames.is_open()) {
+		while (getline(savedGames, filenamesString)) {
+			filenames += "\n"+filenamesString;
+		}
+		savedGames.close();
+	} else {
+		cout << "Unable to open file" << endl; 
+	}
+	
+	ofstream gamesList;
+	gamesList.open ("games.txt");
+	gamesList << filenames;
+	gamesList.close();
 	
 }
 		

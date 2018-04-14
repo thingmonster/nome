@@ -94,7 +94,7 @@ void LoadScene::load() {
 	string str;
 	if (savedGames.is_open()) {
 		while (getline(savedGames, str)) {
-			if (filenames.size() < 5) {
+			if (filenames.size() < 4) {
 				filenames.push_back(str);
 			}
 		}
