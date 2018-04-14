@@ -32,6 +32,11 @@ class Scene {
 
 class LevelScene : public Scene {
 		
+	
+	protected:
+		bool loaded = false;
+		
+		
 	public:
 		LevelScene() = default;
 		virtual void update(const double& dt) = 0;
@@ -95,5 +100,7 @@ class Engine {
 		
 		static void changeMode();
 		static std::string getMode();
+		
+		static void endGame();
 		
 };

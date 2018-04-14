@@ -29,7 +29,6 @@ class Level1Scene : public LevelScene {
 		std::shared_ptr<Entity> player;
 		std::shared_ptr<Entity> ball;
 		int maxEnemies = 4;
-		bool loaded = false;
 		
 		
 	public:

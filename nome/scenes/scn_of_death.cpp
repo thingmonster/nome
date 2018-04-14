@@ -92,6 +92,9 @@ void DeathScene::load() {
 	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
 	
+	// ============================== END GAME ============================== // 
+	
+	Engine::endGame();
 }
 
 void DeathScene::unload() {

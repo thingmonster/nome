@@ -56,6 +56,12 @@ void Engine::restoreGame(std::vector<std::shared_ptr<Entity>> entities) {
 	_activeLevel->restore(entities);
 }
 
+void Engine::endGame() {
+	if (_activeLevel != nullptr) {
+		_activeLevel->destroy();
+	}
+	_activeLevel = nullptr;
+}
 
 void Engine::loadKeys() {
 	Engine::keys.push_back(Keyboard::A);
@@ -433,6 +439,7 @@ Scene::~Scene() {}
 
 void LevelScene::destroy() {
 	_ents.list.clear();
+	loaded = false;
 }
 
 void LevelScene::resize() {
