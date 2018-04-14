@@ -49,29 +49,22 @@ void LoadScene::load() {
 	// ============================== CONTENT ============================== // 
 	
 	// "Load Game"
-	auto po = makeEntity();
-	auto pO = po->addComponent<TextComponent>("Load Game", "WorstveldSling.ttf");
-	pO->setColor(sf::Color(200 , 190, 183));
-	pO->setCharacterSize(100);
-	pO->SetPosition({windowSize.x / 2 - pO->getText().getLocalBounds().width / 2, 170});
+	auto loadGame = makeEntity();
+	auto load = loadGame->addComponent<TextComponent>("Press Enter to Load Game", "WorstveldSling.ttf");
+	load->setColor(sf::Color(200 , 190, 183));
+	load->setCharacterSize(70);
+	load->SetPosition({windowSize.x / 2 - load->getText().getLocalBounds().width / 2, 170});
 	
 	
 		
 	// ============================== FOOT ============================== // 
 	
-	// "press enter to resume"
-	auto petb = makeEntity();
-	auto pe = petb->addComponent<TextComponent>("Press ENTER to resume", "WorstveldSling.ttf");
-	pe->setColor(sf::Color(200 , 190, 183));
-	pe->setCharacterSize(70);
-	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, windowSize.y - 135});
-	
-	//  Tab to cancel
-	auto cr = makeEntity();
-	auto c = cr->addComponent<TextComponent>("or TAB to cancel and go back", "WorstveldSling.ttf");
-	c->setColor(sf::Color(200 , 190, 183));
-	c->setCharacterSize(40);
-	c->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 4, windowSize.y - 70});
+	// Tab to cancel
+	auto cancel = makeEntity();
+	auto goBack = cancel->addComponent<TextComponent>("Press TAB to cancel and go back", "WorstveldSling.ttf");
+	goBack->setColor(sf::Color(200 , 190, 183));
+	goBack->setCharacterSize(50);
+	goBack->SetPosition({windowSize.x / 2 - goBack->getText().getLocalBounds().width / 2, windowSize.y - 135});
 	
 	// line
 	auto line2 = makeEntity();

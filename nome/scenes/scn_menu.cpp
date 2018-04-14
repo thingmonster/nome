@@ -257,10 +257,37 @@ void MenuScene::load() {
 	// options key description
 	auto oslOptions = makeEntity();
 	auto options = oslOptions->addComponent<TextComponent>("Options", "WorstveldSling.ttf");
-	options->setOrigin(options->getText().getLocalBounds().width / 2, o->getText().getLocalBounds().height / 2);
+	options->setOrigin(0, options->getText().getLocalBounds().height / 2);
 	options->setColor(sf::Color(200 , 190, 183));
 	options->setCharacterSize(40);
-	options->SetPosition({165, 162});
+	options->SetPosition({140, 162});
+	
+	
+	
+	// load key background
+	auto lkb = makeEntity();
+	auto lb = lkb->addComponent<ShapeComponent>();
+	lb->setShape<sf::RectangleShape>(sf::Vector2f(40, 40));
+	lb->getShape().setOrigin(Vector2f(20,20));
+	lb->getShape().setFillColor(sf::Color(255,255,255));
+	lb->setTexture(keySprites, sf::IntRect(0,0,40,40));
+	lb->getShape().setPosition(sf::Vector2f(100, 240));
+	
+	// load key text
+	auto lkt = makeEntity();
+	auto lt = lkt->addComponent<TextComponent>("L", "DroidSansMono.ttf");
+	lt->setOrigin(lt->getText().getLocalBounds().width / 2, lt->getText().getLocalBounds().height / 2);
+	lt->setColor(sf::Color(72,62,55));
+	lt->setCharacterSize(25);
+	lt->SetPosition({100, 235});
+	
+	// load key description
+	auto oslLoad = makeEntity();
+	auto load = oslLoad->addComponent<TextComponent>("Load Game", "WorstveldSling.ttf");
+	load->setOrigin(0, o->getText().getLocalBounds().height / 2);
+	load->setColor(sf::Color(200 , 190, 183));
+	load->setCharacterSize(40);
+	load->SetPosition({140, 222});
 	
 	
 	// ============================== CONTROLS ============================== // 

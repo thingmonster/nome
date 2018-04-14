@@ -12,7 +12,7 @@ std::shared_ptr<Entity> menuState;
 void OptionsScene::update(const double& dt) {
 
 	if (!menuOpen) {
-		if ((Keyboard::isKeyPressed(Keyboard::B)) || (Joystick::isButtonPressed(0, 1))) //circle
+		if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
 		{
 			auto jukebox = makeEntity();
 			auto audio = jukebox->addComponent<AudioComponent>();
@@ -26,7 +26,11 @@ void OptionsScene::update(const double& dt) {
 				Engine::changeScene(Engine::getLevel());
 			}
 			else {
-				Engine::changeScene(&menu);
+				if (Engine::getLevel() == nullptr) {
+					Engine::changeScene(&menu);
+				} else {
+					Engine::changeScene(Engine::getLevel());
+				}
 			}
 		}
 
@@ -308,17 +312,17 @@ void OptionsScene::load() {
 	makeDescription("Screen Resolution", sf::Vector2f(windowSize.x / 2 - 20, 290));	
 	makeDescription("Full Screen",sf::Vector2f(windowSize.x / 2 - 20, 340));	
 	makeDescription("Remap Controls", sf::Vector2f(windowSize.x / 2 - 20, 390));
-	makeDescription("Back", sf::Vector2f(windowSize.x / 2 - 20, 440));
+	// makeDescription("Back", sf::Vector2f(windowSize.x / 2 - 20, 440));
 	
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 305));
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 355));
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 405));
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 455));
+	// makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 455));
 	
 	makeKeyText("S", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 300));
 	makeKeyText("F", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 350));
 	makeKeyText("R", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 400));
-	makeKeyText("B", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 450));
+	// makeKeyText("B", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 450));
 	
 	
 	
@@ -345,6 +349,26 @@ void OptionsScene::load() {
 	preSelectResolution();
 	
 
+	// ============================== FOOT ============================== // 
+	
+	// go back
+	auto back = makeEntity();
+	auto goBack = back->addComponent<TextComponent>("Press TAB to go back", "WorstveldSling.ttf");
+	goBack->setColor(sf::Color(200 , 190, 183));
+	goBack->setCharacterSize(50);
+	goBack->SetPosition({
+		windowSize.x / 2 - goBack->getText().getLocalBounds().width / 2, 
+		windowSize.y - 85
+	});
+	
+	// line
+	auto line2 = makeEntity();
+	auto s2 = line2->addComponent<ShapeComponent>();
+	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
+	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 100));
+	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
+	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	
 }
 
 void OptionsScene::unload() {

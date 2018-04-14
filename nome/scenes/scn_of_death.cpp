@@ -8,7 +8,7 @@ using namespace std;
 void DeathScene::update(const double& dt) {
 	
 	
-	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
+	if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
 		auto jukebox = makeEntity();
 		auto audio = jukebox->addComponent<AudioComponent>();
@@ -54,9 +54,13 @@ void DeathScene::load() {
 	
 	// "and you lasted HOW LONG!?"
 	float lifespan = Engine::getLifespan();
+	int precision = 2;
+	if (lifespan >= 10) {
+		precision = 0;
+	}
 	
 	stringstream stream;
-	stream << fixed << setprecision(2) << lifespan;
+	stream << fixed << setprecision(precision) << lifespan;
 	string yourLifeSpan = stream.str();
 	
 	std::string prefix;
@@ -76,11 +80,11 @@ void DeathScene::load() {
 	
 	// ============================== FOOT ============================== // 
 	
-	// "press enter to start over"
+	// press tab
 	auto pressEnter = makeEntity();
-	auto toStartOver = pressEnter->addComponent<TextComponent>("Press ENTER to go back to the start screen", "WorstveldSling.ttf");
+	auto toStartOver = pressEnter->addComponent<TextComponent>("Press TAB to go back to the start screen", "WorstveldSling.ttf");
 	toStartOver->setColor(sf::Color(200 , 190, 183));
-	toStartOver->setCharacterSize(40);
+	toStartOver->setCharacterSize(50);
 	toStartOver->SetPosition({windowSize.x / 2 - toStartOver->getText().getLocalBounds().width / 2, windowSize.y - 135});
 	
 	// line

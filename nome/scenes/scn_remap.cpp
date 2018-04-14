@@ -27,7 +27,7 @@ void RemapScene::update(const double& dt) {
 				finish();
 			}
 				
-			if ((Keyboard::isKeyPressed(Keyboard::B)) || (Joystick::isButtonPressed(0, 1))) //circle
+			if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
 			{
 				auto jukebox = makeEntity();
 				auto audio = jukebox->addComponent<AudioComponent>();
@@ -37,7 +37,12 @@ void RemapScene::update(const double& dt) {
 				{
 					//do nothing
 				}
-				Engine::changeScene(&menu);			
+				if (Engine::getLevel() == nullptr) {
+					Engine::changeScene(&menu);
+				} else {
+					Engine::changeScene(Engine::getLevel());
+				}
+							
 			}
 			
 		} else if (controlCount < Engine::controls.size()) {
@@ -164,11 +169,11 @@ void RemapScene::finish() {
 	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 
-	// "press enter to begin"
+	// "Finished"
 	auto petb = makeEntity();
-	auto pe = petb->addComponent<TextComponent>("Finished - press B to go back to options screen", "WorstveldSling.ttf");
+	auto pe = petb->addComponent<TextComponent>("Finished - Press TAB to go back", "WorstveldSling.ttf");
 	pe->setColor(sf::Color(200 , 190, 183));
-	pe->setCharacterSize(50);
+	pe->setCharacterSize(40);
 	pe->SetPosition({
 		windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 
 		windowSize.y - 85

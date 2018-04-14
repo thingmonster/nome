@@ -72,11 +72,11 @@ void SaveScene::load() {
 	// ============================== CONTENT ============================== // 
 	
 	// "Save Game"
-	auto po = makeEntity();
-	auto pO = po->addComponent<TextComponent>("Save Game", "WorstveldSling.ttf");
-	pO->setColor(sf::Color(200 , 190, 183));
-	pO->setCharacterSize(100);
-	pO->SetPosition({windowSize.x / 2 - pO->getText().getLocalBounds().width / 2, 170});
+	auto saveGame = makeEntity();
+	auto save = saveGame->addComponent<TextComponent>("Save Game", "WorstveldSling.ttf");
+	save->setColor(sf::Color(200 , 190, 183));
+	save->setCharacterSize(100);
+	save->SetPosition({windowSize.x / 2 - save->getText().getLocalBounds().width / 2, 170});
 	
 	
 	// input field
@@ -106,18 +106,19 @@ void SaveScene::load() {
 	// ============================== FOOT ============================== // 
 	
 	// "press enter to resume"
-	auto petb = makeEntity();
-	auto pe = petb->addComponent<TextComponent>("Press ENTER to resume", "WorstveldSling.ttf");
-	pe->setColor(sf::Color(200 , 190, 183));
-	pe->setCharacterSize(70);
-	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, windowSize.y - 135});
 	
-	//  C to cancel
-	auto cr = makeEntity();
-	auto c = cr->addComponent<TextComponent>("or TAB to cancel and go back", "WorstveldSling.ttf");
-	c->setColor(sf::Color(200 , 190, 183));
-	c->setCharacterSize(40);
-	c->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 4, windowSize.y - 70});
+	auto pressEnter = makeEntity();
+	auto enter = pressEnter->addComponent<TextComponent>("Press ENTER to save and resume", "WorstveldSling.ttf");
+	enter->setColor(sf::Color(200 , 190, 183));
+	enter->setCharacterSize(60);
+	enter->SetPosition({windowSize.x / 2 - enter->getText().getLocalBounds().width / 2, windowSize.y - 135});
+	
+	//  tab to cancel
+	auto back = makeEntity();
+	auto goBack = back->addComponent<TextComponent>("or TAB to cancel and resume", "WorstveldSling.ttf");
+	goBack->setColor(sf::Color(200 , 190, 183));
+	goBack->setCharacterSize(40);
+	goBack->SetPosition({windowSize.x / 2 - goBack->getText().getLocalBounds().width / 4, windowSize.y - 70});
 	
 	// line
 	auto line2 = makeEntity();
