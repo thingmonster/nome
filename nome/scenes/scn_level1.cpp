@@ -378,21 +378,25 @@ void Level1Scene::updateEnemyAI(std::shared_ptr<Entity> enemy) {
 
 std::shared_ptr<DistanceDecision> Level1Scene::decisionTree() {
 	
+	// if near ball flee
+	// else if far from nome seek
+	// else if mid distance from nome wander
+	// else if near nome flee
+	
 	auto decision = make_shared<DistanceDecision>(
-		player,
+		ball,
 		ls::getTileSize() * 1,
 		make_shared<FleeDecision>(),
 		make_shared<DistanceDecision>(
 			player,
-			ls::getTileSize() * 3,
-			// make_shared<DistanceDecision> (
-				// player,
-				// ls::getTileSize() * 4,
-				// make_shared<SeekDecision>(),
-				// make_shared<StationaryDecision>()
-			// ),
-			make_shared<WanderDecision>(),
-			make_shared<WanderDecision>()
+			ls::getTileSize() * 1,
+			make_shared<FleeDecision>(),
+			make_shared<DistanceDecision> (
+				player,
+				ls::getTileSize() * 3,
+				make_shared<WanderDecision>(),
+				make_shared<SeekDecision>()
+			)
 		)
 	);
 	
