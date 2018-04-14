@@ -42,13 +42,13 @@ void LoadScene::update(const double& dt) {
 		}
 	}	
 	
-	if ((Keyboard::isKeyPressed(Keyboard::Up)) /* ps4 controls! */ )
+	if ((Keyboard::isKeyPressed(Keyboard::Up)) /* need ps4 controls! */ )
 	{
 		if (timer < 0) {
 			highlightPosition--;
 			auto shape = highlight->getComponents<ShapeComponent>();
 			Vector2f pos = shape[0]->getShape().getPosition();
-			if (pos.y > windowSize.y / 2 - 33) {
+			if (pos.y > windowSize.y / 2 - 3) {
 				pos.y -= 50;
 			}
 			shape[0]->getShape().setPosition(pos);
@@ -57,13 +57,13 @@ void LoadScene::update(const double& dt) {
 	}
 	
 	
-	if ((Keyboard::isKeyPressed(Keyboard::Down)) /* ps4 controls! */ )
+	if ((Keyboard::isKeyPressed(Keyboard::Down)) /* need ps4 controls! */ )
 	{
 		if (timer < 0) {
 			highlightPosition++;
 			auto shape = highlight->getComponents<ShapeComponent>();
 			Vector2f pos = shape[0]->getShape().getPosition();
-			if (pos.y < windowSize.y / 2 - 33 + (filenames.size() * 50)) {
+			if (pos.y < windowSize.y / 2 - 3 + ((filenames.size() - 1) * 50)) {
 				pos.y += 50;
 			}
 			shape[0]->getShape().setPosition(pos);
@@ -80,14 +80,7 @@ void LoadScene::load() {
 	
 	// ============================== CONTENT ============================== // 
 	
-	// "Load Game"
-	auto loadGame = makeEntity();
-	auto load = loadGame->addComponent<TextComponent>("Up and Down to select, Enter to load game", "WorstveldSling.ttf");
-	load->setColor(sf::Color(200 , 190, 183));
-	load->setCharacterSize(50);
-	load->SetPosition({windowSize.x / 2 - load->getText().getLocalBounds().width / 2, 170});
-	
-	
+	bool gamesExist = false;
 	
 	ifstream savedGames ("games.txt");
 	
@@ -96,6 +89,7 @@ void LoadScene::load() {
 		while (getline(savedGames, str)) {
 			if (filenames.size() < 4) {
 				filenames.push_back(str);
+				gamesExist = true;
 			}
 		}
 		savedGames.close();
@@ -103,14 +97,31 @@ void LoadScene::load() {
 		cout << "Unable to open file" << endl; 
 	}
 	
+	std::string message;
+	if (gamesExist) {
+		message = "Up and Down to select, Enter to load game";
+	} else {
+		message = "Sorry, no one has saved any games yet";
+	}
+	
+	// "Load Game"
+	auto loadGame = makeEntity();
+	auto load = loadGame->addComponent<TextComponent>(message, "WorstveldSling.ttf");
+	load->setColor(sf::Color(200 , 190, 183));
+	load->setCharacterSize(50);
+	load->SetPosition({windowSize.x / 2 - load->getText().getLocalBounds().width / 2, 170});
+	
+	
+	
+	
 	if (filenames.size() > 0) {
 	
 		highlight = makeEntity();
 		auto background = highlight->addComponent<ShapeComponent>();
-		background->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 200, 40));
-		background->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y / 2 - 33));
+		background->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 300, 40));
+		background->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y / 2 - 3));
 		background->getShape().setFillColor(sf::Color(90 , 80, 75));
-		background->getShape().setOrigin(Vector2f((windowSize.x - 200) / 2, 20));
+		background->getShape().setOrigin(Vector2f((windowSize.x - 300) / 2, 20));
 	}
 	
 	for (int i = 0; i < filenames.size(); i++) {
@@ -121,7 +132,7 @@ void LoadScene::load() {
 		text->setCharacterSize(25);
 		text->SetPosition({
 			windowSize.x / 2 - text->getText().getLocalBounds().width / 2, 
-			windowSize.y / 2 - 50 + (50 * i)
+			windowSize.y / 2 - 20 + (50 * i)
 		});
 		
 		fileEntities.push_back(game);
