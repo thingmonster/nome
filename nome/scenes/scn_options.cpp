@@ -43,6 +43,19 @@ void OptionsScene::update(const double& dt) {
 			Engine::changeScene(&remap);
 		}
 
+		if ((Keyboard::isKeyPressed(Keyboard::F))) // NEED TO ADD THE JOYSTICK CONTROL
+		{
+			auto jukebox = makeEntity();
+			auto audio = jukebox->addComponent<AudioComponent>();
+			audio->LoadAudio("Enter_Press.wav");
+			audio->PlayAudio();
+			while (audio->AudioIsPlaying())
+			{
+				//do nothing
+			}
+			Engine::changeMode();
+		}
+
 		if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 3))) //triangle
 		{
 			auto jukebox = makeEntity();

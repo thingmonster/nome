@@ -10,6 +10,9 @@ using namespace sf;
 	
 // ======================== ENGINE ======================== //
 	
+RenderWindow Engine::window;
+std::string Engine::windowMode = "default";
+bool Engine::changingMode = false;
 
 Scene* Engine::_activeScene = nullptr;
 LevelScene* Engine::_activeLevel = nullptr;
@@ -21,10 +24,14 @@ vector<sf::Keyboard::Key> Engine::controls;
 vector<sf::Joystick::Axis> Engine::joycon;
 vector<sf::Keyboard::Key> Engine::keys;	
 vector<std::string> Engine::keyStrings;
+
 static sf::Clock lifeSpan;	
 	
-
 	
+void Engine::changeMode()  {
+	changingMode = true;
+}
+
 void Engine::changeScene(Scene* s) {
 	if (_activeScene != nullptr) {
 		_activeScene->unload();
@@ -274,7 +281,7 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	loadKeys();
 	loadKeyStrings();
 	
-	RenderWindow window(sf::VideoMode(width, height), name);
+	window.create(sf::VideoMode(width, height), name, sf::Style::Fullscreen);
 	window.setVerticalSyncEnabled(true);
 	
 	Renderer::initialise(window);
@@ -285,6 +292,19 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 		
 		Event event;
     while (window.pollEvent(event)) {
+			
+			if (changingMode) {
+				window.close();
+				if (windowMode == "default") {
+					window.create(sf::VideoMode(width, height), name, sf::Style::Default);
+					windowMode = "fullscreen";
+				} else {
+					window.create(sf::VideoMode(width, height), name, sf::Style::Fullscreen);
+					windowMode = "default";
+				}
+				window.setVerticalSyncEnabled(true);
+				changingMode = false;
+			}
 			
 			if (controls.size() < 4) {
 					

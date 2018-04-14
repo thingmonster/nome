@@ -67,6 +67,10 @@ class Engine {
 	
 		static void resize();
 		
+		static RenderWindow window;
+		static std::string windowMode;
+		static bool changingMode;
+		
 	public:
 		Engine() = delete;
 		~Engine() = delete;
@@ -88,6 +92,8 @@ class Engine {
 		static std::string getInput();
 		
 		static float getLifespan();
+		
+		static void changeMode();
 		
 		
 };
