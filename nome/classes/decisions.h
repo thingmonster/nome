@@ -7,6 +7,13 @@
 #include <random>
 #include <chrono>
 
+/*
+
+this file contains the definitions for DecisionTreeNode,
+Decision and MultiDecision
+
+*/
+
 class DecisionTreeNode {
 	
 	public:

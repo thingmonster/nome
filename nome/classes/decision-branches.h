@@ -2,6 +2,13 @@
 
 #include "decisions.h"
 
+/*
+
+this file contains the definitions for RandomDecision,
+RandomMultiDecision and DistanceDecision
+
+*/
+
 
 
 class RandomDecision : public Decision {
@@ -40,12 +47,9 @@ class DistanceDecision : public Decision {
 	protected:
 		std::shared_ptr<DecisionTreeNode> getBranch(Entity *owner) final {
 			float dist = sf::length(owner->getPosition() - _player->getPosition());
-			// cout << "dist "<< dist << " | " << "_distance "<< _distance << endl;
 			if (dist < _distance) {
-				// cout << "true" << endl;
 				return _trueNode;
 			} else {
-				// cout << "false" << endl;
 				return _falseNode;
 			}
 		}		
@@ -57,7 +61,6 @@ class DistanceDecision : public Decision {
 			std::shared_ptr<DecisionTreeNode> trueNode,
 			std::shared_ptr<DecisionTreeNode> falseNode
 		) : _player(player), _distance(distance), Decision(trueNode, falseNode) {
-			// cout << "dd ";
 		}
 		
 };

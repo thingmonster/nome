@@ -7,6 +7,12 @@
 using namespace std;
 using namespace sf;
 
+/*
+
+functional but no opportunity to put it to use as yet
+
+*/
+
 class Node {
 	
 	private:

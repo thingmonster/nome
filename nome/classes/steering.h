@@ -4,6 +4,14 @@
 #include <ctime>
 #include "engine.h"
 
+/*
+
+this file contains the definitions for the 
+SteeringOutput struct, the SteeringBehaviour 
+class and all the individual steering classes
+
+*/
+
 
 
 struct SteeringOutput {

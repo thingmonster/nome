@@ -1,7 +1,6 @@
 #include "steering.h"
 
 SteeringOutput SeekSteering::getSteering() const noexcept {
-	// cout << "seek ";
 	SteeringOutput steering;
 	steering.direction = _target->getPosition() - _character->getPosition();
 	steering.direction = normalize(steering.direction);
@@ -11,7 +10,6 @@ SteeringOutput SeekSteering::getSteering() const noexcept {
 }
 
 SteeringOutput FleeSteering::getSteering() const noexcept {
-	// cout << "flee ";
 	SteeringOutput steering;
 	steering.direction = _character->getPosition() - _target->getPosition();
 	steering.direction = normalize(steering.direction);
@@ -21,7 +19,8 @@ SteeringOutput FleeSteering::getSteering() const noexcept {
 }
 
 SteeringOutput WanderSteering::getSteering() const noexcept {
-	// cout << "wander ";
+	
+	// assign a random direction to steering
 	
 	SteeringOutput steering;
 	steering.direction = Vector2f(std::rand() % 100, std::rand() % 100) - Vector2f(std::rand() % 100, std::rand() % 100);
@@ -33,23 +32,25 @@ SteeringOutput WanderSteering::getSteering() const noexcept {
 }
 
 SteeringOutput WanderSteering::getSteering(sf::Vector2f direction) {
-	// cout << "wander ";
+	
+	
 	
 	SteeringOutput steering;
 	steering.direction = Vector2f(0,0);
 	
+	// current direction not set, generate one at random
 	if (direction.x == 0 && direction.y == 0) {
-		// cout << "no direction " << endl;
 		Vector2f newDirection = Vector2f(std::rand() % 100, std::rand() % 100) - Vector2f(std::rand() % 100, std::rand() % 100);
 		steering.direction = newDirection;
-	} else {
+	} 
+	
+	// otherwise 2% chance of changing to a new random direction
+	else {
 		int odds = std::rand() % 100;
 		if (odds < 2) {		
-			// cout << "random direction " << endl;
 			Vector2f newDirection = Vector2f(std::rand() % 100, std::rand() % 100);
 			steering.direction = newDirection;
 		} else {	
-			// cout << "same direction " << endl;
 			steering.direction = direction;
 		}
 	}
