@@ -1,5 +1,12 @@
 #include "physics.h"
 
+/*
+
+the contents of this file is largely taken from the 
+platformer engine source code with two modifications 
+in the initialise and invert_height methods
+
+*/
 
 namespace Physics {
 	
@@ -8,6 +15,7 @@ namespace Physics {
 	const int32 positionIterations = 2;
 
 	void initialise() {
+		// top down so no gravity
 		b2Vec2 gravity(0.0f, 0.0f);
 		world.reset(new b2World(gravity));
 	}
@@ -42,6 +50,7 @@ namespace Physics {
 	}
 
 	const Vector2f invert_height(const Vector2f& in) {
+		// y axis determined by window size
 		return Vector2f(in.x, Renderer::getWindow().getSize().y - in.y);
 	}
 

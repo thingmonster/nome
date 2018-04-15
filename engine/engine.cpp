@@ -9,25 +9,13 @@ using namespace sf;
 
 	
 // ======================== ENGINE ======================== //
-	
+
+/* window modes */
+
 RenderWindow Engine::window;
 std::string Engine::windowMode = "default";
 bool Engine::changingMode = false;
 
-Scene* Engine::_activeScene = nullptr;
-LevelScene* Engine::_activeLevel = nullptr;
-
-bool Engine::readingInput = false;
-std::string Engine::userInput;	
-
-vector<sf::Keyboard::Key> Engine::controls;
-vector<sf::Joystick::Axis> Engine::joycon;
-vector<sf::Keyboard::Key> Engine::keys;	
-vector<std::string> Engine::keyStrings;
-
-static sf::Clock lifeSpan;	
-	
-	
 void Engine::changeMode()  {
 	changingMode = true;
 }
@@ -36,32 +24,18 @@ std::string Engine::getMode()  {
 	return windowMode;
 }
 
-void Engine::changeScene(Scene* s) {
-	if (_activeScene != nullptr) {
-		_activeScene->unload();
-	}
-	_activeScene = s;
-	_activeScene->load();
-}
+/* end window modes */
 
-void Engine::changeLevel(LevelScene* s) {
-	if (_activeLevel != nullptr) {
-		_activeLevel->destroy();
-	}
-	_activeLevel = s;
-}
 
-void Engine::restoreGame(std::vector<std::shared_ptr<Entity>> entities) {
-	_activeScene = _activeLevel;
-	_activeLevel->restore(entities);
-}
+/* reading input for remapping and saving games */
 
-void Engine::endGame() {
-	if (_activeLevel != nullptr) {
-		_activeLevel->destroy();
-	}
-	_activeLevel = nullptr;
-}
+bool Engine::readingInput = false;
+std::string Engine::userInput;	
+
+vector<sf::Keyboard::Key> Engine::controls;
+vector<sf::Joystick::Axis> Engine::joycon;
+vector<sf::Keyboard::Key> Engine::keys;	
+vector<std::string> Engine::keyStrings;
 
 void Engine::loadKeys() {
 	Engine::keys.push_back(Keyboard::A);
@@ -275,34 +249,117 @@ void Engine::loadKeyStrings() {
 	
 }
 	
+void Engine::setReadingInput(bool b) {
+	readingInput = b;
+}
+
+std::string Engine::getInput() {
+	std::string ret = userInput;
+	userInput = "";
+	return ret;
+}
+
+/* end reading input */
+
+
+
+/* managing scenes */
+
+Scene* Engine::_activeScene = nullptr;
+LevelScene* Engine::_activeLevel = nullptr;
+
+void Engine::changeScene(Scene* s) {
+	if (_activeScene != nullptr) {
+		_activeScene->unload();
+	}
+	_activeScene = s;
+	_activeScene->load();
+}
+
+void Engine::changeLevel(LevelScene* s) {
+	if (_activeLevel != nullptr) {
+		_activeLevel->destroy();
+	}
+	_activeLevel = s;
+}
+
+LevelScene* Engine::getLevel() {
+	return _activeLevel;
+}
+
+std::vector<std::shared_ptr<Entity>> Scene::getEntities() {
+	return Engine::getLevel()->_ents.list;
+}
+
+void Engine::restoreGame(std::vector<std::shared_ptr<Entity>> entities) {
+	_activeScene = _activeLevel;
+	_activeLevel->restore(entities);
+}
+
+void Engine::resize() {
+	_activeScene->resize();
+}
+
+void Engine::endGame() {
+	if (_activeLevel != nullptr) {
+		_activeLevel->destroy();
+	}
+	_activeLevel = nullptr;
+}
+
+/* end managing scenes */
+
+
+
+
+/* lifespan clock */
+
+static sf::Clock lifeSpan;	
+	
 float Engine::getLifespan() {	
 	float lifespan = lifeSpan.restart().asSeconds();
 	return lifespan;
 }
 	
+/* end lifespan clock */
+
+	
+	
+/* main methods */
+	
 void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 	
+	// set up default controls
 	Engine::controls.push_back(Keyboard::Left);
 	Engine::controls.push_back(Keyboard::Right);
 	Engine::controls.push_back(Keyboard::Up);
 	Engine::controls.push_back(Keyboard::Down);
 	Engine::joycon.push_back(Joystick::X);
 	Engine::joycon.push_back(Joystick::Y);
+	
+	// set up sfml key references
 	loadKeys();
 	loadKeyStrings();
 	
+	// set up window and vsync
 	window.create(sf::VideoMode(width, height), name, sf::Style::Default);
 	window.setVerticalSyncEnabled(true);
 	
+	// initialise renderer and physics
 	Renderer::initialise(window);
 	Physics::initialise();
+	
+	// set active scene
 	changeScene(s);			
 	
 	while (window.isOpen()) {
 		
+		
+		// check for user input and window events
 		Event event;
     while (window.pollEvent(event)) {
 			
+			// if window mode is being toggled close and reopen
 			if (changingMode) {
 				window.close();
 				if (windowMode == "default") {
@@ -314,15 +371,21 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 				}
 				window.setVerticalSyncEnabled(true);
 				changingMode = false;
-			}
+			} // end toggling window mode
 			
+			
+			
+			// if controls are being remapped read user input
 			if (controls.size() < 4) {
 					
 				if (event.type == sf::Event::EventType::KeyPressed){
 						controls.push_back(keys[event.key.code]);
 				}
-			}
+			}// end remapping controls
 
+			
+			
+			// if reading input for saved game filename
 			if (readingInput) {
 					
 				if (
@@ -331,27 +394,43 @@ void Engine::Start(int width, int height, const std::string& name, Scene* s) {
 				) {
 					userInput += keyStrings[event.key.code];
 				}
-			}
+			} // end reading filename input
 			
+			
+			
+			// close window if necessary
       if (event.type == Event::Closed) {
         window.close();
-				
-      } else if (event.type == sf::Event::Resized) {
+      } 
+			
+			// resize window if necessary, reload current scene and pass the command to it
+			else if (event.type == sf::Event::Resized) {
 				window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
 				changeScene(_activeScene);
 				resize();
-			}
-    }
+			} // end resize window
+			
+    } // end pollEvent
+		
+		
+		
+		// close window if escape pressed
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
       window.close();
 		}
-				
+		
+		
+		
+		// main functions				
 		window.clear();
 		update();
 		render();
 		window.display();
 	}
 	
+	
+	
+	// game has ended
   window.close();
 	Physics::shutdown();
 	
@@ -361,7 +440,8 @@ void Engine::update() {
 	
 	static sf::Clock clock;
 	float dt = clock.restart().asSeconds();
-		
+	
+	// step physics world and update current scene
 	if (_activeScene != nullptr) {
     Physics::update(dt);
     _activeScene->update(dt);
@@ -374,31 +454,8 @@ void Engine::render() {
 	Renderer::render();
 }
 
-void Engine::resize() {
-	_activeScene->resize();
-	// ls::resize(windowSize);
-}
-
- void Engine::setReadingInput(bool b) {
-	readingInput = b;
-}
-
-std::string Engine::getInput() {
-	std::string ret = userInput;
-	userInput = "";
-	return ret;
-}
 
 
-
-
-LevelScene* Engine::getLevel() {
-	return _activeLevel;
-}
-
-std::vector<std::shared_ptr<Entity>> Scene::getEntities() {
-	return Engine::getLevel()->_ents.list;
-}
 
 
 
@@ -406,6 +463,7 @@ std::vector<std::shared_ptr<Entity>> Scene::getEntities() {
 // ======================== SCENE ======================== //
 	
 
+/* main methods */
 
 void Scene::render() {
 	_ents.render();
@@ -415,19 +473,25 @@ void Scene::update(const double& dt) {
 	_ents.update(dt); 
 }
 
+Scene::~Scene() {}
+
+
+/* make an entity with a tag */
+
 std::shared_ptr<Entity> Scene::makeEntity(std::string tag) {
 	auto e = make_shared<Entity>(this, tag);
 	_ents.list.push_back(e);
 	return std::move(e);
 }
 
+
+/* make an entity without a tag */
+
 std::shared_ptr<Entity> Scene::makeEntity() {
 	auto e = make_shared<Entity>(this);
 	_ents.list.push_back(e);
 	return std::move(e);
 }
-
-Scene::~Scene() {}
 
 
 
@@ -436,14 +500,21 @@ Scene::~Scene() {}
 // ======================== LEVELSCENE ======================== //
 	
 
-
+/* destroy all current level's entities and unload */
+	
 void LevelScene::destroy() {
 	_ents.list.clear();
 	loaded = false;
 }
 
+
+/* resize and restyle current map and entities */
+
 void LevelScene::resize() {
 }
+
+
+/* beetle death count */
 
 void LevelScene::setDeathCount() {
 	deathCount++;

@@ -1,6 +1,14 @@
 
 #include "system_renderer.h"
 
+/*
+
+the contents of this file is largely taken from the 
+platformer engine source code, but a getWindow method
+has been added
+
+*/
+
 using namespace sf;
 using namespace std;
 

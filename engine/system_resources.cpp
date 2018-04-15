@@ -1,6 +1,14 @@
 #include "system_resources.h"
 #include <iostream>
 
+/*
+
+this file is an exact duplicate of the platformer
+system_resources file, with the exception that the 
+file paths have been updated
+
+*/
+
 using namespace sf;
 using namespace std;
 	

@@ -9,6 +9,9 @@
 
 class Scene {
 	
+	protected:
+		EntityManager _ents;
+		
 	public:
 		Scene() = default;
 		virtual ~Scene();
@@ -23,19 +26,14 @@ class Scene {
 		std::vector<std::shared_ptr<Entity>> Scene::getEntities();
 		Vector2f windowSize;
 		
-	protected:
-		EntityManager _ents;
-		
 };
 
 
 
 class LevelScene : public Scene {
 		
-	
 	protected:
 		bool loaded = false;
-		
 		
 	public:
 		LevelScene() = default;
@@ -44,8 +42,8 @@ class LevelScene : public Scene {
 		virtual void unload() = 0;
 		virtual void reload() = 0;
 		virtual void render() = 0;
-		virtual void restore(std::vector<std::shared_ptr<Entity>> entities) = 0;
 		
+		virtual void restore(std::vector<std::shared_ptr<Entity>> entities) = 0;
 		void resize();
 		void destroy();
 		
