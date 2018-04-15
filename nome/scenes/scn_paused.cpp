@@ -9,6 +9,7 @@ using namespace std;
 
 void PausedScene::update(const double& dt) {
 	
+	// resume game
 	if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
 		auto jukebox = makeEntity();
@@ -22,6 +23,7 @@ void PausedScene::update(const double& dt) {
 		Engine::changeScene(&level1);
 	}
 	
+	// quit game and destroy current level
 	if ((Keyboard::isKeyPressed(Keyboard::Q)) || (Joystick::isButtonPressed(0, 1))) //circle
 	{
 		auto jukebox = makeEntity();
@@ -37,6 +39,7 @@ void PausedScene::update(const double& dt) {
 		Engine::changeScene(&menu);
 	}
 	
+	// go to save game scene
 	if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 2))) //square
 	{
 		auto jukebox = makeEntity();
@@ -53,6 +56,7 @@ void PausedScene::update(const double& dt) {
 
 void PausedScene::makeDescription(std::string t, sf::Vector2f p) {
 	
+	// write the description for one of the controls
 	auto entity = makeEntity();
 	auto text = entity->addComponent<TextComponent>(t, "Rubik-Medium.ttf");
 	text->setColor(sf::Color(200 , 190, 183));
@@ -64,6 +68,7 @@ void PausedScene::makeDescription(std::string t, sf::Vector2f p) {
 
 void PausedScene::makeKeys(std::shared_ptr<sf::Texture> sp, sf::Vector2f p) {
 		
+	// create the background for one of the keys
 	auto entity = makeEntity();
 	auto shape = entity->addComponent<ShapeComponent>();
 	shape->setShape<sf::RectangleShape>(sf::Vector2f(40, 40));
@@ -76,6 +81,7 @@ void PausedScene::makeKeys(std::shared_ptr<sf::Texture> sp, sf::Vector2f p) {
 
 void PausedScene::makeKeyText(std::string t, sf::Vector2f p) {
 	
+	// write the key text for one the keys
 	auto entity = makeEntity();
 	auto text = entity->addComponent<TextComponent>(t, "DroidSansMono.ttf");
 	text->setOrigin(text->getText().getLocalBounds().width / 2, text->getText().getLocalBounds().height / 2);
@@ -84,7 +90,10 @@ void PausedScene::makeKeyText(std::string t, sf::Vector2f p) {
 	text->SetPosition(p);
 }
 
+/* delete?
+
 void PausedScene::resolutionIndicators(bool v, sf::Vector2f s, std::shared_ptr<sf::Texture> sp, sf::IntRect r, sf::Vector2f p) {
+	
 	
 	auto entity = makeEntity();
 	entity->setVisible(v);
@@ -98,10 +107,11 @@ void PausedScene::resolutionIndicators(bool v, sf::Vector2f s, std::shared_ptr<s
 	
 	
 	
-}
+} */
 
 void PausedScene::load() {
 	
+	// create top section
 	UIScene::load();
 
 	// ============================== CONTENT ============================== // 
@@ -113,8 +123,9 @@ void PausedScene::load() {
 	paused->setCharacterSize(100);
 	paused->SetPosition({windowSize.x / 2 - paused->getText().getLocalBounds().width / 2, 170});
 	
-	// ============================== DESCRIPTIONS & KEYS ============================== // 
 	
+	
+	// ============================== DESCRIPTIONS & KEYS ============================== // 
 	
 	std::shared_ptr<sf::Texture> keySprites = Resources::get<sf::Texture>("ui_key.png");
 	
@@ -144,14 +155,13 @@ void PausedScene::load() {
 	goBack->setCharacterSize(50);
 	goBack->SetPosition({windowSize.x / 2 - goBack->getText().getLocalBounds().width / 2, windowSize.y - 135});
 	
-	// line
-	auto line2 = makeEntity();
-	auto s2 = line2->addComponent<ShapeComponent>();
-	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 165));
-	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
-	
+	// footer divider
+	auto footDivider = makeEntity();
+	auto divider = footDivider->addComponent<ShapeComponent>();
+	divider->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
+	divider->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 165));
+	divider->getShape().setFillColor(sf::Color(200 , 190, 183));
+	divider->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
 }
 

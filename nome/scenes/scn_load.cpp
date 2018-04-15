@@ -7,10 +7,11 @@ using namespace std;
 
 void LoadScene::update(const double& dt) {
 	
+	// prevent single key presses registering multiple times
 	static double timer = 0.f;
 	timer -= dt;
 	
-	
+	// load the selected game
 	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
 		auto jukebox = makeEntity();
@@ -24,6 +25,7 @@ void LoadScene::update(const double& dt) {
 		loadGame();
 	}
 	
+	// resume game
 	if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
 	{
 		auto jukebox = makeEntity();
@@ -42,6 +44,7 @@ void LoadScene::update(const double& dt) {
 		}
 	}	
 	
+	// move selected game highlight up the menu
 	if ((Keyboard::isKeyPressed(Keyboard::Up)) /* need ps4 controls! */ )
 	{
 		if (timer < 0) {
@@ -57,6 +60,7 @@ void LoadScene::update(const double& dt) {
 	}
 	
 	
+	// move selected game highlight down the menu
 	if ((Keyboard::isKeyPressed(Keyboard::Down)) /* need ps4 controls! */ )
 	{
 		if (timer < 0) {
@@ -74,11 +78,15 @@ void LoadScene::update(const double& dt) {
 
 void LoadScene::load() {
 	
-	levels.push_back(&level1);
+	// more levels would need to be added here unless stored elsewhere
+	levels.push_back(&level1); 
 	
+	// create top section
 	UIScene::load();
 	
 	// ============================== CONTENT ============================== // 
+	
+	// check any saved games exist
 	
 	bool gamesExist = false;
 	
@@ -97,6 +105,7 @@ void LoadScene::load() {
 		cout << "Unable to open file" << endl; 
 	}
 	
+	// customise message
 	std::string message;
 	if (gamesExist) {
 		message = "Up and Down to select, Enter to load game";
@@ -104,7 +113,7 @@ void LoadScene::load() {
 		message = "Sorry, no one has saved any games yet";
 	}
 	
-	// "Load Game"
+	// "Load Game" text
 	auto loadGame = makeEntity();
 	auto load = loadGame->addComponent<TextComponent>(message, "WorstveldSling.ttf");
 	load->setColor(sf::Color(200 , 190, 183));
@@ -113,7 +122,7 @@ void LoadScene::load() {
 	
 	
 	
-	
+	// if there's at least one game create the highlight
 	if (filenames.size() > 0) {
 	
 		highlight = makeEntity();
@@ -124,6 +133,7 @@ void LoadScene::load() {
 		background->getShape().setOrigin(Vector2f((windowSize.x - 300) / 2, 20));
 	}
 	
+	// create entities to display the text for up to four saved games
 	for (int i = 0; i < filenames.size(); i++) {
 		
 		auto game = makeEntity();
@@ -142,7 +152,7 @@ void LoadScene::load() {
 		
 	// ============================== FOOT ============================== // 
 	
-	// Tab to cancel
+	// check whether a game is in progress for customised message
 	
 	std::string backText;
 	if (Engine::getLevel() == nullptr) {
@@ -157,13 +167,13 @@ void LoadScene::load() {
 	goBack->setCharacterSize(50);
 	goBack->SetPosition({windowSize.x / 2 - goBack->getText().getLocalBounds().width / 2, windowSize.y - 85});
 	
-	// line
-	auto line2 = makeEntity();
-	auto s2 = line2->addComponent<ShapeComponent>();
-	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 105));
-	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	// footer divider
+	auto footDivider = makeEntity();
+	auto divider = footDivider->addComponent<ShapeComponent>();
+	divider->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
+	divider->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 105));
+	divider->getShape().setFillColor(sf::Color(200 , 190, 183));
+	divider->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
 	
 }
@@ -180,20 +190,30 @@ void LoadScene::reload() {
 
 void LoadScene::loadGame() {
 	
+	/*
+	
+	load game from the file that corresponds 
+	with the highlight position
+	
+	*/
+	
 	int line = 1;
 	int level = -1;
 	std::string entity;
 	std::vector<std::shared_ptr<Entity>> entities;
 	
 	ifstream savedGame (filenames[highlightPosition]+".txt");
-	
 	string str;
+	
+	// iterate over each line
 	if (savedGame.is_open()) {
 		while (getline(savedGame, str)) {
 			if (line == 1) {
+				// fist line stores the level number
 				level = std::stoi(str) - 1;
 				line = 2;
 			} else {
+				// subsequent lines store entities
 				entities.push_back(loadEntity(str));
 			}
 		}
@@ -202,6 +222,7 @@ void LoadScene::loadGame() {
 		cout << "Unable to open file" << endl; 
 	}
 	
+	// if this is a valid file go to game
 	if (level >= 0) {
 		Engine::changeLevel(levels[level]);
 		Engine::restoreGame(entities);
@@ -211,6 +232,19 @@ void LoadScene::loadGame() {
 }
 
 std::shared_ptr<Entity> LoadScene::loadEntity(std::string s) {
+	
+	/*
+	
+	split a line from the file into its tokens
+	(tag, position x, position y) and use them to 
+	create a pre-positioned entity
+	
+	positions are relative to the map size and are
+	stored as numbers between 0 and 1 - these are converted 
+	to screen coordinates in the level scene's restore
+	method
+	
+	*/
 	
 	std::string delimiter = ",";
 

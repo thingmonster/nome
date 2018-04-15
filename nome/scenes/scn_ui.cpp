@@ -1,15 +1,14 @@
 
 #include "scn_ui.h"
 
-// ======================== UISCENE ======================== //
-	
-
 
 void UIScene::resize() {
 	
 }
 	
 void UIScene::load() {
+	
+	// get window size and then create top section template
 	
 	windowSize = (Vector2f)Renderer::getWindow().getSize();
 

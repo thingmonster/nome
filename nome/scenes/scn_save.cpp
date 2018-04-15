@@ -9,7 +9,7 @@ std::shared_ptr<sf::Texture> SaveScene::inputField;
 
 void SaveScene::update(const double& dt) {
 	
-	
+	// save game with the filename entered then resume
 	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
 		auto jukebox = makeEntity();
@@ -25,6 +25,7 @@ void SaveScene::update(const double& dt) {
 		Engine::changeScene(&level1);
 	}
 	
+	// resume game
 	if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
 	{
 		auto jukebox = makeEntity();
@@ -39,17 +40,19 @@ void SaveScene::update(const double& dt) {
 		Engine::changeScene(&level1);
 	}
 	
+	// collect new user input and add to current filename
 	userInput += Engine::getInput();
-	
 	auto text = userText->getComponents<TextComponent>();
 	text[0]->setString(userInput);
 	
+	// move cursor
 	auto shape = cursor->getComponents<ShapeComponent>();
 	shape[0]->getShape().setPosition(Vector2f(
-		windowSize.x / 2 - 135 + text[0]->getText().getLocalBounds().width, 
+		windowSize.x / 2 - 132 + text[0]->getText().getLocalBounds().width, 
 		windowSize.y - 247
 	));
 	
+	// flash cursor
 	static double timer = 0.5f;
 	timer -= dt;
 	if (timer < 0.f)  {
@@ -64,8 +67,10 @@ void SaveScene::update(const double& dt) {
 
 void SaveScene::load() {
 	
+	// craete top section
 	UIScene::load();
 	
+	// tell the engine to start reading input
 	Engine::setReadingInput(true);
 	
 	
@@ -120,13 +125,13 @@ void SaveScene::load() {
 	goBack->setCharacterSize(40);
 	goBack->SetPosition({windowSize.x / 2 - goBack->getText().getLocalBounds().width / 4, windowSize.y - 70});
 	
-	// line
-	auto line2 = makeEntity();
-	auto s2 = line2->addComponent<ShapeComponent>();
-	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 165));
-	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	// footer divider
+	auto footDivider = makeEntity();
+	auto divider = footDivider->addComponent<ShapeComponent>();
+	divider->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
+	divider->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 165));
+	divider->getShape().setFillColor(sf::Color(200 , 190, 183));
+	divider->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
 	
 }
@@ -143,10 +148,14 @@ void SaveScene::reload() {
 
 void SaveScene::saveGame() {
 	
+	// get all entities and current level index
 	std::vector<std::shared_ptr<Entity>> entities = Scene::getEntities();
 	std::string gameString = "1"; // needs replaced with current level
-	sf::Vector2f pos;
 	
+	
+	// determine positions of each entity relative to 
+	// the map and assign a number between 0 and 1
+	sf::Vector2f pos;
 	for (auto& e : entities) {
 		
 		pos.x = (e->getPosition().x - ls::getOffset().x) / (ls::getWidth() * ls::getTileSize());
@@ -162,14 +171,14 @@ void SaveScene::saveGame() {
 		}
 	}
 	
+	// write level and entities to file
 	ofstream gameFile;
 	gameFile.open (userInput+".txt");
 	gameFile << gameString;
 	gameFile.close();
 	
-	
-	ifstream savedGames ("games.txt");
-	
+	// prepend filename to games list file contents
+	ifstream savedGames ("games.txt");	
 	string filenames = userInput;
 	string filenamesString;
 	if (savedGames.is_open()) {
@@ -181,6 +190,7 @@ void SaveScene::saveGame() {
 		cout << "Unable to open file" << endl; 
 	}
 	
+	// write new games list to file
 	ofstream gamesList;
 	gamesList.open ("games.txt");
 	gamesList << filenames;
