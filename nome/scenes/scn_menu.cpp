@@ -5,6 +5,8 @@
 using namespace sf;
 using namespace std;
 
+
+// for player control labels
 const std::string controls[] = {
     "Left",
     "Right",
@@ -13,8 +15,9 @@ const std::string controls[] = {
 };
 
 
-
 void MenuScene::update(const double& dt) {
+	
+	// go to level 1 scene
 	if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 	{
 		auto jukebox = makeEntity();
@@ -28,6 +31,7 @@ void MenuScene::update(const double& dt) {
 		Engine::changeScene(&level1);	
 	}
 	
+	// go to options scene
 	if ((Keyboard::isKeyPressed(Keyboard::O)) || (Joystick::isButtonPressed(0, 6))) //select
 	{
 		auto jukebox = makeEntity();
@@ -41,6 +45,7 @@ void MenuScene::update(const double& dt) {
 		Engine::changeScene(&options);
 	}
 	
+	// go to load game scene
 	if ((Keyboard::isKeyPressed(Keyboard::L)) || (Joystick::isButtonPressed(0, 3))) //triangle
 	{
 		auto jukebox = makeEntity();
@@ -57,46 +62,64 @@ void MenuScene::update(const double& dt) {
 
 void MenuScene::buildKeys() {
 	
+	/*
+	
+	to display the controls in most cases we need a 
+	background and some text, but if an arrow key needs 
+	displayed we want to use a texture. this method 
+	checks if the key is an arrow, and calls the
+	appropriate function to display it.
+	
+	*/
+	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 	
-	// down
+	// ============= down =============
 	
+	// get the default positions for the key and its description
 	sf::Vector2f kPos = Vector2f(windowSize.x  / 2 + 100, windowSize.y / 2 + 30);
 	sf::Vector2f dPos = Vector2f(windowSize.x  / 2 + 100, windowSize.y / 2 + 60);
 		
+	// the function called depends on whether this is an arrow key
 	if ((Engine::controls[0] > 70) && (Engine::controls[0] < 75)) {		
 		textureKey(3, kPos, dPos);	
 	} else {
 		textKey(3, kPos, dPos, 0);	
 	}
 	
-	// left
+	// ============= left =============
 	
+	// get the default positions for the key and its description
 	kPos = Vector2f(windowSize.x  / 2 + 70, windowSize.y / 2 - 20);
 	dPos = Vector2f(windowSize.x  / 2 + 10, windowSize.y / 2 - 30);
 		
+	// the function called depends on whether this is an arrow key
 	if ((Engine::controls[0] > 70) && (Engine::controls[0] < 75)) {		
 		textureKey(0, kPos, dPos);	
 	} else {
 		textKey(0, kPos, dPos, -1);	
 	}
 	
-	// right
+	// ============= right =============
 	
+	// get the default positions for the key and its description
 	kPos = Vector2f(windowSize.x  / 2 + 130, windowSize.y / 2 - 20);
 	dPos = Vector2f(windowSize.x  / 2 + 190, windowSize.y / 2 - 30);
 		
+	// the function called depends on whether this is an arrow key
 	if ((Engine::controls[0] > 70) && (Engine::controls[0] < 75)) {		
 		textureKey(1, kPos, dPos);	
 	} else {
 		textKey(1, kPos, dPos, 1);	
 	}
 	
-	// up
+	// ============= up =============
 	
+	// get the default positions for the key and its description
 	kPos = Vector2f(windowSize.x  / 2 + 100, windowSize.y / 2 - 70);
 	dPos = Vector2f(windowSize.x  / 2 + 100, windowSize.y / 2 - 135);
 		
+	// the function called depends on whether this is an arrow key
 	if ((Engine::controls[2] > 70) && (Engine::controls[2] < 75)) {		
 		textureKey(2, kPos, dPos);
 	} else {
@@ -109,10 +132,12 @@ void MenuScene::buildKeys() {
 
 void MenuScene::textureKey(int c, sf::Vector2f kPos, sf::Vector2f dPos) {
 
+	// build a key with a texture only and no text
 	std::shared_ptr<sf::Texture> keySprites = Resources::get<sf::Texture>("ui_key.png");
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 	IntRect ir;
 	
+	// set the correct spritesheet offset
 	if (Engine::keyStrings[Engine::controls[c]] == "Left") {
 		ir = IntRect(120,0,40,40);
 	} else if (Engine::keyStrings[Engine::controls[c]] == "Right") {
@@ -123,9 +148,7 @@ void MenuScene::textureKey(int c, sf::Vector2f kPos, sf::Vector2f dPos) {
 		ir = IntRect(240,0,40,40);
 	}
 		
-		
-		
-	// background
+	// control key
 	auto entity = makeEntity();
 	auto shape = entity->addComponent<ShapeComponent>();
 	shape->setShape<sf::RectangleShape>(sf::Vector2f(40, 40));
@@ -146,6 +169,20 @@ void MenuScene::textureKey(int c, sf::Vector2f kPos, sf::Vector2f dPos) {
 
 void MenuScene::textKey(int c, sf::Vector2f kPos, sf::Vector2f dPos, int direction) {
 	
+	/*
+	
+	build a key which could have any length of text 
+	(for example "BackSlash") 
+	
+	the direction parameter	is used to determine if this 
+	key is for the right or left and set its origin to the 
+	point closest to the centre of the controls area so 
+	that it extends outwards
+	
+	it needs improvement
+	
+	*/
+	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 
 	// description
@@ -159,11 +196,7 @@ void MenuScene::textKey(int c, sf::Vector2f kPos, sf::Vector2f dPos, int directi
 	text->setCharacterSize(40);
 	text->SetPosition(dPos);
 	
-		
-		
-		
-		
-	// key text
+	// key text 
 	auto key = makeEntity();
 	auto keyText = key->addComponent<TextComponent>(Engine::keyStrings[Engine::controls[c]], "Rubik-Medium.ttf");
 	keyText->setOrigin(
@@ -229,6 +262,7 @@ void MenuScene::textKey(int c, sf::Vector2f kPos, sf::Vector2f dPos, int directi
 
 void MenuScene::load() {
 	
+	// create top section
 	UIScene::load();
 	
 	// ============================== KEYS ============================== // 
@@ -343,13 +377,13 @@ void MenuScene::load() {
 	pe->setCharacterSize(70);
 	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, windowSize.y - 110});
 	
-	// line
-	auto line2 = makeEntity();
-	auto s2 = line2->addComponent<ShapeComponent>();
-	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 150));
-	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	// footer divider
+	auto footDivider = makeEntity();
+	auto divider = footDivider->addComponent<ShapeComponent>();
+	divider->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
+	divider->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 150));
+	divider->getShape().setFillColor(sf::Color(200 , 190, 183));
+	divider->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
 }
 
