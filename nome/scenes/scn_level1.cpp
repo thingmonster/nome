@@ -388,14 +388,19 @@ std::shared_ptr<DistanceDecision> Level1Scene::decisionTree() {
 		ls::getTileSize() * 1,
 		make_shared<FleeDecision>(),
 		make_shared<DistanceDecision>(
-			player,
-			ls::getTileSize() * 1,
-			make_shared<FleeDecision>(),
-			make_shared<DistanceDecision> (
+			ball,
+			ls::getTileSize() * 2,
+			make_shared<WanderDecision>(),
+			make_shared<DistanceDecision>(		
 				player,
-				ls::getTileSize() * 3,
-				make_shared<WanderDecision>(),
-				make_shared<SeekDecision>()
+				ls::getTileSize() * .5,
+				make_shared<FleeDecision>(),
+				make_shared<DistanceDecision> (
+					player,
+					ls::getTileSize() * 2,
+					make_shared<WanderDecision>(),
+					make_shared<SeekDecision>()
+				)
 			)
 		)
 	);
