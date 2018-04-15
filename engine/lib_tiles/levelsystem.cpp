@@ -41,6 +41,8 @@ std::map<LevelSystem::TILE, sf::IntRect> LevelSystem::_spriteCoords {
 
 
 
+// getters and setters for sizes and dimensions
+
 size_t LevelSystem::getHeight() {
 	return _height;
 }
@@ -57,31 +59,24 @@ sf::Vector2f LevelSystem::getOffset() {
 	return _offset;
 }
 
-void LevelSystem::resize(const std::string& sprites, sf::Vector2f windowSize) {
-	
-	
-	cout << windowSize.x << endl;
-	cout << windowSize.y << endl;
-	
-	if (windowSize.x / _width > windowSize.y / _height) {
-		_tileSize = windowSize.y / _height;
-		_offset = Vector2f((windowSize.x - _tileSize * _width) / 2, 0);
-	} else {
-		_tileSize = windowSize.x / _width;
-		_offset = Vector2f(0, (windowSize.y - _tileSize * _height) / 2);
+
+// getters and setters for colours
+
+sf::Color LevelSystem::getColor(LevelSystem::TILE t) {
+	auto it = _colours.find(t);
+	if (it == _colours.end()) {
+		_colours[t] = Color::Transparent;
 	}
-	
-	for (size_t y = 0; y < LevelSystem::getHeight(); ++y) {
-		for (size_t x = 0; x < LevelSystem::getWidth(); ++x) {
-			
-			Vector2f pos = getTilePosition({x, y});
-			_sprites[x + _width * y]->setPosition(getTilePosition({x, y}));
-			_sprites[x + _width * y]->setSize(Vector2f(_tileSize, _tileSize));
-			
-		}
-	}
-	
+	return _colours[t];
 }
+ 
+void LevelSystem::setColor(LevelSystem::TILE t, sf::Color c) {
+	_colours[t] = c;
+}
+
+
+
+// methods to get tile indexes
 
 sf::Vector2ul LevelSystem::screenCoordsToIndexes(sf::Vector2f pos) {
 	pos.x = (pos.x - _offset.x) / _tileSize;
@@ -89,66 +84,9 @@ sf::Vector2ul LevelSystem::screenCoordsToIndexes(sf::Vector2f pos) {
 	return (Vector2ul)pos;
 }
 
-
-
-LevelSystem::TILE LevelSystem::getTileAt(sf::Vector2f v) {
-	
-	size_t index = (v.y * _width) + v.x;
-	return _tiles[index];
-}
-
-LevelSystem::TILE LevelSystem::getTileFromScreenCoords(sf::Vector2f v) {
-	
-	size_t x = floor(v.x - _offset.x) / _tileSize;
-	size_t y = floor(v.y - _offset.y) / _tileSize;
-	
-	size_t index = (y * _width) + x;
-	return _tiles[index];
-}
-
-LevelSystem::TILE LevelSystem::getTile(sf::Vector2ul v) {
-	
-	size_t index = (v.y * _width) + v.x;
-	return _tiles[index];
-}
-
-sf::Vector2f LevelSystem::getTilePosition(sf::Vector2ul v) {
-	
-	float xPos = (v.x * _tileSize) + _offset.x;
-	float yPos = v.y * _tileSize + _offset.y;
-	
-	return {xPos, yPos};	
-}
-
-sf::Vector2f LevelSystem::getTileCentre(sf::Vector2ul v) {
-	
-	float xPos = v.x * _tileSize + _tileSize / 2 + _offset.x;
-	float yPos = v.y * _tileSize + _tileSize / 2 + _offset.y;
-	return {xPos, yPos};	
-}
-
-sf::Vector2f LevelSystem::getTileCoordinates(TILE t) {
-	
-	size_t index;
-	
-	for (size_t i = 0; i < _width * _height; i++) {
-		if (_tiles[i] == t) {
-			index = i;
-		}
-	}
-	
-	size_t x = (index % _width);
-	size_t y = floor(index / _width);
-	
-	sf::Vector2f coords = getTilePosition({x,y});
-	
-	coords.x += _tileSize / 2 + _offset.x;
-	coords.y += _tileSize / 2 + _offset.y;
-	
-	return coords;
-}
-
 vector<sf::Vector2ul> LevelSystem::findTiles(TILE t) {
+	
+	// gets the indexes of all tiles of this type
 	
 	vector<sf::Vector2ul> coords;
 	
@@ -171,29 +109,74 @@ vector<sf::Vector2ul> LevelSystem::findTiles(TILE t) {
 	return coords;
 }
 
-sf::Color LevelSystem::getColor(LevelSystem::TILE t) {
-	auto it = _colours.find(t);
-	if (it == _colours.end()) {
-		_colours[t] = Color::Transparent;
+
+// methods to get tile type
+
+LevelSystem::TILE LevelSystem::getTileAt(sf::Vector2f v) {
+	
+	size_t index = (v.y * _width) + v.x;
+	return _tiles[index];
+}
+
+LevelSystem::TILE LevelSystem::getTileFromScreenCoords(sf::Vector2f v) {
+	
+	size_t x = floor(v.x - _offset.x) / _tileSize;
+	size_t y = floor(v.y - _offset.y) / _tileSize;
+	
+	size_t index = (y * _width) + x;
+	return _tiles[index];
+}
+
+LevelSystem::TILE LevelSystem::getTile(sf::Vector2ul v) {
+	
+	size_t index = (v.y * _width) + v.x;
+	return _tiles[index];
+}
+
+
+// methods to get tile positioning
+
+sf::Vector2f LevelSystem::getTilePosition(sf::Vector2ul v) {
+	
+	float xPos = (v.x * _tileSize) + _offset.x;
+	float yPos = v.y * _tileSize + _offset.y;
+	
+	return {xPos, yPos};	
+}
+
+sf::Vector2f LevelSystem::getTileCentre(sf::Vector2ul v) {
+	
+	float xPos = v.x * _tileSize + _tileSize / 2 + _offset.x;
+	float yPos = v.y * _tileSize + _tileSize / 2 + _offset.y;
+	return {xPos, yPos};	
+}
+
+sf::Vector2f LevelSystem::getTileCoordinates(TILE t) {
+	
+	// returns the coordinates of the last tile to match this type
+	
+	size_t index;
+	
+	for (size_t i = 0; i < _width * _height; i++) {
+		if (_tiles[i] == t) {
+			index = i;
+		}
 	}
-	return _colours[t];
-}
- 
-sf::IntRect LevelSystem::getSpriteCoords(LevelSystem::TILE t) {
-	auto it = _spriteCoords.find(t);
-	if (it == _spriteCoords.end()) {
-		_spriteCoords[t] = sf::IntRect(300,0,150,150);
-	}
-	return _spriteCoords[t];
-}
- 
- 
-void LevelSystem::setColor(LevelSystem::TILE t, sf::Color c) {
-	_colours[t] = c;
+	
+	size_t x = (index % _width);
+	size_t y = floor(index / _width);
+	
+	sf::Vector2f coords = getTilePosition({x,y});
+	
+	coords.x += _tileSize / 2 + _offset.x;
+	coords.y += _tileSize / 2 + _offset.y;
+	
+	return coords;
 }
 
+ 
 
-
+// methods to load or reload map and sprites
 
 void LevelSystem::loadLevel(const std::string &path, const std::string &sprites, sf::Vector2f windowSize) {
 	
@@ -251,6 +234,9 @@ void LevelSystem::loadLevel(const std::string &path, const std::string &sprites,
 	std::copy(temp_tiles.begin(), temp_tiles.end(), &_tiles[0]);
 	
 	
+	// calculate tile size and offset depending  
+	// which axis will constrain the map's size
+	
 	if (windowSize.x / w > windowSize.y / h) {
 		_tileSize = windowSize.y / h;
 		_offset = Vector2f((windowSize.x - _tileSize * w) / 2, 0);
@@ -259,17 +245,14 @@ void LevelSystem::loadLevel(const std::string &path, const std::string &sprites,
 		_offset = Vector2f(0, (windowSize.y - _tileSize * h) / 2);
 	}
 	
-	
-	
-	cout << "Level " << path << " Loaded. " << w << "x" << h << std::endl;
 	buildSprites(sprites);
 
 }
 
 void LevelSystem::buildSprites(const std::string &sprites) {
 	
+	// remove existing sprites and load textures file
 	_sprites.clear();
-	
 	texture.loadFromFile(sprites);
 	
 	for (size_t y = 0; y < LevelSystem::getHeight(); ++y) {
@@ -277,6 +260,8 @@ void LevelSystem::buildSprites(const std::string &sprites) {
 			
 			auto s = make_unique<sf::RectangleShape>();
 			
+			// use indexes to assign a colour, position and 
+			// sprite sheet offset
 			s->setPosition(getTilePosition({x, y}));
 			s->setSize(Vector2f(_tileSize, _tileSize));
 			s->setFillColor(getColor(getTile({x, y})));
@@ -290,6 +275,42 @@ void LevelSystem::buildSprites(const std::string &sprites) {
 		}
 	}
 }
+
+sf::IntRect LevelSystem::getSpriteCoords(LevelSystem::TILE t) {
+	
+	// used internally to determine sprite sheet offset
+	
+	auto it = _spriteCoords.find(t);
+	if (it == _spriteCoords.end()) {
+		_spriteCoords[t] = sf::IntRect(300,0,150,150);
+	}
+	return _spriteCoords[t];
+}
+ 
+void LevelSystem::resize(const std::string& sprites, sf::Vector2f windowSize) {
+	
+	// recalculate tile size and offset	
+	if (windowSize.x / _width > windowSize.y / _height) {
+		_tileSize = windowSize.y / _height;
+		_offset = Vector2f((windowSize.x - _tileSize * _width) / 2, 0);
+	} else {
+		_tileSize = windowSize.x / _width;
+		_offset = Vector2f(0, (windowSize.y - _tileSize * _height) / 2);
+	}
+	
+	// update all sprite sizes and positions
+	for (size_t y = 0; y < LevelSystem::getHeight(); ++y) {
+		for (size_t x = 0; x < LevelSystem::getWidth(); ++x) {
+			
+			Vector2f pos = getTilePosition({x, y});
+			_sprites[x + _width * y]->setPosition(getTilePosition({x, y}));
+			_sprites[x + _width * y]->setSize(Vector2f(_tileSize, _tileSize));
+			
+		}
+	}
+	
+}
+
 
 
 		

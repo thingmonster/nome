@@ -5,6 +5,15 @@
 #include<cmath>
 #include<vector>
 
+/*
+
+most of these methods are the same as in the platformer
+maths library, although deg2rad was our own effort - hope 
+it's correct! - and we wrote vector2degrees and 
+inverseVector2degrees for this game
+
+*/
+
 const double PI = 3.14159265359;
 
 namespace sf {
@@ -60,12 +69,9 @@ namespace sf {
 	}
 	
 	// Vector to degrees
-	static float vector2degrees(sf::Vector2f v) {
-		
+	static float vector2degrees(sf::Vector2f v) {		
 		float angle = atan2 (v.y,v.x) * 180 / PI;		
-		angle += 90;
-		
-		
+		angle += 90;		
 		return angle;
 	}
 	
@@ -74,8 +80,7 @@ namespace sf {
 		
 		v.y *= -1;
 		float angle = atan2 (v.y,v.x) * 180 / PI;		
-		angle += 90;
-				
+		angle += 90;				
 		return angle;
 	}
 	

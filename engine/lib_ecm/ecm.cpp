@@ -57,6 +57,7 @@ Entity::Entity(Scene* s, std::string tag, Vector2f pos) : scene(s), _fordeletion
 
 Entity::~Entity() {
 	
+	// identical to the platformer destructor
 	int deli = 0;
   while (deli != _components.size()) {
 		deli = _components.size();
@@ -81,13 +82,14 @@ Entity::~Entity() {
 
 void EntityManager::update(double dt) {
 	
+	// delete entities as necessary
 	for (int i = list.size() - 1; i >= 0; i--) {
 		if (list[i]->is_fordeletion()) {
 			list.erase(list.begin() + i);
-			cout << i << endl;
 		}
 	}
 	
+	// update entities
 	for (auto &e : list) {
 		e->update(dt);
 	}

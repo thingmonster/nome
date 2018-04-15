@@ -12,6 +12,11 @@
 using namespace sf;
 using namespace std;
 
+/*
+
+the component, entity and scene classes are defined in this file
+
+*/
 
 
 class Entity;

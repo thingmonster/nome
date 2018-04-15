@@ -15,27 +15,35 @@ class LevelSystem {
 		static void loadLevel(const std::string& path, const std::string& sprites, sf::Vector2f windowSize = {800.f, 600.f});
 		static void render(sf::RenderWindow &window);
 		
+		// colours and textures
 		static sf::IntRect getSpriteCoords(TILE t);
 		static sf::Color getColor(TILE t);
 		static void setColor(TILE t, sf::Color c);
 		static sf::Texture texture;
 		
+		// map and tile dimensions
 		static size_t getWidth();
 		static size_t getHeight();
 		static float getTileSize();
 		static void resize(const std::string& sprites, sf::Vector2f windowSize = {800.f, 600.f});
 		static sf::Vector2f getOffset();
+		
+		// convert between screen coordinates and tile indexes
 		static sf::Vector2ul screenCoordsToIndexes(sf::Vector2f);
 		static sf::Vector2f getCoordsFromIndex(size_t index);
 		
+		// get tile type from indexes or screen coordinates
 		static TILE getTile(sf::Vector2ul v);
 		static TILE getTileAt(sf::Vector2f);
 		static TILE getTileFromScreenCoords(sf::Vector2f);
+		
+		// get tile positioning
 		static sf::Vector2f getTilePosition(sf::Vector2ul v);
 		static sf::Vector2f getTileCentre(sf::Vector2ul v);
-		
-		static std::vector<sf::Vector2ul> findTiles(TILE t);
 		static sf::Vector2f getTileCoordinates(TILE t);
+		
+		// get all tiles of a type
+		static std::vector<sf::Vector2ul> findTiles(TILE t);
 		
 
 		

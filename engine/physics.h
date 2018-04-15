@@ -3,7 +3,6 @@
 #include "Box2D/Box2D.h"
 #include <SFML/Graphics.hpp>
 #include "engine.h"
-// #include "system_renderer.h"
 
 using namespace std;
 using namespace sf;
