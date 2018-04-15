@@ -37,7 +37,11 @@ bool Entity::is_fordeletion() {
 
 
 
-void Entity::update(const double dt) {}
+void Entity::update(const double dt) {
+	for (auto &c : _components) {
+		c->update(dt);
+	}
+}
 
 void Entity::render() {
 	for (auto& c : _components) {
@@ -85,9 +89,7 @@ void EntityManager::update(double dt) {
 	}
 	
 	for (auto &e : list) {
-		for (auto &c : e->_components) {
-			c->update(dt);
-		}
+		e->update(dt);
 	}
 }
 	
