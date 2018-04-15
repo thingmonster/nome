@@ -63,7 +63,7 @@ class SeekState : public State {
 	
 	public:
 		SeekState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player, float speed)
-			: _speed(speed), _steering(owner.get(), player.get(), ls::getTileSize()) {}
+			: _speed(speed), _steering(owner.get(), player.get(), 1) {}
 		void execute(Entity*, double) noexcept override;
 };
 
@@ -75,7 +75,7 @@ class FleeState : public State {
 	
 	public:
 		FleeState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player, float speed)
-			: _speed(speed), _steering(owner.get(), player.get(), ls::getTileSize()) {}
+			: _speed(speed), _steering(owner.get(), player.get(), 1) {}
 		void execute(Entity*, double) noexcept override;
 };
 
@@ -87,7 +87,7 @@ class WanderState : public State {
 	
 	public:
 		WanderState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player, float speed)
-			: _speed(speed), _steering(owner.get(), player.get(), ls::getTileSize()) {}
+			: _speed(speed), _steering(owner.get(), player.get(), 1) {}
 		void execute(Entity*, double) noexcept override;
 };
 

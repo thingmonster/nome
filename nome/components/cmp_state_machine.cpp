@@ -1,4 +1,5 @@
 #include "cmp_state_machine.h"
+#include "cmp_physics.h"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ and the individual states it uses
 
 /* ============================ STATE MACHINE ============================ */
 
-// state machine methods drawn directory from lab book examples
+// state machine methods drawn directly from lab book examples
 
 StateMachineComponent::StateMachineComponent(Entity *p)
  : _current_state(nullptr), Component(p) {}
@@ -65,10 +66,10 @@ void SeekState::execute(Entity *owner, double dt) noexcept {
 	// to determine entity direction and rotation
 	
 	auto output = _steering.getSteering();
-	auto movement = owner->getComponents<MovementComponent>();
-	movement[0]->move((output.direction * _speed * (float)dt));
-	movement[0]->setDirection( output.direction);
-		
+	
+	auto physics = owner->getComponents<EnemyPhysicsComponent>();
+	physics[0]->setDirection(output.direction);
+	
 	auto shape = owner->getComponents<ShapeComponent>();
 	shape[0]->getShape().setRotation(output.rotation);
 }
@@ -79,9 +80,9 @@ void FleeState::execute(Entity *owner, double dt) noexcept {
 	// to determine entity direction and rotation
 	
 	auto output = _steering.getSteering();
-	auto movement = owner->getComponents<MovementComponent>();
-	movement[0]->move((output.direction * _speed * (float)dt));
-	movement[0]->setDirection( output.direction);
+	
+	auto physics = owner->getComponents<EnemyPhysicsComponent>();
+	physics[0]->setDirection(output.direction);
 	
 	auto shape = owner->getComponents<ShapeComponent>();
 	shape[0]->getShape().setRotation(output.rotation);
@@ -93,22 +94,24 @@ void WanderState::execute(Entity *owner, double dt) noexcept {
 	// to determine entity direction and rotation
 	
 	// get current direction
-	auto movement = owner->getComponents<MovementComponent>();
-	sf::Vector2f direction = movement[0]->getDirection();
+	auto physics = owner->getComponents<EnemyPhysicsComponent>();
+	sf::Vector2f direction = physics[0]->getDirection();
 	
 	// use it to get new direction
 	auto output = _steering.getSteering(direction);
-	movement[0]->setDirection( output.direction);
+	physics[0]->setDirection(output.direction);
+	
 	
 	// if move is not valid call WanderSteering with no direction
 	// to change direction
+	auto movement = owner->getComponents<MovementComponent>();
 	if (!movement[0]->move((output.direction * _speed * (float)dt)))  {
 		output = _steering.getSteering();
 		movement[0]->move(output.direction * _speed * (float)dt);
 	}
 	
-	// update movement direction 
-	movement[0]->setDirection( output.direction);
+	// update physics direction 
+	physics[0]->setDirection(output.direction);
 	
 	// update shape rotation
 	auto shape = owner->getComponents<ShapeComponent>();

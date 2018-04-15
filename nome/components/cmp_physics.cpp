@@ -126,12 +126,12 @@ const sf::Vector2f PhysicsComponent::getVelocity() const {
 
 
 
-PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) 
+PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size, float speed) 
 : PhysicsComponent(p, true, size) {
 	// based mostly on platformer player physics component constructor
   _size = sv2_to_bv2(size, true);
   _maxVelocity = Vector2f(400.f, 400.f);
-  _speed = 50.f;
+  _speed = speed;
   _body->SetSleepingAllowed(false);
   _body->SetFixedRotation(false);
 	_fixture->SetRestitution(.1);
@@ -283,25 +283,42 @@ bool PlayerPhysicsComponent::checkContacts() const {
 
 
 
-EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p, const Vector2f& size) 
+EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p, const Vector2f& size, float speed) 
 : PhysicsComponent(p, true, size) {
   // based mostly on platformer player physics component constructor
   _size = sv2_to_bv2(size, true);
   _maxVelocity = Vector2f(400.f, 400.f);
-  _speed = 30.f;
+  _speed = speed;
   _body->SetSleepingAllowed(false);
   _body->SetFixedRotation(true);
   // Bullet items have higher-res collision detection
   _body->SetBullet(true);
 }
 
+void EnemyPhysicsComponent::setDirection(Vector2f direction) {
+	_direction = direction;
+}
+
+Vector2f EnemyPhysicsComponent::getDirection() {
+	return _direction;
+}
+
+
 void EnemyPhysicsComponent::update(double dt) {
-	//check collistions
+	
+	//check collisions
 	checkContacts();
-	// move to position determined by state machine and steering behaviour
-	// this could be updated to calculate the direction by comparing body and entity positions,
-	// applying an impulse in that direction, and then updating entity position
-	_body->SetTransform(sv2_to_bv2(invert_height(_parent->getPosition())), 1 );
+	
+	// move body
+	impulse({_direction.x * _speed * (float)dt, _direction.y * _speed * (float)dt});
+	
+	// apply extra dampening to enemy body
+	dampen({0.75f, 0.75f});
+	
+	// update parent entity's position
+  PhysicsComponent::update(dt);
+	
+	
 }
 
 bool EnemyPhysicsComponent::checkContacts() const {

@@ -299,7 +299,10 @@ void Level1Scene::makePlayer(std::shared_ptr<Entity> player) {
 	// add physics component if not present
 	auto checkPhysics = player->getComponents<PhysicsComponent>();
 	if (checkPhysics.size() == 0) {
-		player->addComponent<PlayerPhysicsComponent>(Vector2f(ls::getTileSize() / 3, ls::getTileSize() / 3));
+		player->addComponent<PlayerPhysicsComponent>(
+			Vector2f(ls::getTileSize() / 3, ls::getTileSize() / 3),
+			ls::getTileSize() / 1.1
+		);
 	}
 }
 
@@ -353,7 +356,10 @@ void Level1Scene::makeEnemy(std::shared_ptr<Entity> enemy) {
 	// add physics component if not present
 	auto checkPhysics = enemy->getComponents<EnemyPhysicsComponent>();
 	if (checkPhysics.size() == 0) {
-		enemy->addComponent<EnemyPhysicsComponent>(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
+		enemy->addComponent<EnemyPhysicsComponent>(
+			Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4), 
+			ls::getTileSize() / 2
+		);
 	}
 }
 
@@ -374,8 +380,6 @@ void Level1Scene::spawn() {
 	entity->setPosition(ls::getTileCentre(ls::findTiles(ls::HOLE)[0]));
 	makeEnemy(entity);
 	addEnemyAI(entity);
-	
-	auto physics = entity->addComponent<EnemyPhysicsComponent>(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
 	
 }
 
@@ -467,7 +471,7 @@ std::shared_ptr<DistanceDecision> Level1Scene::decisionTree() {
 		make_shared<FleeDecision>(),
 		make_shared<DistanceDecision>(
 			ball,
-			ls::getTileSize() * 2,
+			ls::getTileSize() * 1.5,
 			make_shared<WanderDecision>(),
 			make_shared<DistanceDecision>(		
 				player,

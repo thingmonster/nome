@@ -44,7 +44,7 @@ class PlayerPhysicsComponent : public PhysicsComponent {
 
 	public:
 		void update(double dt) override;
-		explicit PlayerPhysicsComponent(Entity* p, const sf::Vector2f& size);
+		explicit PlayerPhysicsComponent(Entity* p, const sf::Vector2f& size, float speed);
 		PlayerPhysicsComponent() = delete;
 		
 };
@@ -55,12 +55,15 @@ class EnemyPhysicsComponent : public PhysicsComponent {
 		b2Vec2 _size;
 		sf::Vector2f _maxVelocity;
 		float _speed;
+		Vector2f _direction;
 		bool checkContacts() const;
 
 	public:
 		void update(double dt) override;
-		explicit EnemyPhysicsComponent(Entity* p, const sf::Vector2f& size);
+		explicit EnemyPhysicsComponent(Entity* p, const sf::Vector2f& size, float speed);
 		EnemyPhysicsComponent() = delete;
+		void setDirection(Vector2f direction);
+		Vector2f getDirection();
 		
 };
 
