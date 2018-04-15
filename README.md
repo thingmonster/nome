@@ -20,9 +20,8 @@ Download the <a href="https://github.com/thingmonster/nome/releases/download/v0.
 ## Screenshots
 [![forthebadge](https://forthebadge.com/images/badges/designed-in-ms-paint.svg)](https://forthebadge.com)
 
-![image](https://user-images.githubusercontent.com/24362260/38470049-8bb83bd8-3b55-11e8-87a6-e9020be6b5e0.png)
+![image](https://user-images.githubusercontent.com/24362260/38784945-4e273870-4111-11e8-9926-7f9e115df231.png)
 
-![image](https://user-images.githubusercontent.com/24362260/38470037-6ad6ff4e-3b55-11e8-989d-e44cbaeb0155.png)
-
+![image](https://user-images.githubusercontent.com/24362260/38784950-5c494678-4111-11e8-891b-2ba05d5ceaad.png)
 
 
