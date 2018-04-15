@@ -290,6 +290,32 @@ void MenuScene::load() {
 	load->SetPosition({140, 222});
 	
 	
+	// pause key background
+	auto pkb = makeEntity();
+	auto pb = pkb->addComponent<ShapeComponent>();
+	pb->setShape<sf::RectangleShape>(sf::Vector2f(40, 40));
+	pb->getShape().setOrigin(Vector2f(20,20));
+	pb->getShape().setFillColor(sf::Color(255,255,255));
+	pb->setTexture(keySprites, sf::IntRect(0,0,40,40));
+	pb->getShape().setPosition(sf::Vector2f(100, 300));
+	
+	// pause key text
+	auto pkt = makeEntity();
+	auto pt = pkt->addComponent<TextComponent>("P", "DroidSansMono.ttf");
+	pt->setOrigin(pt->getText().getLocalBounds().width / 2, pt->getText().getLocalBounds().height / 2);
+	pt->setColor(sf::Color(72,62,55));
+	pt->setCharacterSize(25);
+	pt->SetPosition({100, 295});
+	
+	// pause key description
+	auto oslPause = makeEntity();
+	auto pause = oslPause->addComponent<TextComponent>("Pause Game", "WorstveldSling.ttf");
+	pause->setOrigin(0, o->getText().getLocalBounds().height / 2);
+	pause->setColor(sf::Color(200 , 190, 183));
+	pause->setCharacterSize(40);
+	pause->SetPosition({140, 282});
+	
+	
 	// ============================== CONTROLS ============================== // 
 	
 	buildKeys();
