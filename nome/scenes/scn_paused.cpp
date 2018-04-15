@@ -32,6 +32,8 @@ void PausedScene::update(const double& dt) {
 		{
 			//do nothing
 		}
+		
+		Engine::endGame();
 		Engine::changeScene(&menu);
 	}
 	
