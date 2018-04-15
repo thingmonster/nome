@@ -2,7 +2,12 @@
 
 #include "cmp_shape.h"
 
+/* 
 
+just getters and setters, render, update and 
+constructor in this class
+
+*/
 
 using namespace sf;
 using namespace std;

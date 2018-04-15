@@ -19,7 +19,6 @@ class DecisionTreeComponent : public Component {
 		DecisionTreeComponent() = delete;
 		
 		void setDecisionTree(std::shared_ptr<DecisionTreeNode> tree);
-		// void setDecisionTree();
 		
 };
 

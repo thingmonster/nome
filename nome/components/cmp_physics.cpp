@@ -9,7 +9,15 @@ using namespace Physics;
 
 
 PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : Component(p), _dynamic(dyn) {
+	
+	/*
+	
+	this method does not differ much from the platformer
+	component in the module repo, just a couple of settings
+	tweaked
 
+	*/
+	
   b2BodyDef BodyDef;
   BodyDef.type = _dynamic ? b2_dynamicBody : b2_staticBody;
   BodyDef.position = sv2_to_bv2(invert_height(p->getPosition()));
@@ -36,6 +44,7 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 }
 
 PhysicsComponent::~PhysicsComponent() {
+	// slight changes because we were getting runtime exceptions
 	if (Physics::GetWorld() != nullptr) {
 		_body->SetActive(false);
 		Physics::GetWorld()->DestroyBody(_body);
@@ -45,21 +54,21 @@ PhysicsComponent::~PhysicsComponent() {
 
 void PhysicsComponent::update(double dt) {
   _parent->setPosition(invert_height(bv2_to_sv2(_body->GetPosition())));
-	// _parent->setRotation((180 / b2_pi) * _body->GetAngle());	
+	// very slight dampening applied to all bodies
 	dampen({0.995f, 0.995f});	
 }
 
-void PhysicsComponent::render() {
-  // cout << "physics render" << endl;
-}
+void PhysicsComponent::render() {}
 
 
 void PhysicsComponent::impulse(const sf::Vector2f& i) {
+	// identical to platformer
   auto a = b2Vec2(i.x, i.y * -1.0f);
 	_body->ApplyLinearImpulseToCenter(a, true);
 }
 
 void PhysicsComponent::dampen(const sf::Vector2f& s) {
+	// identical to platformer
   auto vel = _body->GetLinearVelocity();
   vel.x *= s.x;
   vel.y *= s.y;
@@ -69,6 +78,8 @@ void PhysicsComponent::dampen(const sf::Vector2f& s) {
 
 std::vector<const b2Contact const*> PhysicsComponent::getTouching() const {
   
+	// identical to platformer
+	
 	std::vector<const b2Contact const*> ret;
   b2ContactEdge* edge = _body->GetContactList();
 
@@ -84,22 +95,27 @@ std::vector<const b2Contact const*> PhysicsComponent::getTouching() const {
 }
 
 bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
+	// not yet implemented :(
 	return true;
 }
 
 bool PhysicsComponent::isTouching(const PhysicsComponent& pc, b2Contact const* bc) const {
+	// not yet implemented :(
 	return true;
 }
 
 void PhysicsComponent::setRestitution(float r) {
+	// identical to platformer
 	_fixture->SetRestitution(r);
 }
 
 void PhysicsComponent::setVelocity(const sf::Vector2f& v) {
+	// identical to platformer
 	_body->SetLinearVelocity(sv2_to_bv2(v, true));
 }
 
 const sf::Vector2f PhysicsComponent::getVelocity() const {
+	// identical to platformer
   return bv2_to_sv2(_body->GetLinearVelocity(), true);
 }
 
@@ -110,7 +126,9 @@ const sf::Vector2f PhysicsComponent::getVelocity() const {
 
 
 
-PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
+PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) 
+: PhysicsComponent(p, true, size) {
+	// based mostly on platformer player physics component constructor
   _size = sv2_to_bv2(size, true);
   _maxVelocity = Vector2f(400.f, 400.f);
   _speed = 50.f;
@@ -118,14 +136,18 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) 
   _body->SetFixedRotation(false);
 	_fixture->SetRestitution(.1);
   //Bullet items have higher-res collision detection
-  // _body->SetBullet(true);
+  _body->SetBullet(true);
 }
 
 void PlayerPhysicsComponent::update(double dt) {
 	
   const auto pos = _parent->getPosition();
 	
-	if ((Keyboard::isKeyPressed(Keyboard::Up)) || (Joystick::getAxisPosition(0, Joystick::Axis::Y) < -60.00f))//up 
+	// ============ go up ============
+	if (
+		(Keyboard::isKeyPressed(Keyboard::Up)) || 
+		(Joystick::getAxisPosition(0, Joystick::Axis::Y) < -60.00f)//up 
+	)
 	{
 		if (getVelocity().x < _maxVelocity.x) {
 			impulse({0, -(float)(dt * _speed)});
@@ -137,7 +159,13 @@ void PlayerPhysicsComponent::update(double dt) {
 			impulse({ 0, -(float)(dt * (_speed / 3)) });
 		}
 	}
-	if ((Keyboard::isKeyPressed(Keyboard::Down)) || (Joystick::getAxisPosition(0, Joystick::Axis::Y) > 60.00f))//down
+	
+	
+	// ============ go down ============
+	if (
+		(Keyboard::isKeyPressed(Keyboard::Down)) || 
+		(Joystick::getAxisPosition(0, Joystick::Axis::Y) > 60.00f)//down
+	)
 	{
 		if (getVelocity().x < _maxVelocity.x) {
 			impulse({0, (float)(dt * _speed)});
@@ -149,7 +177,13 @@ void PlayerPhysicsComponent::update(double dt) {
 			impulse({ 0, (float)(dt * (_speed / 3)) });
 		}
 	}
-	if ((Keyboard::isKeyPressed(Keyboard::Right)) || (Joystick::getAxisPosition(0, Joystick::Axis::X) > 60.00f))//right
+	
+	
+	// ============ go right ============
+	if (
+		(Keyboard::isKeyPressed(Keyboard::Right)) || 
+		(Joystick::getAxisPosition(0, Joystick::Axis::X) > 60.00f)//right
+	)
 	{
 		if (getVelocity().x < _maxVelocity.x) {
 			impulse({(float)(dt * _speed), 0});
@@ -161,7 +195,13 @@ void PlayerPhysicsComponent::update(double dt) {
 			impulse({ (float)(dt * (_speed / 3)), 0 });
 		}
 	}
-	if ((Keyboard::isKeyPressed(Keyboard::Left)) || (Joystick::getAxisPosition(0, Joystick::Axis::X) < -60.00f))//left
+	
+	
+	// ============ go left ============
+	if (
+		(Keyboard::isKeyPressed(Keyboard::Left)) || 
+		(Joystick::getAxisPosition(0, Joystick::Axis::X) < -60.00f)//left
+	)
 	{
 		if (getVelocity().x > -_maxVelocity.x) {
 			impulse({-(float)(dt * _speed), 0});
@@ -174,18 +214,23 @@ void PlayerPhysicsComponent::update(double dt) {
 		}
 	}
 	
+	// apply extra dampening to player body
 	dampen({0.92f, 0.92f});
 	
+	// check for contact with other bodies
 	checkContacts();
 
+	// clamp velocity?
   auto v = getVelocity();
   v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
   v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
   setVelocity(v);
 
+	// set parent entity's rotation
 	auto shape = _parent->getComponents<ShapeComponent>();
 	shape[0]->setRotation(inverseVector2degrees(v));
 	
+	// update parent entity's position
   PhysicsComponent::update(dt);
 }
 
@@ -193,7 +238,11 @@ bool PlayerPhysicsComponent::checkContacts() const {
 	
 	auto touch = getTouching();
 	const auto& pos = _body->GetPosition();
+	
+	// for each body touched
 	for (const auto& contact : touch) {
+		
+		// get entity tags from user data
 		
 		std::string tagA;
 		std::string tagB;
@@ -214,9 +263,9 @@ bool PlayerPhysicsComponent::checkContacts() const {
 			}
 		}
 		
+		// this is the player so we know that if he touches a beetle he's dead
 		if ((tagA == "beetle") || (tagB == "beetle")) {
 			_parent->setVisible(false);
-			cout << "beetle / player" << endl;
 			Engine::changeScene(&death);
 		}
 		
@@ -234,7 +283,9 @@ bool PlayerPhysicsComponent::checkContacts() const {
 
 
 
-EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
+EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p, const Vector2f& size) 
+: PhysicsComponent(p, true, size) {
+  // based mostly on platformer player physics component constructor
   _size = sv2_to_bv2(size, true);
   _maxVelocity = Vector2f(400.f, 400.f);
   _speed = 30.f;
@@ -245,16 +296,22 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p, const Vector2f& size) : 
 }
 
 void EnemyPhysicsComponent::update(double dt) {
-	
+	//check collistions
 	checkContacts();
+	// move to position determined by state machine and steering behaviour
+	// this could be updated to calculate the direction by comparing body and entity positions,
+	// applying an impulse in that direction, and then updating entity position
 	_body->SetTransform(sv2_to_bv2(invert_height(_parent->getPosition())), 1 );
 }
 
 bool EnemyPhysicsComponent::checkContacts() const {
 	auto touch = getTouching();
 	const auto& pos = _body->GetPosition();
+	
+	// for each body that's been touched
 	for (const auto& contact : touch) {
 		
+		// get the entity's tag from user data
 		std::string tagA;
 		std::string tagB;
 		
@@ -274,11 +331,13 @@ bool EnemyPhysicsComponent::checkContacts() const {
 			}
 		}
 		
+		// this is a beetle so we know that if it's touched the ball it's dead
 		if ((tagA == "ball") || (tagB == "ball")) {
+			
+			// should be updated so that the beetle died but is not deleted immediately
 			Engine::getLevel()->setDeathCount();
 			_parent->setVisible(false);
 			_parent->setForDelete();
-			cout << "beetle / ball" << endl;
 		}
 		
 		

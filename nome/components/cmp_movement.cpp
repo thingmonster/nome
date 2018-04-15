@@ -1,6 +1,13 @@
 
 #include "cmp_movement.h"
 
+/*
+
+mostly drawn directly from examples in the workbook, but move method
+checks ahead for valid position and returns a boolean so alternative
+action can be taken if the move does not succeed
+
+*/
 
 using namespace sf;
 
@@ -10,13 +17,12 @@ void MovementComponent::update(double dt) {
 MovementComponent::MovementComponent(Entity* p) : _speed(ls::getTileSize()), Component(p) {}
 
 bool MovementComponent::validMove(const sf::Vector2f& pos) {
-	
-	
-	
 	return (LevelSystem::getTileFromScreenCoords(pos) != LevelSystem::WALL);
 }
 
 bool MovementComponent::move(const sf::Vector2f& p) {
+	
+	// look ahead just a little bit so we don't get stuck in walls
 	auto pp = _parent->getPosition() + p;
 	if (validMove(Vector2f(pp.x + (ls::getTileSize() / 400 * _direction.x), pp.y + (ls::getTileSize() / 400 * _direction.y)))) {
 		_parent->setPosition(pp);

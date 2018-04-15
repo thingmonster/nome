@@ -1,6 +1,11 @@
 
 #include "cmp_pathfinding.h"
 
+/*
+
+functional but sadly not implemented in the game - no time :(
+
+*/
 
 using namespace std;
 using namespace sf;

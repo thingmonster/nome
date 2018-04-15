@@ -5,6 +5,13 @@
 #include "../classes/steering.h"
 #include <SFML/Graphics.hpp>
 
+/*
+
+this class is not used
+
+*/
+
+
 using namespace sf;
 using namespace std;
 

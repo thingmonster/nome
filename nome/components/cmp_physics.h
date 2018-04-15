@@ -4,6 +4,12 @@
 #include "../game.h"
 #include <Box2D/Dynamics/b2Body.h>
 
+/* 
+
+this file contains definitions for physics component and 
+also player physics component and enemy physics component
+
+*/
 
 class PhysicsComponent : public Component {
 	protected:

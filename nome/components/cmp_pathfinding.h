@@ -4,6 +4,12 @@
 #include "levelsystem.h"
 #include "../classes/astar.h"
 
+/*
+
+functional, but not used
+
+*/
+
 class PathfindingComponent : public Component {
 	
 	protected:

@@ -15,8 +15,3 @@ void DecisionTreeComponent::update(double dt) {
 void DecisionTreeComponent::setDecisionTree(std::shared_ptr<DecisionTreeNode> tree) {
 	DecisionTreeComponent::_decisionTree = tree;
 }
-
-// void DecisionTreeComponent::setDecisionTree() {
-	// cout << "dt" << endl;
-	// DecisionTreeComponent::_decisionTree = tree;
-// }

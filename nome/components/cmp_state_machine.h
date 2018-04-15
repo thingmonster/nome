@@ -7,13 +7,21 @@
 #include "cmp_movement.h"
 #include "../classes/steering.h"
 
+/* 
+
+this file contains definitions for the State class, 
+StateMachineComponent class and the individual classes
+for each state
+
+*/
+
 
 class State {
-	
-		
+			
 	public:
 		virtual ~State() = default;
 		virtual void execute(Entity*, double) noexcept = 0;
+
 };
  
 
@@ -37,13 +45,10 @@ class StateMachineComponent : public Component {
 			return _current_state_name;
 		}
 		
-		
 };
 
 
 class StationaryState : public State {
-	
-	private:
 	
 	public:
 		StationaryState() = default;
@@ -55,7 +60,6 @@ class SeekState : public State {
 	private:
 		SeekSteering _steering;
 		float _speed;
-		int _direction;
 	
 	public:
 		SeekState(std::shared_ptr<Entity> owner, std::shared_ptr<Entity> player, float speed)

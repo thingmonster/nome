@@ -4,8 +4,21 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
+using namespace sf;
+using namespace std;
+
+/* 
+
+just getters and setters, render, update and 
+constructor in this class
+
+*/
+
+
+
 TextComponent::TextComponent(Entity* const p, const std::string& str, const std::string& font)
  : Component(p), _string(str) {
+	// constructor assigns font using resources template
   _text.setString(_string);
   _font = Resources::get<sf::Font>(font);
   _text.setFont(*_font);

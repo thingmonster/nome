@@ -4,6 +4,18 @@
 using namespace sf;
 using namespace std;
 
+
+/*
+
+this was the original player movement component before we added
+box2d... it had quite nice momentum and I would have used 
+my diagonal circle vs square collision detector if box2d hadn't 
+been part of the module. instead you can only find it in
+lab 3 in my other repo https://github.com/thingmonster/set09121
+
+
+*/
+
 double PlayerMovementComponent::_momentum(double * timer) {
 	
 	double move = 0;
