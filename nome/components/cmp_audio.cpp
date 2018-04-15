@@ -1,14 +1,6 @@
 #include "cmp_audio.h"
 #include <iostream>
 
-/*
-
-This should be using the resources namespace in the engine!
-see scn_level1.cpp loading in textures for an example of usage,
-or TextComponent constructor
-
-*/
-
 AudioComponent::AudioComponent(Entity* p) :Component(p) {}
 
 void AudioComponent::LoadAudio(const std::string &file)
@@ -25,6 +17,20 @@ void AudioComponent::PlayAudio()
 {
 	_sound.setBuffer(_buffer);
 	_sound.play();
+}
+
+void AudioComponent::LoadMusic(const std::string &file)
+{
+	_file = file;
+	if (!_music.openFromFile("res/music/" + _file))
+	{
+		std::cout << "ERROR" << std::endl;
+	}
+}
+
+void AudioComponent::PlayMusic()
+{
+	_music.play();	
 }
 
 bool AudioComponent::AudioIsPlaying()

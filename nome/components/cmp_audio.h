@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/Music.hpp>
 #include <iostream>
 #include <ecm.h>
 
@@ -15,6 +16,8 @@ public:
 
 	void LoadAudio(const std::string &file);
 	void PlayAudio();
+	void LoadMusic(const std::string &file);
+	void PlayMusic();
 	bool AudioIsPlaying();
 	void render() override;
 	void update(double dt) override;
@@ -22,4 +25,5 @@ protected:
 	std::string _file;
 	sf::SoundBuffer _buffer;
 	sf::Sound _sound;
+	sf::Music _music;
 };

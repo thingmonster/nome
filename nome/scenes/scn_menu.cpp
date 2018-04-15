@@ -385,6 +385,11 @@ void MenuScene::load() {
 	divider->getShape().setFillColor(sf::Color(200 , 190, 183));
 	divider->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
+
+	auto jukebox = makeEntity();
+	auto music = jukebox->addComponent<AudioComponent>();
+	music->LoadMusic("Nomes_Theme.flac");
+	music->PlayMusic();
 }
 
 void MenuScene::unload() {

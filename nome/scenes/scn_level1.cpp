@@ -142,6 +142,11 @@ void Level1Scene::load() {
 		ball->setPosition(ls::getTileCentre(ls::findTiles(ls::BALL)[0]));
 		makeBall(ball);
 		
+		auto jukebox = makeEntity();
+		auto music = jukebox->addComponent<AudioComponent>();
+		music->LoadMusic("nome_game.flac");
+		music->PlayMusic();
+
 		loaded = true;
 	}
 }
