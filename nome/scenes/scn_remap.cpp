@@ -5,7 +5,7 @@
 using namespace sf;
 using namespace std;
 
-
+// labels for the controls functionality
 const std::string controls[] = {
     "Left",
     "Right",
@@ -16,17 +16,20 @@ const std::string controls[] = {
 
 void RemapScene::update(const double& dt) {
 	
+	// prevent single keypresses being registered as multiple events
 	static double timer = 0.f;
 	timer -= dt;
 	
 	if (timer < 0) {
 	
+		// if four controls have already been submitted
 		if (controlCount == 4) {
 			
 			if (!finished) {
 				finish();
 			}
-				
+			
+			// if game is in progress resume, else go to start menu
 			if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
 			{
 				auto jukebox = makeEntity();
@@ -45,9 +48,15 @@ void RemapScene::update(const double& dt) {
 							
 			}
 			
-		} else if (controlCount < Engine::controls.size()) {
+		} 
+		
+		// still waiting for all the controls to be submitted
+		else if (controlCount < Engine::controls.size()) {
 			
+			// set up for the next control to be submitted
 			queryKey();
+			
+			// update controls count to match engine
 			controlCount = Engine::controls.size();
 			
 		}
@@ -58,8 +67,10 @@ void RemapScene::update(const double& dt) {
 
 void RemapScene::load() {
 	
+	// create top section
 	UIScene::load();
 	
+	// empty the controls array, set flags and reset counter
 	Engine::controls.clear();
 	remapping = true;
 	controlCount = 0;
@@ -98,6 +109,7 @@ void RemapScene::reload() {
 
 void RemapScene::queryKey() {
 	
+	// create the text description for the newly submitted key
 	auto entity = makeEntity();
 	auto text = entity->addComponent<TextComponent>(controls[controlCount], "Rubik-Medium.ttf");
 	text->setColor(sf::Color(200, 190, 183));
@@ -107,7 +119,7 @@ void RemapScene::queryKey() {
 		(windowSize.y / 2 - 20) + (45 * controlCount)
 	});
 
-	
+	// create text for the newly submitted key
 	auto newKey = makeEntity();
 	auto keyText = newKey->addComponent<TextComponent>(Engine::keyStrings[Engine::controls[controlCount]], "Rubik-Medium.ttf");
 	keyText->setColor(sf::Color(72,62,55));
@@ -117,6 +129,7 @@ void RemapScene::queryKey() {
 		(windowSize.y / 2 - 20) + (45 * controlCount)
 	});
 
+	// get text bounds and use to determine size and position of background
 	Vector2f bounds(keyText->getText().getLocalBounds().width, 35);
 	
 	float positionOffset = 0;
@@ -141,13 +154,12 @@ void RemapScene::queryKey() {
 	});
 	
 	
-	
+	// load background and create entity in front of key text
 	std::shared_ptr<sf::Texture> keySprites = Resources::get<sf::Texture>("ui_key.png");
 	
 	auto background = makeEntity();
 	auto bg = background->addComponent<ShapeComponent>();
 	bg->setShape<sf::RectangleShape>(bounds);
-	// bg->getShape().setOrigin(20,20);
 	bg->getShape().setFillColor(sf::Color(255,255,255));
 	bg->setTexture(keySprites, textureRect);
 	bg->getShape().setPosition({
@@ -155,8 +167,10 @@ void RemapScene::queryKey() {
 		(windowSize.y / 2 - 20) + (45 * controlCount)
 	});
 	
+	// move background behind key text
 	iter_swap(_ents.list.begin() + _ents.list.size() - 2, _ents.list.begin() + _ents.list.size() - 1);
 	
+	// if there are still some controls to go show the next message
 	if (controlCount < 3) {
 		auto i = instructions->getComponents<TextComponent>();
 		i[0]->setString("Choose a Key to Move "+controls[controlCount + 1]);
@@ -167,9 +181,11 @@ void RemapScene::queryKey() {
 
 void RemapScene::finish() {
 	
+	// all controls have been submitted
+	
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 
-	// "Finished"
+	// check if game is in progress for customised "finished" text
 	
 	std::string backText;
 	if (Engine::getLevel() == nullptr) {
@@ -186,14 +202,15 @@ void RemapScene::finish() {
 		windowSize.y - 85
 	});
 	
-	// line
-	auto line2 = makeEntity();
-	auto s2 = line2->addComponent<ShapeComponent>();
-	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 100));
-	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	// footer divider
+	auto footDivider = makeEntity();
+	auto divider = footDivider->addComponent<ShapeComponent>();
+	divider->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
+	divider->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 100));
+	divider->getShape().setFillColor(sf::Color(200 , 190, 183));
+	divider->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
+	// hide instructions set set finished flag
 	instructions->setVisible(false);
 	finished = true;
 	

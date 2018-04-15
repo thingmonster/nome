@@ -5,15 +5,20 @@
 using namespace sf;
 using namespace std;
 
+// to store potential menu states and the menu state that is currently visible
 std::vector<std::shared_ptr<Entity>> menuStates;
 std::shared_ptr<Entity> menuState;
 
 
 void OptionsScene::update(const double& dt) {
 
+	// if the screen res menu has not been opened
 	if (!menuOpen) {
+		
+		// resume game or go back to start menu
 		if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
 		{
+			// play audio
 			auto jukebox = makeEntity();
 			auto audio = jukebox->addComponent<AudioComponent>();
 			audio->LoadAudio("Enter_Press.wav");
@@ -34,8 +39,10 @@ void OptionsScene::update(const double& dt) {
 			}
 		}
 
+		// go to remap scene
 		if ((Keyboard::isKeyPressed(Keyboard::R)) || (Joystick::isButtonPressed(0, 2))) //square
 		{
+			// play audio
 			auto jukebox = makeEntity();
 			auto audio = jukebox->addComponent<AudioComponent>();
 			audio->LoadAudio("Enter_Press.wav");
@@ -47,8 +54,10 @@ void OptionsScene::update(const double& dt) {
 			Engine::changeScene(&remap);
 		}
 
+		// toggle fullscreen window mode and update indicator
 		if ((Keyboard::isKeyPressed(Keyboard::F))) // NEED TO ADD THE JOYSTICK CONTROL
 		{
+			// play audio
 			auto jukebox = makeEntity();
 			auto audio = jukebox->addComponent<AudioComponent>();
 			audio->LoadAudio("Enter_Press.wav");
@@ -67,6 +76,7 @@ void OptionsScene::update(const double& dt) {
 			}
 		}
 
+		// open screen resolution menu
 		if ((Keyboard::isKeyPressed(Keyboard::S)) || (Joystick::isButtonPressed(0, 3))) //triangle
 		{
 			auto jukebox = makeEntity();
@@ -82,10 +92,14 @@ void OptionsScene::update(const double& dt) {
 		}
 	} 
 	
+	
+	// if the screen res menu is open
 	else {
-		int x = 0;
+		
+		// apply current selection and close menu
 		if ((Keyboard::isKeyPressed(Keyboard::Enter)) || (Joystick::isButtonPressed(0, 7))) //start
 		{
+			// play audio
 			auto jukebox = makeEntity();
 			auto audio = jukebox->addComponent<AudioComponent>();
 			audio->LoadAudio("Enter_Press.wav");
@@ -97,12 +111,18 @@ void OptionsScene::update(const double& dt) {
 			menuOpen = false;
 			closeResMenu();
 		}
+		
+		// navigate down menu
 		if (Keyboard::isKeyPressed(Keyboard::Down)) {
 			updateResMenu(1, dt);
 		}
+		
+		// navigate up menu
 		if (Keyboard::isKeyPressed(Keyboard::Up)) {
 			updateResMenu(-1, dt);
 		}
+		
+		// joystick one way navigation
 		if (Joystick::isButtonPressed(0, 3)) //triangle
 		{
 			updateResMenu(1, dt);
@@ -112,18 +132,20 @@ void OptionsScene::update(const double& dt) {
 
 void OptionsScene::showResMenu() {
 	
+	// hide all menu states that were created in the load method
 	for (auto &m : menuStates) {
 		m->setVisible(false);
 	}
 	
-	// show menu
-	// switch selected position and intrect
-	
+	// show the open menu background and blanket highlighting	
 	menuStates[3]->setVisible(true);
 	menuStates[4]->setVisible(true);
 	
+	
+	// get window size to check against preloaded resolution settings
 	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 	
+	// adjust position and spritesheet offset to show highlight for current res
 	if (windowSize.x == 800 && windowSize.y == 600) {
 		
 		auto shape = menuStates[4]->getComponents<ShapeComponent>();
@@ -147,6 +169,13 @@ void OptionsScene::showResMenu() {
 
 void OptionsScene::preSelectResolution() {
 	
+	/*
+	
+	if one of the preloaded resolutions corresponds 
+	with the current resolution highlight it
+	
+	*/
+	
 	if (Renderer::getWindow().getSize().x == 800 && Renderer::getWindow().getSize().y == 600) {
 		menuStates[0]->setVisible(true);
 		menuState = menuStates[0];
@@ -162,41 +191,48 @@ void OptionsScene::preSelectResolution() {
 
 void OptionsScene::closeResMenu() {
 	
+	// hide all menu states
 	for (auto &m : menuStates) {
 		m->setVisible(false);
 	}
 	
+	// show current menu state
 	menuState->setVisible(true);
 	
+	// resize window (event is handled in engine)
 	if (menuState == menuStates[0]) {
 		Renderer::getWindow().setSize(sf::Vector2u(800,600));
-		// Renderer::getWindow().setView(sf::View(sf::FloatRect(0,0,800,600)));
 	} else if (menuState == menuStates[1]) {
 		Renderer::getWindow().setSize(sf::Vector2u(1024,768));
-		// Renderer::getWindow().setView(sf::View(sf::FloatRect(0,0,1024,768)));
 	} else if (menuState == menuStates[2]) {
 		Renderer::getWindow().setSize(sf::Vector2u(1366,768));
-		// Renderer::getWindow().setView(sf::View(sf::FloatRect(0,0,1366,768)));
 	}
 	
+	// display current resolution if applicable
 	preSelectResolution();
 	
 }
 
 void OptionsScene::updateResMenu(int direction, const double& dt) {
 	
+	// prevent single keypresses registering multiple events
 	static double timer = 0.f;
 	timer -= dt;
 	
 	if (timer < 0) {
-	
+		
+		// get window size
 		sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
 		
+		// get blanket highlighting entity position
 		auto shape = menuStates[4]->getComponents<ShapeComponent>();
 		sf::Vector2f pos = shape[0]->getShape().getPosition();
+		
+		// set default spritesheet offset
 		sf::IntRect intRect = IntRect(0,0,168,34);
 			
-		if (direction == 1) {
+		// adjust the position and spritesheet offset of the highlight
+		if (direction == 1) { // downwards
 			
 			if (pos.y == 305) {
 				pos.y += 34;
@@ -212,7 +248,7 @@ void OptionsScene::updateResMenu(int direction, const double& dt) {
 				menuState = menuStates[0];
 			}
 			
-		} else {
+		} else { // upwards
 			
 			if (pos.y == 373) {
 				pos.y -= 34;
@@ -228,6 +264,7 @@ void OptionsScene::updateResMenu(int direction, const double& dt) {
 			
 		}
 		
+		// set highlight position and spritesheet offset
 		shape[0]->getShape().setPosition(pos);
 		shape[0]->getShape().setTextureRect(intRect);
 		
@@ -237,6 +274,8 @@ void OptionsScene::updateResMenu(int direction, const double& dt) {
 }
 
 void OptionsScene::makeDescription(std::string t, sf::Vector2f p) {
+	
+	// create the text for a key description
 	
 	auto entity = makeEntity();
 	auto text = entity->addComponent<TextComponent>(t, "Rubik-Medium.ttf");
@@ -250,6 +289,8 @@ void OptionsScene::makeDescription(std::string t, sf::Vector2f p) {
 
 void OptionsScene::makeKeys(std::shared_ptr<sf::Texture> sp, sf::Vector2f p) {
 		
+	// create a key background
+		
 	auto entity = makeEntity();
 	auto shape = entity->addComponent<ShapeComponent>();
 	shape->setShape<sf::RectangleShape>(sf::Vector2f(40, 40));
@@ -262,6 +303,8 @@ void OptionsScene::makeKeys(std::shared_ptr<sf::Texture> sp, sf::Vector2f p) {
 
 void OptionsScene::makeKeyText(std::string t, std::string f, sf::Color c, float s, sf::Vector2f p) {
 	
+	// create the text for a key
+	
 	auto entity = makeEntity();
 	auto text = entity->addComponent<TextComponent>(t, f);
 	text->setOrigin(text->getText().getLocalBounds().width / 2, text->getText().getLocalBounds().height / 2);
@@ -272,6 +315,8 @@ void OptionsScene::makeKeyText(std::string t, std::string f, sf::Color c, float 
 }
 
 void OptionsScene::resolutionIndicators(bool v, sf::Vector2f s, std::shared_ptr<sf::Texture> sp, sf::IntRect r, sf::Vector2f p) {
+	
+	// create entities and set visibility for each menu state
 	
 	auto entity = makeEntity();
 	entity->setVisible(v);
@@ -284,6 +329,7 @@ void OptionsScene::resolutionIndicators(bool v, sf::Vector2f s, std::shared_ptr<
 	shape->getShape().setPosition(p);
 	menuStates.push_back(entity);
 	
+	// if this one is visible then it is the current menu state
 	if (v) {
 		menuState = entity;
 	}
@@ -293,6 +339,7 @@ void OptionsScene::resolutionIndicators(bool v, sf::Vector2f s, std::shared_ptr<
 
 void OptionsScene::load() {
 	
+	// create top section
 	UIScene::load();
 	
 	// ============================== CONTENT ============================== // 
@@ -312,22 +359,20 @@ void OptionsScene::load() {
 	makeDescription("Screen Resolution", sf::Vector2f(windowSize.x / 2 - 20, 290));	
 	makeDescription("Full Screen",sf::Vector2f(windowSize.x / 2 - 20, 340));	
 	makeDescription("Remap Controls", sf::Vector2f(windowSize.x / 2 - 20, 390));
-	// makeDescription("Back", sf::Vector2f(windowSize.x / 2 - 20, 440));
 	
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 305));
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 355));
 	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 405));
-	// makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 455));
 	
 	makeKeyText("S", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 300));
 	makeKeyText("F", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 350));
 	makeKeyText("R", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 400));
-	// makeKeyText("B", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 450));
 	
 	
 	
 	// ============================== SCREEN CONTROLS ============================== // 
 	
+	// load graphics
 	std::shared_ptr<sf::Texture> screenResSprites = Resources::get<sf::Texture>("ui_screen_res.png");
 	std::shared_ptr<sf::Texture> fullScreenSprites = Resources::get<sf::Texture>("ui_fullscreen.png");
 	
@@ -340,18 +385,21 @@ void OptionsScene::load() {
 	fsI->setTexture(fullScreenSprites, sf::IntRect(0,0,52,40));
 	fsI->getShape().setPosition(sf::Vector2f(windowSize.x / 2 + 80, 355));
 	
-	// resolution indicators
+	// invisible resolution indicators
 	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,0,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,33,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,66,168,33), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	resolutionIndicators(false, sf::Vector2f(168, 102), screenResSprites, sf::IntRect(0,99,168,102), sf::Vector2f(windowSize.x / 2 + 80, 308));
 	resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 308));
+	
+	// show the resolution indicator that corresponds with 
+	// current screen size (if applicable)
 	preSelectResolution();
 	
 
 	// ============================== FOOT ============================== // 
 	
-	// go back
+	// check if a game is in progress to customise message
 	
 	std::string backText;
 	if (Engine::getLevel() == nullptr) {
@@ -368,18 +416,19 @@ void OptionsScene::load() {
 		windowSize.y - 85
 	});
 	
-	// line
-	auto line2 = makeEntity();
-	auto s2 = line2->addComponent<ShapeComponent>();
-	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 100));
-	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
+	// footer divider
+	auto footDivider = makeEntity();
+	auto divider = footDivider->addComponent<ShapeComponent>();
+	divider->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
+	divider->getShape().setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y - 100));
+	divider->getShape().setFillColor(sf::Color(200 , 190, 183));
+	divider->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
 	
 }
 
 void OptionsScene::unload() {
 	
+	// empty local menu states vector and variable as well
   _ents.list.clear();
   menuStates.clear();
   menuState = nullptr;
@@ -387,109 +436,6 @@ void OptionsScene::unload() {
 	
 void OptionsScene::reload() {
 	
-	sf::Vector2f windowSize = (Vector2f)Renderer::getWindow().getSize();
-/* 
-	{ // background	
-	auto background = makeEntity();
-	auto b = background->addComponent<ShapeComponent>();
-	b->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x, windowSize.y));
-	b->getShape().setPosition(sf::Vector2f(0,0));
-	b->getShape().setFillColor(sf::Color(72,62,55));
-	}
-	
-	{// "story of nome"
-	auto son = makeEntity();
-	auto sn = son->addComponent<TextComponent>("The Story of Nome", "WorstveldSling.ttf");
-	sn->setColor(sf::Color(200 , 190, 183));
-	sn->setCharacterSize(75);
-	sn->SetPosition({windowSize.x / 2 - sn->getText().getLocalBounds().width / 2, 10});
-	}
-	
-	{ // ============================== CONTENT ============================== // 
-	
-	// "Preference Options"
-	auto po = makeEntity();
-	auto pO = po->addComponent<TextComponent>("Preference Options", "Rubik-Medium.ttf");
-	pO->setColor(sf::Color(200 , 190, 183));
-	pO->setCharacterSize(50);
-	pO->SetPosition({windowSize.x / 2 - pO->getText().getLocalBounds().width / 2, 200});
-	
-	}
-	
-	{ // ============================== DESCRIPTIONS & KEYS ============================== // 
-	
-	
-	std::shared_ptr<sf::Texture> keySprites = Resources::get<sf::Texture>("ui_key.png");
-	
-	makeDescription("Screen Resolution", sf::Vector2f(windowSize.x / 2 - 20, 290));	
-	makeDescription("Full Screen",sf::Vector2f(windowSize.x / 2 - 20, 345));	
-	makeDescription("Remap Controls", sf::Vector2f(windowSize.x / 2 - 20, 400));
-	
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 305));
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 360));
-	makeKeys(keySprites, sf::Vector2f(windowSize.x / 2 + 20, 415));
-	
-	makeKeyText("S", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 300));
-	makeKeyText("F", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 355));
-	makeKeyText("R", "DroidSansMono.ttf", sf::Color(72,62,55), 25,sf::Vector2f(windowSize.x / 2 + 20, 410));
-	}
-		
-	{ // ============================== SCREEN MENU ============================== // 
-	
-	std::shared_ptr<sf::Texture> screenResSprites = Resources::get<sf::Texture>("ui_screen_res.png");
-	std::shared_ptr<sf::Texture> fullScreenSprites = Resources::get<sf::Texture>("ui_fullscreen.png");
-	
-	// fullscreen indicator
-	auto fsi = makeEntity();
-	auto fsI = fsi->addComponent<ShapeComponent>();
-	fsI->setShape<sf::RectangleShape>(sf::Vector2f(52, 40));
-	fsI->getShape().setOrigin(Vector2f(20,20));
-	fsI->getShape().setFillColor(sf::Color(255,255,255));
-	fsI->setTexture(fullScreenSprites, sf::IntRect(0,0,52,40));
-	fsI->getShape().setPosition(sf::Vector2f(windowSize.x / 2 + 80, 360));
-	
-	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,0,168,33), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,33,168,33), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	resolutionIndicators(false, sf::Vector2f(168, 33), screenResSprites, sf::IntRect(0,66,168,33), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	resolutionIndicators(false, sf::Vector2f(168, 102), screenResSprites, sf::IntRect(0,99,168,102), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	
-	setSelectedResolution();
-	
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,167,168,34), sf::Vector2f(windowSize.x / 2 + 80, 373));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,201,168,34), sf::Vector2f(windowSize.x / 2 + 80, 305));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,235,168,34), sf::Vector2f(windowSize.x / 2 + 80, 339));
-	// resolutionIndicators(false, sf::Vector2f(168, 34), screenResSprites, sf::IntRect(0,269,168,34), sf::Vector2f(windowSize.x / 2 + 80, 373));
-	
-	}
-	
-	{ // ============================== FOOT ============================== // 
-	
-	// "press enter to begin"
-	auto petb = makeEntity();
-	auto pe = petb->addComponent<TextComponent>("Press enter to begin", "WorstveldSling.ttf");
-	pe->setColor(sf::Color(200 , 190, 183));
-	pe->setCharacterSize(70);
-	pe->SetPosition({windowSize.x / 2 - pe->getText().getLocalBounds().width / 2, 490});
-	
-	// line
-	auto line = makeEntity();
-	auto s = line->addComponent<ShapeComponent>();
-	s->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s->getShape().setPosition(sf::Vector2f(windowSize.x / 2, sn->getText().getLocalBounds().height * 2));
-	s->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
-	
-	// line
-	auto line2 = makeEntity();
-	auto s2 = line->addComponent<ShapeComponent>();
-	s2->setShape<sf::RectangleShape>(sf::Vector2f(windowSize.x - 100, 2));
-	s2->getShape().setPosition(sf::Vector2f(windowSize.x / 2, 500));
-	s2->getShape().setFillColor(sf::Color(200 , 190, 183));
-	s2->getShape().setOrigin(Vector2f((windowSize.x - 100) / 2, 1));
-	
-	}
-	 */
 }
 
 
