@@ -28,6 +28,9 @@ Download the <a href="https://github.com/thingmonster/nome/releases/download/v0.
 
 ![image](https://user-images.githubusercontent.com/24362260/38784950-5c494678-4111-11e8-891b-2ba05d5ceaad.png)
 
+![screenshots](https://user-images.githubusercontent.com/24362260/38814456-6ff07a2a-4189-11e8-8505-328062e5e9c6.png)
+
+
 ## Bug reporting 
 
 Something not right? Let us know <a href="https://github.com/thingmonster/nome/issues">here</a> by opening up a 'new issue' and we'll work hard to try and help you.
