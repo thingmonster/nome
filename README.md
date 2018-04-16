@@ -3,6 +3,7 @@
 
 We set out to create a 2D top-down perspective game, called the Story of Nome. The game sees the player take control of Nome, the game’s protagonist. Nome must battle against beetles to stay alive. He does this by pushing a ball around to hit them, however if he is hit by a beetle, he dies instantly. 
 
+## Why we created 'Story of Nome'
 Our game was inspired by similar games played from a top-down perspective such as Zelda, Chips Challenge, Enigma, and Labyrinth. We hoped to deliver a roguelike experience pioneered by games like spelunky, that make for a challenging experience.
 
 ## Install the game 
@@ -24,4 +25,6 @@ Download the <a href="https://github.com/thingmonster/nome/releases/download/v0.
 
 ![image](https://user-images.githubusercontent.com/24362260/38784950-5c494678-4111-11e8-891b-2ba05d5ceaad.png)
 
+## Bug reporting 
 
+Something not right? Let us know <a href="https://github.com/thingmonster/nome/issues">here</a> by opening up a 'new issue' and we'll work hard to try and help you.
