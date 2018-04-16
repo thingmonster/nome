@@ -19,7 +19,6 @@ Download the <a href="https://github.com/thingmonster/nome/releases/download/v0.
 <a href="https://github.com/thingmonster/nome/archive/v0.3.tar.gz">v0.3 .tar.gz download</a>
 
 ## Screenshots
-[![forthebadge](https://forthebadge.com/images/badges/designed-in-ms-paint.svg)](https://forthebadge.com)
 
 ![image](https://user-images.githubusercontent.com/24362260/38784945-4e273870-4111-11e8-9926-7f9e115df231.png)
 
