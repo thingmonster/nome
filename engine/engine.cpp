@@ -443,7 +443,9 @@ void Engine::update() {
 	
 	// step physics world and update current scene
 	if (_activeScene != nullptr) {
-    Physics::update(dt);
+    if (_activeScene == _activeLevel) {
+			Physics::update(dt);
+		}
     _activeScene->update(dt);
 	}
 	
