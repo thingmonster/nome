@@ -8,7 +8,7 @@ using namespace std;
 void DeathScene::update(const double& dt) {
 	
 	// go to start menu
-	if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 7))) //start
+	if ((Keyboard::isKeyPressed(Keyboard::Tab)) || (Joystick::isButtonPressed(0, 1))) //circle
 	{
 		auto jukebox = makeEntity();
 		auto audio = jukebox->addComponent<AudioComponent>();
