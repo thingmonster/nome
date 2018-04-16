@@ -55,7 +55,7 @@ void OptionsScene::update(const double& dt) {
 		}
 
 		// toggle fullscreen window mode and update indicator
-		if ((Keyboard::isKeyPressed(Keyboard::F))) // NEED TO ADD THE JOYSTICK CONTROL
+		if (((Keyboard::isKeyPressed(Keyboard::F))) || (Joystick::isButtonPressed(0, 8))) //l3
 		{
 			// play audio
 			auto jukebox = makeEntity();
