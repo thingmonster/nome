@@ -145,7 +145,7 @@ void PlayerPhysicsComponent::update(double dt) {
 	
 	// ============ go up ============
 	if (
-		(Keyboard::isKeyPressed(Keyboard::Up)) || 
+		(Keyboard::isKeyPressed(Engine::controls[2])) || 
 		(Joystick::getAxisPosition(0, Joystick::Axis::Y) < -60.00f)//up 
 	)
 	{
@@ -163,7 +163,7 @@ void PlayerPhysicsComponent::update(double dt) {
 	
 	// ============ go down ============
 	if (
-		(Keyboard::isKeyPressed(Keyboard::Down)) || 
+		(Keyboard::isKeyPressed(Engine::controls[3])) || 
 		(Joystick::getAxisPosition(0, Joystick::Axis::Y) > 60.00f)//down
 	)
 	{
@@ -181,7 +181,7 @@ void PlayerPhysicsComponent::update(double dt) {
 	
 	// ============ go right ============
 	if (
-		(Keyboard::isKeyPressed(Keyboard::Right)) || 
+		(Keyboard::isKeyPressed(Engine::controls[1])) || 
 		(Joystick::getAxisPosition(0, Joystick::Axis::X) > 60.00f)//right
 	)
 	{
@@ -199,7 +199,7 @@ void PlayerPhysicsComponent::update(double dt) {
 	
 	// ============ go left ============
 	if (
-		(Keyboard::isKeyPressed(Keyboard::Left)) || 
+		(Keyboard::isKeyPressed(Engine::controls[0])) || 
 		(Joystick::getAxisPosition(0, Joystick::Axis::X) < -60.00f)//left
 	)
 	{
