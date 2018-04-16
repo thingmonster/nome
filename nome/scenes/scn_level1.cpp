@@ -327,13 +327,13 @@ void Level1Scene::makeBall(std::shared_ptr<Entity> ball) {
 	shape[0]->setTexture(playerSprites, sf::IntRect(300,0,300,300));
 	
 	// add physics component if not present
-	auto checkPhysics = ball->getComponents<PhysicsComponent>();
+	auto checkPhysics = ball->getComponents<BallPhysicsComponent>();
 	if (checkPhysics.size() == 0) {
-		ball->addComponent<PhysicsComponent>(true, Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4));
+		ball->addComponent<BallPhysicsComponent>(Vector2f(ls::getTileSize() / 4, ls::getTileSize() / 4), ls::getTileSize());
 	}
 	
 	// make very bouncy
-	auto physics = ball->getComponents<PhysicsComponent>();
+	auto physics = ball->getComponents<BallPhysicsComponent>();
 	physics[0]->setRestitution(1);
 }
 
@@ -464,15 +464,14 @@ void Level1Scene::updateEnemyAI(std::shared_ptr<Entity> enemy) {
 
 std::shared_ptr<DistanceDecision> Level1Scene::decisionTree() {
 	
-	// if very near ball flee
+	// if very near ball flee from ball
 	// if sort of near ball wander (to prevent juddering)
 	// else if far from nome seek
 	// else if mid distance from nome wander
-	// else if very near nome flee
 	
 	auto decision = make_shared<DistanceDecision>(
 		ball,
-		ls::getTileSize() * 1,
+		ls::getTileSize() * .5,
 		make_shared<FleeDecision>(),
 		make_shared<DistanceDecision>(
 			ball,
@@ -480,14 +479,9 @@ std::shared_ptr<DistanceDecision> Level1Scene::decisionTree() {
 			make_shared<WanderDecision>(),
 			make_shared<DistanceDecision>(		
 				player,
-				ls::getTileSize() * .5,
-				make_shared<FleeDecision>(),
-				make_shared<DistanceDecision> (
-					player,
-					ls::getTileSize() * 2,
-					make_shared<WanderDecision>(),
-					make_shared<SeekDecision>()
-				)
+				ls::getTileSize() * 2,
+				make_shared<WanderDecision>(),
+				make_shared<SeekDecision> ()
 			)
 		)
 	);

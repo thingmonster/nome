@@ -18,12 +18,19 @@ SteeringOutput FleeSteering::getSteering() const noexcept {
 	return steering;
 }
 
+
+WanderSteering::WanderSteering(Entity *character, Entity *target, float maxSpeed)
+	: _character(character), _target(target), _maxSpeed(maxSpeed) {
+	srand( time( NULL ) );
+}
+
+
 SteeringOutput WanderSteering::getSteering() const noexcept {
 	
 	// assign a random direction to steering
 	
 	SteeringOutput steering;
-	steering.direction = Vector2f(std::rand() % 100, std::rand() % 100) - Vector2f(std::rand() % 100, std::rand() % 100);
+	steering.direction = Vector2f((std::rand() % 100) - 50, (std::rand() % 100) - 50);
 	steering.direction = normalize(steering.direction);
 	steering.direction *= _maxSpeed;
 	steering.rotation = vector2degrees(steering.direction);
@@ -32,8 +39,6 @@ SteeringOutput WanderSteering::getSteering() const noexcept {
 }
 
 SteeringOutput WanderSteering::getSteering(sf::Vector2f direction) {
-	
-	
 	
 	SteeringOutput steering;
 	steering.direction = Vector2f(0,0);
@@ -47,8 +52,8 @@ SteeringOutput WanderSteering::getSteering(sf::Vector2f direction) {
 	// otherwise 2% chance of changing to a new random direction
 	else {
 		int odds = std::rand() % 100;
-		if (odds < 2) {		
-			Vector2f newDirection = Vector2f(std::rand() % 100, std::rand() % 100);
+		if (odds < 2) {	
+			Vector2f newDirection = Vector2f((std::rand() % 100) - 50, (std::rand() % 100) - 50);
 			steering.direction = newDirection;
 		} else {	
 			steering.direction = direction;

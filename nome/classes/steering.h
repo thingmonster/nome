@@ -66,8 +66,8 @@ class WanderSteering : public SteeringBehaviour {
 		
 	public:
 		WanderSteering() = delete;
-		WanderSteering(Entity *character, Entity *target, float maxSpeed)
-			: _character(character), _target(target), _maxSpeed(maxSpeed) {}
+		WanderSteering(Entity *character, Entity *target, float maxSpeed);
+			// : _character(character), _target(target), _maxSpeed(maxSpeed) {}
 		SteeringOutput getSteering() const noexcept;
 		SteeringOutput getSteering(sf::Vector2f direction);
 };

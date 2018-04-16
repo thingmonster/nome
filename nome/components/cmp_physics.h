@@ -67,6 +67,21 @@ class EnemyPhysicsComponent : public PhysicsComponent {
 		
 };
 
+class BallPhysicsComponent : public PhysicsComponent {
+		
+	protected:
+		b2Vec2 _size;
+		sf::Vector2f _maxVelocity;
+		float _speed;
+		bool checkContacts() const;
+
+	public:
+		void update(double dt) override;
+		explicit BallPhysicsComponent(Entity* p, const sf::Vector2f& size, float speed);
+		BallPhysicsComponent() = delete;
+		
+};
+
 
 
 

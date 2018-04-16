@@ -33,7 +33,7 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 	// SetAsBox box takes HALF-Widths!
 	Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
 	b2FixtureDef FixtureDef;
-	FixtureDef.friction = _dynamic ? 1.f : 0.8f;
+	FixtureDef.friction = _dynamic ? 1.f : 0.1f;
 	FixtureDef.restitution = .1;
 	FixtureDef.shape = &Shape;
 
@@ -295,15 +295,6 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p, const Vector2f& size, fl
   _body->SetBullet(true);
 }
 
-void EnemyPhysicsComponent::setDirection(Vector2f direction) {
-	_direction = direction;
-}
-
-Vector2f EnemyPhysicsComponent::getDirection() {
-	return _direction;
-}
-
-
 void EnemyPhysicsComponent::update(double dt) {
 	
 	//check collisions
@@ -364,9 +355,49 @@ bool EnemyPhysicsComponent::checkContacts() const {
   return false;
 }
 
+void EnemyPhysicsComponent::setDirection(Vector2f direction) {
+	_direction = direction;
+}
+
+Vector2f EnemyPhysicsComponent::getDirection() {
+	return _direction;
+}
 
 
 
+
+
+BallPhysicsComponent::BallPhysicsComponent(Entity* p, const Vector2f& size, float speed) 
+: PhysicsComponent(p, true, size) {
+  // based mostly on platformer player physics component constructor
+  _size = sv2_to_bv2(size, true);
+  _maxVelocity = Vector2f(400.f, 400.f);
+  _speed = speed;
+  _body->SetSleepingAllowed(false);
+  _body->SetFixedRotation(true);
+  // Bullet items have higher-res collision detection
+  _body->SetBullet(true);
+}
+
+void BallPhysicsComponent::update(double dt) {
+	
+	
+	/* needs more work unfortunately.. no time
+	if (getVelocity().x < .5 && getVelocity().y < .5) {
+		
+	Vector2f test = invert_height(bv2_to_sv2(_body->GetPosition()));
+		Vector2ul nearestTile = ls::screenCoordsToIndexes(test);
+		Vector2f nearestCentre = ls::getTileCentre(nearestTile);
+		impulse({nearestTile.x / 5.f, nearestTile.y / 5.f});
+		dampen({0.95f, 0.95f});
+	}	
+	*/
+	
+	// update parent entity's position
+  PhysicsComponent::update(dt);
+	
+	
+}
 
 
 
