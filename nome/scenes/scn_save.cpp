@@ -20,9 +20,11 @@ void SaveScene::update(const double& dt) {
 		{
 			//do nothing
 		}
-		saveGame();
-		Engine::setReadingInput(false);
-		Engine::changeScene(&level1);
+		if (userInput.length() > 0) {
+			saveGame();
+			Engine::setReadingInput(false);
+			Engine::changeScene(&level1);
+		}
 	}
 	
 	// resume game
@@ -139,6 +141,7 @@ void SaveScene::load() {
 void SaveScene::unload() {
 	
   _ents.list.clear();
+	userInput = "";
 	
 }
 
