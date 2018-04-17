@@ -1,5 +1,6 @@
 
 #include "../game.h"
+#include "../components/cmp_audio.h"
 
 using namespace sf;
 using namespace std;
@@ -25,6 +26,12 @@ void DeathScene::update(const double& dt) {
 
 void DeathScene::load() {
 	
+	//play death audio
+	auto jukebox = makeEntity();
+	auto audio = jukebox->addComponent<AudioComponent>();
+	audio->LoadAudio("Nome_Die.wav");
+	audio->PlayAudio();
+
 	// create top section
 	UIScene::load();
 	
