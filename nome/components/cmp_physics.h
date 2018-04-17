@@ -3,6 +3,8 @@
 #include "engine.h"
 #include "../game.h"
 #include <Box2D/Dynamics/b2Body.h>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
 /* 
 
@@ -74,12 +76,15 @@ class BallPhysicsComponent : public PhysicsComponent {
 		sf::Vector2f _maxVelocity;
 		float _speed;
 		bool checkContacts() const;
+		sf::SoundBuffer _buffer;
+		sf::Sound _sound;
+		sf::Music _music;
+		
 
 	public:
 		void update(double dt) override;
 		explicit BallPhysicsComponent(Entity* p, const sf::Vector2f& size, float speed);
 		BallPhysicsComponent() = delete;
-		
 };
 
 

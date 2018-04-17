@@ -16,6 +16,7 @@ public:
 
 	void LoadAudio(const std::string &file);
 	void PlayAudio();
+	void QuickPlay(const std::string &file);
 	void LoadMusic(const std::string &file);
 	void PlayMusic();
 	bool AudioIsPlaying();

@@ -377,6 +377,7 @@ BallPhysicsComponent::BallPhysicsComponent(Entity* p, const Vector2f& size, floa
   _body->SetFixedRotation(true);
   // Bullet items have higher-res collision detection
   _body->SetBullet(true);
+
 }
 
 void BallPhysicsComponent::update(double dt) {
@@ -392,11 +393,55 @@ void BallPhysicsComponent::update(double dt) {
 		dampen({0.95f, 0.95f});
 	}	
 	*/
-	
+	if (checkContacts())
+	{
+		if (!_buffer.loadFromFile("res/fx/Beetle_Die.wav"))
+		{
+			std::cout << "ERROR" << std::endl;
+		}
+		_sound.setBuffer(_buffer);
+		_sound.play();
+	}
 	// update parent entity's position
   PhysicsComponent::update(dt);
-	
-	
+}
+
+bool BallPhysicsComponent::checkContacts() const {
+	auto touch = getTouching();
+	const auto& pos = _body->GetPosition();
+
+	// for each body that's been touched
+	for (const auto& contact : touch) {
+
+		// get the entity's tag from user data
+		std::string tagA;
+		std::string tagB;
+
+		void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+		if (bodyUserDataA) {
+			Entity* entityA = static_cast<Entity*>(contact->GetFixtureA()->GetBody()->GetUserData());
+			if (entityA != NULL) {
+				tagA = entityA->getTag();
+			}
+		}
+
+		void* bodyUserDataB = contact->GetFixtureA()->GetBody()->GetUserData();
+		if (bodyUserDataB) {
+			Entity* entityB = static_cast<Entity*>(contact->GetFixtureB()->GetBody()->GetUserData());
+			if (entityB != NULL) {
+				tagB = entityB->getTag();
+			}
+		}
+
+		if ((tagA == "beetle") || (tagB == "beetle")) {
+			return true;
+		}
+
+
+		
+	}
+
+	return false;
 }
 
 
