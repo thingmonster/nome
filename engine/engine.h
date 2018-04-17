@@ -21,9 +21,9 @@ class Scene {
 		virtual void unload() = 0;
 		virtual void reload() = 0;
 		virtual void resize() = 0;
-		std::shared_ptr<Entity> Scene::makeEntity();
-		std::shared_ptr<Entity> Scene::makeEntity(std::string tag);
-		std::vector<std::shared_ptr<Entity>> Scene::getEntities();
+		std::shared_ptr<Entity> makeEntity();
+		std::shared_ptr<Entity> makeEntity(std::string tag);
+		std::vector<std::shared_ptr<Entity>> getEntities();
 		Vector2f windowSize;
 		
 };

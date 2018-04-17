@@ -506,6 +506,7 @@ std::shared_ptr<Entity> Scene::makeEntity() {
 	
 void LevelScene::destroy() {
 	_ents.list.clear();
+	deathCount = 0;
 	loaded = false;
 }
 
