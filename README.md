@@ -9,14 +9,14 @@ Our game was inspired by similar games played from a top-down perspective such a
 ## Install the game 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c-plus-plus.svg)](https://forthebadge.com)
 
-Download the <a href="https://github.com/thingmonster/nome/releases/download/v0.3/setup.exe" target="_blank">v0.3 setup.exe</a> file and follow the instructions to install on your computer.
+Download the <a href="https://github.com/thingmonster/nome/releases/download/v0.4/setup.exe" target="_blank">v0.4 setup.exe</a> file and follow the instructions to install on your computer.
 
 ## Source Code
 [![Build status](https://ci.appveyor.com/api/projects/status/pf80ga951mt102yy?svg=true)](https://ci.appveyor.com/project/EarlMurray/nome)
 
-<a href="https://github.com/thingmonster/nome/archive/v0.3.zip">v0.3 .zip download</a>
+<a href="https://github.com/thingmonster/nome/archive/v0.4.zip">v0.4 .zip download</a>
 
-<a href="https://github.com/thingmonster/nome/archive/v0.3.tar.gz">v0.3 .tar.gz download</a>
+<a href="https://github.com/thingmonster/nome/archive/v0.4.tar.gz">v0.4 .tar.gz download</a>
 
 ## Controls
 
