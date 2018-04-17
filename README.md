@@ -20,7 +20,7 @@ Download the <a href="https://github.com/thingmonster/nome/releases/download/v0.
 
 ## Controls
 
-![nome_joystick_controls](https://user-images.githubusercontent.com/24362260/38814269-0600822c-4189-11e8-9842-287c3397e9e1.png)
+![nome_joystick_controls](https://user-images.githubusercontent.com/24362260/38838644-13cf2318-41cf-11e8-9238-4d3d8f78bf8a.png)
 
 ## Screenshots
 
